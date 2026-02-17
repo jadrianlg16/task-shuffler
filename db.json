@@ -1,0 +1,177 @@
+{
+  "activities": [
+    {
+      "id": "4524f34a-75a2-43c1-964f-0ec6cc27446a",
+      "name": "Plan life",
+      "durationMinutes": 120,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-02-13T16:01:13.355Z",
+      "completedAt": null
+    },
+    {
+      "id": "2bfd7bfa-a751-4111-b933-0d9855a9a974",
+      "name": "comprar un regalo para maria villareal",
+      "durationMinutes": 20,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-02-13T15:57:45.943Z",
+      "completedAt": null
+    },
+    {
+      "id": "e3c11dba-b2e3-498d-a690-5ba0c8daab80",
+      "name": "Hacer lista de posibles interships para verano",
+      "durationMinutes": 120,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-02-13T15:52:06.910Z",
+      "completedAt": null
+    },
+    {
+      "id": "faffdf9c-e8e8-45ee-996f-b9ff2a78fdf5",
+      "name": "Actualizar CV",
+      "durationMinutes": 50,
+      "categoryId": "personal",
+      "status": "archived",
+      "createdAt": "2026-02-13T15:51:45.479Z",
+      "completedAt": "2026-02-13T15:53:34.135Z"
+    },
+    {
+      "id": "eb59ab68-88bb-4754-b9c1-ea45ec298290",
+      "name": "Work on the youtube video generator project",
+      "durationMinutes": 60,
+      "categoryId": "hobby",
+      "status": "active",
+      "createdAt": "2026-02-13T15:54:40.585Z",
+      "completedAt": null
+    },
+    {
+      "id": "062d5f17-da52-4a5c-ac33-e15c36c0f130",
+      "name": "Hacer plan de semestre profesional",
+      "durationMinutes": 45,
+      "categoryId": "business",
+      "status": "active",
+      "createdAt": "2026-02-13T15:51:22.442Z",
+      "completedAt": null
+    },
+    {
+      "id": "10ffdfa3-9bd0-4815-b6da-f69770fd9aa2",
+      "name": "Estudiar conceptos de clases y mejorar mis notas",
+      "durationMinutes": 60,
+      "categoryId": "school",
+      "status": "active",
+      "createdAt": "2026-02-13T15:50:58.686Z",
+      "completedAt": null
+    },
+    {
+      "id": "32aefeeb-d76a-42e2-8387-9efd73a04a6a",
+      "name": "tocar una cancion de piano",
+      "durationMinutes": 10,
+      "categoryId": "hobby",
+      "status": "active",
+      "createdAt": "2026-02-13T15:50:31.529Z",
+      "completedAt": null
+    },
+    {
+      "id": "ff9a9961-3ba0-4869-9826-deb8dcf62d2a",
+      "name": "crear libreta de finanzas personal",
+      "durationMinutes": 60,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-02-13T15:50:11.996Z",
+      "completedAt": null
+    },
+    {
+      "id": "ec38c35a-dbfd-40cc-9788-bbf708c5c6c6",
+      "name": "arreglar la pintura del carro",
+      "durationMinutes": null,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-02-13T15:49:48.276Z",
+      "completedAt": null
+    },
+    {
+      "id": "d3ca8efe-ecad-4af2-a960-9bad378f5560",
+      "name": "lavar carro",
+      "durationMinutes": 60,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-02-13T15:49:31.878Z",
+      "completedAt": null
+    },
+    {
+      "id": "ebefe57c-282a-4acf-9d31-5648c62d8f9a",
+      "name": "listear el anuncio de trabajo",
+      "durationMinutes": 20,
+      "categoryId": "business",
+      "status": "active",
+      "createdAt": "2026-02-13T15:32:47.503Z",
+      "completedAt": null
+    },
+    {
+      "id": "98d5dbd0-9db1-453a-b9da-0dc980d6df8d",
+      "name": "Palladium Plan",
+      "durationMinutes": null,
+      "categoryId": "business",
+      "status": "active",
+      "createdAt": "2026-02-13T15:32:18.923Z",
+      "completedAt": null
+    }
+  ],
+  "categories": [
+    {
+      "id": "school",
+      "name": "School",
+      "color": "#3B82F6",
+      "icon": "S",
+      "isDefault": true,
+      "isHidden": false,
+      "sortOrder": 0
+    },
+    {
+      "id": "personal",
+      "name": "Personal",
+      "color": "#8B5CF6",
+      "icon": "P",
+      "isDefault": true,
+      "isHidden": false,
+      "sortOrder": 1
+    },
+    {
+      "id": "business",
+      "name": "Business",
+      "color": "#F59E0B",
+      "icon": "B",
+      "isDefault": true,
+      "isHidden": false,
+      "sortOrder": 2
+    },
+    {
+      "id": "hobby",
+      "name": "Hobby",
+      "color": "#10B981",
+      "icon": "H",
+      "isDefault": true,
+      "isHidden": false,
+      "sortOrder": 3
+    },
+    {
+      "id": "field",
+      "name": "Field",
+      "color": "#EF4444",
+      "icon": "F",
+      "isDefault": true,
+      "isHidden": false,
+      "sortOrder": 4
+    },
+    {
+      "id": "unassigned",
+      "name": "Unassigned",
+      "color": "#6B7280",
+      "icon": "U",
+      "isDefault": true,
+      "isHidden": false,
+      "sortOrder": 5
+    }
+  ]
+}

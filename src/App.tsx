@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { useTheme } from "@/hooks/useTheme";
 import { useUIStore } from "@/store/uiStore";
+import { useActivityStore } from "@/store/activityStore";
+import { useCategoryStore } from "@/store/categoryStore";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Header } from "@/components/layout/Header";
 import { QuickAddForm } from "@/components/activities/QuickAddForm";
@@ -16,6 +18,13 @@ import type { Activity } from "@/types";
 export default function App() {
   useTheme();
   const currentView = useUIStore((s) => s.currentView);
+  const loadActivities = useActivityStore((s) => s.loadActivities);
+  const loadCategories = useCategoryStore((s) => s.loadCategories);
+
+  useEffect(() => {
+    loadActivities();
+    loadCategories();
+  }, [loadActivities, loadCategories]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [shuffleResult, setShuffleResult] = useState<{
     candidates: Activity[];
