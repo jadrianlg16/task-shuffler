@@ -1,63 +1,18 @@
-import type { Activity, Category } from "@/types";
+import * as httpDb from "./httpDb";
+import * as localDb from "./localDb";
 
-const API_URL = "http://localhost:3001";
+/**
+ * Storage façade. Default: json-server over HTTP (httpDb).
+ * Build with VITE_STORAGE=local for a serverless localStorage build
+ * (used by the portfolio embed at adriangaona.dev).
+ */
+const impl = import.meta.env.VITE_STORAGE === "local" ? localDb : httpDb;
 
-export async function fetchActivities(): Promise<Activity[]> {
-  const res = await fetch(`${API_URL}/activities`);
-  return res.json();
-}
-
-export async function saveActivity(activity: Activity): Promise<Activity> {
-  const res = await fetch(`${API_URL}/activities`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(activity),
-  });
-  return res.json();
-}
-
-export async function updateActivity(
-  id: string,
-  updates: Partial<Activity>
-): Promise<Activity> {
-  const res = await fetch(`${API_URL}/activities/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updates),
-  });
-  return res.json();
-}
-
-export async function deleteActivity(id: string): Promise<void> {
-  await fetch(`${API_URL}/activities/${id}`, { method: "DELETE" });
-}
-
-export async function fetchCategories(): Promise<Category[]> {
-  const res = await fetch(`${API_URL}/categories`);
-  return res.json();
-}
-
-export async function saveCategory(category: Category): Promise<Category> {
-  const res = await fetch(`${API_URL}/categories`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(category),
-  });
-  return res.json();
-}
-
-export async function updateCategory(
-  id: string,
-  updates: Partial<Category>
-): Promise<Category> {
-  const res = await fetch(`${API_URL}/categories/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updates),
-  });
-  return res.json();
-}
-
-export async function deleteCategory(id: string): Promise<void> {
-  await fetch(`${API_URL}/categories/${id}`, { method: "DELETE" });
-}
+export const fetchActivities = impl.fetchActivities;
+export const saveActivity = impl.saveActivity;
+export const updateActivity = impl.updateActivity;
+export const deleteActivity = impl.deleteActivity;
+export const fetchCategories = impl.fetchCategories;
+export const saveCategory = impl.saveCategory;
+export const updateCategory = impl.updateCategory;
+export const deleteCategory = impl.deleteCategory;

@@ -32,9 +32,9 @@
       "name": "Actualizar CV",
       "durationMinutes": 50,
       "categoryId": "personal",
-      "status": "archived",
+      "status": "active",
       "createdAt": "2026-02-13T15:51:45.479Z",
-      "completedAt": "2026-02-13T15:53:34.135Z"
+      "completedAt": null
     },
     {
       "id": "eb59ab68-88bb-4754-b9c1-ea45ec298290",
