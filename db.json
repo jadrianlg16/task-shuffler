@@ -1,120 +1,120 @@
 {
   "activities": [
     {
-      "id": "4524f34a-75a2-43c1-964f-0ec6cc27446a",
-      "name": "Plan life",
-      "durationMinutes": 120,
-      "categoryId": "personal",
-      "status": "active",
-      "createdAt": "2026-02-13T16:01:13.355Z",
-      "completedAt": null
-    },
-    {
-      "id": "2bfd7bfa-a751-4111-b933-0d9855a9a974",
-      "name": "comprar un regalo para maria villareal",
-      "durationMinutes": 20,
-      "categoryId": "personal",
-      "status": "active",
-      "createdAt": "2026-02-13T15:57:45.943Z",
-      "completedAt": null
-    },
-    {
-      "id": "e3c11dba-b2e3-498d-a690-5ba0c8daab80",
-      "name": "Hacer lista de posibles interships para verano",
-      "durationMinutes": 120,
-      "categoryId": "personal",
-      "status": "active",
-      "createdAt": "2026-02-13T15:52:06.910Z",
-      "completedAt": null
-    },
-    {
-      "id": "faffdf9c-e8e8-45ee-996f-b9ff2a78fdf5",
-      "name": "Actualizar CV",
-      "durationMinutes": 50,
-      "categoryId": "personal",
-      "status": "active",
-      "createdAt": "2026-02-13T15:51:45.479Z",
-      "completedAt": null
-    },
-    {
-      "id": "eb59ab68-88bb-4754-b9c1-ea45ec298290",
-      "name": "Work on the youtube video generator project",
-      "durationMinutes": 60,
-      "categoryId": "hobby",
-      "status": "active",
-      "createdAt": "2026-02-13T15:54:40.585Z",
-      "completedAt": null
-    },
-    {
-      "id": "062d5f17-da52-4a5c-ac33-e15c36c0f130",
-      "name": "Hacer plan de semestre profesional",
-      "durationMinutes": 45,
-      "categoryId": "business",
-      "status": "active",
-      "createdAt": "2026-02-13T15:51:22.442Z",
-      "completedAt": null
-    },
-    {
-      "id": "10ffdfa3-9bd0-4815-b6da-f69770fd9aa2",
-      "name": "Estudiar conceptos de clases y mejorar mis notas",
+      "id": "11111111-1111-4111-8111-111111111101",
+      "name": "Review lecture notes",
       "durationMinutes": 60,
       "categoryId": "school",
       "status": "active",
-      "createdAt": "2026-02-13T15:50:58.686Z",
+      "createdAt": "2026-01-05T09:00:00.000Z",
       "completedAt": null
     },
     {
-      "id": "32aefeeb-d76a-42e2-8387-9efd73a04a6a",
-      "name": "tocar una cancion de piano",
-      "durationMinutes": 10,
-      "categoryId": "hobby",
+      "id": "11111111-1111-4111-8111-111111111102",
+      "name": "Finish problem set",
+      "durationMinutes": 120,
+      "categoryId": "school",
       "status": "active",
-      "createdAt": "2026-02-13T15:50:31.529Z",
+      "createdAt": "2026-01-05T09:05:00.000Z",
       "completedAt": null
     },
     {
-      "id": "ff9a9961-3ba0-4869-9826-deb8dcf62d2a",
-      "name": "crear libreta de finanzas personal",
-      "durationMinutes": 60,
-      "categoryId": "personal",
-      "status": "active",
-      "createdAt": "2026-02-13T15:50:11.996Z",
-      "completedAt": null
-    },
-    {
-      "id": "ec38c35a-dbfd-40cc-9788-bbf708c5c6c6",
-      "name": "arreglar la pintura del carro",
-      "durationMinutes": null,
-      "categoryId": "personal",
-      "status": "active",
-      "createdAt": "2026-02-13T15:49:48.276Z",
-      "completedAt": null
-    },
-    {
-      "id": "d3ca8efe-ecad-4af2-a960-9bad378f5560",
-      "name": "lavar carro",
-      "durationMinutes": 60,
-      "categoryId": "personal",
-      "status": "active",
-      "createdAt": "2026-02-13T15:49:31.878Z",
-      "completedAt": null
-    },
-    {
-      "id": "ebefe57c-282a-4acf-9d31-5648c62d8f9a",
-      "name": "listear el anuncio de trabajo",
+      "id": "11111111-1111-4111-8111-111111111103",
+      "name": "Reply to open emails",
       "durationMinutes": 20,
       "categoryId": "business",
       "status": "active",
-      "createdAt": "2026-02-13T15:32:47.503Z",
+      "createdAt": "2026-01-05T09:10:00.000Z",
       "completedAt": null
     },
     {
-      "id": "98d5dbd0-9db1-453a-b9da-0dc980d6df8d",
-      "name": "Palladium Plan",
-      "durationMinutes": null,
+      "id": "11111111-1111-4111-8111-111111111104",
+      "name": "Draft the quarterly plan",
+      "durationMinutes": 45,
       "categoryId": "business",
       "status": "active",
-      "createdAt": "2026-02-13T15:32:18.923Z",
+      "createdAt": "2026-01-05T09:15:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111105",
+      "name": "Practice one piano piece",
+      "durationMinutes": 10,
+      "categoryId": "hobby",
+      "status": "active",
+      "createdAt": "2026-01-05T09:20:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111106",
+      "name": "Sketch an idea for a side project",
+      "durationMinutes": 30,
+      "categoryId": "hobby",
+      "status": "active",
+      "createdAt": "2026-01-05T09:25:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111107",
+      "name": "Go for a walk",
+      "durationMinutes": 25,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-01-05T09:30:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111108",
+      "name": "Tidy the desk",
+      "durationMinutes": 15,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-01-05T09:35:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111109",
+      "name": "Repot the plants",
+      "durationMinutes": null,
+      "categoryId": "personal",
+      "status": "active",
+      "createdAt": "2026-01-05T09:40:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111110",
+      "name": "Water the garden beds",
+      "durationMinutes": 20,
+      "categoryId": "field",
+      "status": "active",
+      "createdAt": "2026-01-05T09:45:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111111",
+      "name": "Idea with no category yet",
+      "durationMinutes": null,
+      "categoryId": "unassigned",
+      "status": "active",
+      "createdAt": "2026-01-05T09:50:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111112",
+      "name": "Read one chapter",
+      "durationMinutes": 40,
+      "categoryId": "hobby",
+      "status": "active",
+      "createdAt": "2026-01-04T18:00:00.000Z",
+      "completedAt": "2026-01-04T19:00:00.000Z"
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111113",
+      "name": "Old task kept for reference",
+      "durationMinutes": 30,
+      "categoryId": "business",
+      "status": "archived",
+      "createdAt": "2025-12-20T12:00:00.000Z",
       "completedAt": null
     }
   ],
