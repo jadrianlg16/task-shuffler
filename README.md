@@ -25,7 +25,7 @@ implementations behind the same async API:
 
 | Build | Storage | Use case |
 |---|---|---|
-| default | `json-server` over HTTP (`httpDb.ts`) | local dev / Docker, shared db.json |
+| default | `json-server` over HTTP (`httpDb.ts`) | local dev / Docker. In the Docker image the live file is `$DB_FILE` (`/app/data/db.json`, seeded from `db.json` on first run) so a volume on `/app/data` keeps tasks across container re-creation |
 | `VITE_STORAGE=local` | browser localStorage (`localDb.ts`) | serverless static build — this is what the portfolio embeds |
 
 The localStorage build seeds a generic demo dataset on first run and needs no

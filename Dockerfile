@@ -11,7 +11,11 @@ COPY . .
 
 # Polling makes file-watching reliable inside a container.
 ENV CHOKIDAR_USEPOLLING=true
+# Live data lives under /app/data so it can be mounted as a volume and survive
+# container re-creation (the dashboard removes + recreates the container on
+# every Open/Stop). /app/db.json stays in the image as the first-run seed only.
+ENV DB_FILE=/app/data/db.json
 EXPOSE 3003 3001
 
-# json-server on 0.0.0.0:3001 + vite on 0.0.0.0:3003.
-CMD ["sh", "-c", "npx json-server --watch db.json --host 0.0.0.0 --port 3001 & npx vite --host 0.0.0.0 --port 3003"]
+# Seed the data file once, then json-server on 0.0.0.0:3001 + vite on 0.0.0.0:3003.
+CMD ["sh", "-c", "mkdir -p \"$(dirname \"$DB_FILE\")\"; if [ ! -f \"$DB_FILE\" ]; then cp /app/db.json \"$DB_FILE\"; fi; npx json-server --watch \"$DB_FILE\" --host 0.0.0.0 --port 3001 & npx vite --host 0.0.0.0 --port 3003"]
