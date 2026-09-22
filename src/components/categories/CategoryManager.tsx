@@ -62,7 +62,7 @@ export function CategoryManager({
   const handleExport = () => {
     const data = exportData(activities, categories);
     const date = format(new Date(), "yyyy-MM-dd");
-    downloadJson(data, `task-shuffler-backup-${date}.json`);
+    downloadJson(data, `done-backup-${date}.json`);
     toast("Data exported!");
   };
 

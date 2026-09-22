@@ -1,4 +1,4 @@
-# Task Shuffler
+# done.
 
 Tell it how much time you have; it tells you what to do. A task manager built
 around one idea: **the hard part isn't tracking tasks, it's picking one.**
