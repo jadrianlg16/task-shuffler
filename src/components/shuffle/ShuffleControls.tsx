@@ -4,6 +4,8 @@ import { useCategoryStore } from "@/store/categoryStore";
 import { getShuffleCandidates, shuffleSelect } from "@/utils/shuffle";
 import { TimeFilterControl } from "./TimeFilterControl";
 import { Button } from "@/components/ui/button";
+import { CategoryDot } from "@/components/categories/CategoryBadge";
+import { Shuffle } from "lucide-react";
 import type { Activity, ShuffleScope, TimeFilter } from "@/types";
 
 export function ShuffleControls({
@@ -46,82 +48,77 @@ export function ShuffleControls({
   };
 
   return (
-    <div className="rounded-lg border border-border p-4 mb-6 bg-card">
-      <div className="flex flex-wrap items-center gap-3 mb-3">
+    <section className="panel" style={{ padding: 20, marginBottom: 28 }}>
+      <div className="section-label" style={{ marginBottom: 12 }}>
+        Pick for me
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2" style={{ marginBottom: 10 }}>
         <select
           value={scope}
+          aria-label="Shuffle from"
           onChange={(e) => {
             setScope(e.target.value as ShuffleScope);
             setSelectedCategoryIds([]);
           }}
-          className="rounded-md border border-input bg-background px-2 py-1 text-sm h-8"
+          className="field"
         >
-          <option value="all">All Categories</option>
-          <option value="single">Single Category</option>
-          <option value="multi">Multiple Categories</option>
-          <option value="unassigned">Unassigned Only</option>
+          <option value="all">All categories</option>
+          <option value="single">One category</option>
+          <option value="multi">Several categories</option>
+          <option value="unassigned">Unassigned only</option>
         </select>
 
         {scope === "single" && (
           <select
             value={selectedCategoryIds[0] ?? ""}
+            aria-label="Category"
             onChange={(e) => setSelectedCategoryIds([e.target.value])}
-            className="rounded-md border border-input bg-background px-2 py-1 text-sm h-8"
+            className="field"
           >
-            <option value="">Pick a category...</option>
+            <option value="">Pick a category…</option>
             {visibleCategories.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.icon} {c.name}
+                {c.name}
               </option>
             ))}
           </select>
         )}
-
-        {scope === "multi" && (
-          <div className="flex flex-wrap gap-1">
-            {visibleCategories.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => toggleCategoryId(c.id)}
-                className="rounded-full px-2 py-0.5 text-xs border transition-colors"
-                style={{
-                  backgroundColor: selectedCategoryIds.includes(c.id)
-                    ? c.color + "30"
-                    : "transparent",
-                  borderColor: selectedCategoryIds.includes(c.id)
-                    ? c.color
-                    : "var(--border)",
-                  color: selectedCategoryIds.includes(c.id)
-                    ? c.color
-                    : "inherit",
-                }}
-              >
-                {c.name}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
-      <div className="mb-3">
-        <TimeFilterControl value={timeFilter} onChange={setTimeFilter} />
-      </div>
+      {scope === "multi" && (
+        <div className="flex flex-wrap gap-1.5" style={{ marginBottom: 10 }}>
+          {visibleCategories.map((c) => (
+            <button
+              key={c.id}
+              className="chip"
+              aria-pressed={selectedCategoryIds.includes(c.id)}
+              onClick={() => toggleCategoryId(c.id)}
+            >
+              <CategoryDot color={c.color} size={7} />
+              {c.name}
+            </button>
+          ))}
+        </div>
+      )}
 
-      <div className="flex items-center gap-3">
+      <TimeFilterControl value={timeFilter} onChange={setTimeFilter} />
+
+      <div className="flex items-center gap-4" style={{ marginTop: 18 }}>
         <Button
           onClick={handleShuffle}
           disabled={candidates.length === 0}
-          className="font-bold text-lg px-6 py-2"
-          size="lg"
+          className="h-11 rounded-xl px-5 text-[15px]"
         >
-          SHUFFLE!
+          <Shuffle strokeWidth={2} />
+          Shuffle
         </Button>
-        <span className="text-sm text-muted-foreground">
+        <span className="font-body" style={{ fontSize: 13, color: "var(--ink-muted)" }}>
           {candidates.length === 0
-            ? "No activities match! Try adjusting your filters or adding more tasks."
-            : `${candidates.length} task${candidates.length !== 1 ? "s" : ""} to shuffle from`}
+            ? "No tasks match. Loosen the filters or add one."
+            : `${candidates.length} task${candidates.length !== 1 ? "s" : ""} in the pool`}
         </span>
       </div>
-    </div>
+    </section>
   );
 }

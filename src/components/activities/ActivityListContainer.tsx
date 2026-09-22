@@ -32,9 +32,13 @@ export function ActivityListContainer({
       <>
         <ActivityListToolbar />
         <EmptyState
-          icon="+"
-          title="No tasks yet"
-          description="Add your first task above to get started!"
+          icon="add"
+          title={searchQuery.trim() ? "No matches" : "No tasks yet"}
+          description={
+            searchQuery.trim()
+              ? `Nothing matches “${searchQuery.trim()}”.`
+              : "Add your first task above to get started."
+          }
         />
       </>
     );

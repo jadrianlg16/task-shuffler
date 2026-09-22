@@ -42,28 +42,44 @@ export function RouletteWheel({
 
   return (
     <div className="flex flex-col items-center">
+      <div className="section-label" style={{ marginBottom: 14 }}>
+        Shuffling…
+      </div>
       <div
-        className="relative overflow-hidden rounded-lg border-2 border-primary/50 bg-card"
+        className="relative overflow-hidden"
         style={{
           height: ITEM_HEIGHT * VISIBLE_COUNT,
           width: "100%",
           maxWidth: 360,
+          borderRadius: 12,
+          border: "1px solid var(--ink-faint)",
+          background: "var(--surface)",
         }}
       >
-        {/* Center indicator */}
+        {/* Center band: where the pick lands */}
         <div
-          className="absolute left-0 right-0 z-10 border-y-2 border-primary pointer-events-none"
+          className="absolute left-0 right-0 pointer-events-none"
           style={{
             top: ITEM_HEIGHT * centerOffset,
             height: ITEM_HEIGHT,
+            background: "var(--accent-light)",
+            borderTop: "1px solid var(--ds-accent)",
+            borderBottom: "1px solid var(--ds-accent)",
           }}
         />
 
-        {/* Gradient masks top/bottom */}
-        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-card to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-card to-transparent z-10 pointer-events-none" />
+        {/* Fade the rows out toward the top and bottom edges */}
+        <div
+          className="absolute inset-x-0 top-0 z-10 pointer-events-none"
+          style={{ height: ITEM_HEIGHT * 1.5, background: "linear-gradient(to bottom, var(--surface), transparent)" }}
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 z-10 pointer-events-none"
+          style={{ height: ITEM_HEIGHT * 1.5, background: "linear-gradient(to top, var(--surface), transparent)" }}
+        />
 
         <motion.div
+          className="relative"
           initial={{ y: 0 }}
           animate={{ y: targetY }}
           transition={{
@@ -78,11 +94,13 @@ export function RouletteWheel({
               style={{ height: ITEM_HEIGHT }}
             >
               <span
-                className={`text-sm font-medium truncate ${
-                  !animating && i === winnerIndex
-                    ? "text-primary font-bold text-base"
-                    : "text-foreground/70"
-                }`}
+                className="font-body truncate"
+                style={{
+                  fontSize: 14,
+                  color:
+                    !animating && i === winnerIndex ? "var(--ink)" : "var(--ink-muted)",
+                  fontWeight: !animating && i === winnerIndex ? 500 : 400,
+                }}
               >
                 {activity.name}
               </span>

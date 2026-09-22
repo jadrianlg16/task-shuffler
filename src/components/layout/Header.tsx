@@ -1,7 +1,7 @@
 import { useTheme } from "@/hooks/useTheme";
 import { useUIStore } from "@/store/uiStore";
 import { useActivityStore } from "@/store/activityStore";
-import { format } from "date-fns";
+import { format, isToday } from "date-fns";
 
 function SunIcon() {
   return (
@@ -38,9 +38,13 @@ export function Header({
   const activities = useActivityStore((s) => s.activities);
 
   const activeCount = activities.filter((a) => a.status === "active").length;
-  const completedCount = activities.filter((a) => a.status === "archived").length;
-  const totalCount = activities.length;
-  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+  // "Today" framing: the bar fills as today's work gets done and resets tomorrow,
+  // instead of an all-time ratio that stops moving after a week.
+  const doneToday = activities.filter(
+    (a) => a.status === "archived" && a.completedAt && isToday(new Date(a.completedAt))
+  ).length;
+  const todayTotal = activeCount + doneToday;
+  const progressPercent = todayTotal > 0 ? (doneToday / todayTotal) * 100 : 0;
 
   const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
@@ -88,19 +92,27 @@ export function Header({
         </div>
         <div>
           <span className="font-display" style={{ fontSize: 28, fontWeight: 700 }}>
-            {completedCount}
+            {doneToday}
           </span>
           <span
             className="font-body uppercase"
             style={{ fontSize: 11, fontWeight: 500, color: "var(--ink-muted)", marginLeft: 8, letterSpacing: "0.06em" }}
           >
-            Done
+            Done today
           </span>
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="progress-track" style={{ marginTop: 32 }}>
+      <div
+        className="progress-track"
+        style={{ marginTop: 32 }}
+        role="progressbar"
+        aria-label="Done today"
+        aria-valuenow={Math.round(progressPercent)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
         <div
           className="progress-fill"
           style={{ width: `${progressPercent}%` }}
@@ -108,63 +120,29 @@ export function Header({
       </div>
 
       {/* Navigation row */}
-      <div className="flex items-center gap-2" style={{ marginTop: 16 }}>
+      <nav className="flex items-center gap-2" style={{ marginTop: 16 }}>
         <button
+          className="nav-tab"
+          aria-current={currentView === "main"}
           onClick={() => setCurrentView("main")}
-          className="font-body"
-          style={{
-            height: 34,
-            borderRadius: 8,
-            padding: "0 12px",
-            fontSize: 13,
-            fontWeight: currentView === "main" ? 500 : 400,
-            background: currentView === "main" ? "var(--bg)" : "transparent",
-            color: currentView === "main" ? "var(--ink)" : "var(--ink-muted)",
-            border: "none",
-            cursor: "pointer",
-            transition: "all 0.15s ease",
-          }}
         >
           Tasks
         </button>
         <button
+          className="nav-tab"
+          aria-current={currentView === "archive"}
           onClick={() => setCurrentView("archive")}
-          className="font-body"
-          style={{
-            height: 34,
-            borderRadius: 8,
-            padding: "0 12px",
-            fontSize: 13,
-            fontWeight: currentView === "archive" ? 500 : 400,
-            background: currentView === "archive" ? "var(--bg)" : "transparent",
-            color: currentView === "archive" ? "var(--ink)" : "var(--ink-muted)",
-            border: "none",
-            cursor: "pointer",
-            transition: "all 0.15s ease",
-          }}
         >
           Archive
         </button>
         <button
+          className="nav-tab"
+          style={{ marginLeft: "auto" }}
           onClick={onOpenSettings}
-          className="font-body"
-          style={{
-            height: 34,
-            borderRadius: 8,
-            padding: "0 12px",
-            fontSize: 13,
-            fontWeight: 400,
-            background: "transparent",
-            color: "var(--ink-muted)",
-            border: "none",
-            cursor: "pointer",
-            marginLeft: "auto",
-            transition: "all 0.15s ease",
-          }}
         >
           Settings
         </button>
-      </div>
+      </nav>
     </header>
   );
 }

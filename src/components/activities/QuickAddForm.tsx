@@ -96,7 +96,7 @@ export function QuickAddForm() {
           .sort((a, b) => a.sortOrder - b.sortOrder)
           .map((c) => (
             <option key={c.id} value={c.id}>
-              {c.icon} {c.name}
+              {c.name}
             </option>
           ))}
       </select>

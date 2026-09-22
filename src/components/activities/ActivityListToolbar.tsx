@@ -1,19 +1,5 @@
 import { useUIStore } from "@/store/uiStore";
 
-const tabStyle = (active: boolean): React.CSSProperties => ({
-  height: 34,
-  borderRadius: 8,
-  padding: "0 12px",
-  fontSize: 13,
-  fontWeight: active ? 500 : 400,
-  background: active ? "var(--surface)" : "transparent",
-  color: active ? "var(--ink)" : "var(--ink-muted)",
-  border: "none",
-  cursor: "pointer",
-  transition: "all 0.15s ease",
-  boxShadow: active ? "var(--shadow-card)" : "none",
-});
-
 export function ActivityListToolbar() {
   const searchQuery = useUIStore((s) => s.searchQuery);
   const setSearchQuery = useUIStore((s) => s.setSearchQuery);
@@ -23,37 +9,20 @@ export function ActivityListToolbar() {
   const setViewMode = useUIStore((s) => s.setViewMode);
 
   return (
-    <div className="flex items-center gap-2 font-body" style={{ marginBottom: 16 }}>
+    <div className="flex items-center gap-2 font-body" style={{ marginBottom: 20 }}>
       <input
-        placeholder="Search..."
+        placeholder="Search…"
+        aria-label="Search tasks"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="font-body flex-1"
-        style={{
-          height: 34,
-          borderRadius: 8,
-          padding: "0 12px",
-          fontSize: 13,
-          background: "transparent",
-          border: "1px solid var(--ink-faint)",
-          color: "var(--ink)",
-          outline: "none",
-        }}
+        className="field flex-1 min-w-0"
       />
       <select
         value={sortBy}
+        aria-label="Sort tasks"
         onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-        className="font-body"
-        style={{
-          height: 34,
-          borderRadius: 8,
-          padding: "0 8px",
-          fontSize: 13,
-          background: "transparent",
-          border: "1px solid var(--ink-faint)",
-          color: "var(--ink-muted)",
-          outline: "none",
-        }}
+        className="field"
+        style={{ color: "var(--ink-muted)" }}
       >
         <option value="date">Newest</option>
         <option value="name">Name</option>
@@ -61,15 +30,15 @@ export function ActivityListToolbar() {
         <option value="category">Category</option>
       </select>
       <button
-        className="font-body"
-        style={tabStyle(viewMode === "grouped")}
+        className="nav-tab"
+        aria-pressed={viewMode === "grouped"}
         onClick={() => setViewMode("grouped")}
       >
         Group
       </button>
       <button
-        className="font-body"
-        style={tabStyle(viewMode === "flat")}
+        className="nav-tab"
+        aria-pressed={viewMode === "flat"}
         onClick={() => setViewMode("flat")}
       >
         List

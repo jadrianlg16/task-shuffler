@@ -66,7 +66,7 @@ export function ShuffleOverlay({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div className="bg-card rounded-xl border shadow-lg p-6 w-full max-w-md mx-4">
+      <div className="overlay-card">
         {phase === "animating" && (
           <RouletteWheel
             key={winner.id}

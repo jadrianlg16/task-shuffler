@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { RotateCcw, Trash2 } from "lucide-react";
 import type { Activity } from "@/types";
 
 export function ArchiveView() {
@@ -27,55 +28,65 @@ export function ArchiveView() {
   if (activities.length === 0) {
     return (
       <EmptyState
-        icon="--"
-        title="Archive is empty"
-        description="Completed tasks will appear here."
+        icon="archive"
+        title="Nothing here yet"
+        description="Tasks you finish land here, in case you want one back."
       />
     );
   }
 
   return (
     <>
-      <div className="space-y-1">
+      <div className="section-label" style={{ marginBottom: 12 }}>
+        {activities.length} completed
+      </div>
+      <div>
         {activities.map((a) => {
           const category = categories.find((c) => c.id === a.categoryId);
           return (
             <div
               key={a.id}
-              className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-muted/50"
+              className="task-card animate-task-in flex items-center"
+              style={{ marginBottom: 6, gap: 12 }}
             >
-              <span className="flex-1 text-sm line-through text-muted-foreground">
-                {a.name}
-              </span>
-              {a.durationMinutes && (
-                <span className="text-xs text-muted-foreground">
-                  {a.durationMinutes} min
+              <div className="flex-1 min-w-0">
+                <span
+                  className="font-body block truncate line-through"
+                  style={{ fontSize: 14, color: "var(--ink-muted)" }}
+                >
+                  {a.name}
                 </span>
-              )}
-              {category && <CategoryBadge category={category} />}
-              {a.completedAt && (
-                <span className="text-xs text-muted-foreground">
-                  {formatDistanceToNow(new Date(a.completedAt), {
-                    addSuffix: true,
-                  })}
-                </span>
-              )}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-2 text-xs"
+                <div
+                  className="flex items-center flex-wrap gap-x-3 gap-y-0.5 font-body"
+                  style={{ marginTop: 2, fontSize: 11, color: "var(--ink-muted)" }}
+                >
+                  {a.durationMinutes && <span>{a.durationMinutes} min</span>}
+                  {category && <CategoryBadge category={category} />}
+                  {a.completedAt && (
+                    <span>
+                      {formatDistanceToNow(new Date(a.completedAt), {
+                        addSuffix: true,
+                      })}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <button
+                className="icon-btn"
                 onClick={() => restoreActivity(a.id)}
+                aria-label={`Restore ${a.name}`}
+                title="Restore"
               >
-                Restore
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-2 text-xs text-destructive"
+                <RotateCcw size={15} />
+              </button>
+              <button
+                className="icon-btn danger"
                 onClick={() => setConfirmDelete(a)}
+                aria-label={`Delete ${a.name}`}
+                title="Delete permanently"
               >
-                Delete
-              </Button>
+                <Trash2 size={15} />
+              </button>
             </div>
           );
         })}
@@ -86,7 +97,7 @@ export function ArchiveView() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete permanently?</DialogTitle>
+            <DialogTitle className="font-display font-normal">Delete for good?</DialogTitle>
             <DialogDescription>
               &quot;{confirmDelete?.name}&quot; will be permanently removed. This
               cannot be undone.

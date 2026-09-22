@@ -1,7 +1,13 @@
+import { Archive, ListPlus, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const ICONS: Record<string, LucideIcon> = {
+  archive: Archive,
+  add: ListPlus,
+};
+
 interface EmptyStateProps {
-  icon: string;
+  icon: keyof typeof ICONS;
   title: string;
   description: string;
   action?: {
@@ -11,15 +17,18 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+  const Icon = ICONS[icon];
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-center">
-      <span className="text-4xl mb-3">{icon}</span>
-      <h3 className="text-lg font-semibold mb-1">{title}</h3>
-      <p className="text-sm text-muted-foreground mb-4 max-w-sm">
+    <div className="flex flex-col items-center justify-center text-center" style={{ padding: "48px 0" }}>
+      <Icon size={22} strokeWidth={1.5} style={{ color: "var(--ink-muted)", marginBottom: 14 }} />
+      <h3 className="font-display" style={{ fontSize: 18, fontWeight: 400, marginBottom: 6 }}>
+        {title}
+      </h3>
+      <p className="font-body max-w-sm" style={{ fontSize: 13, color: "var(--ink-muted)" }}>
         {description}
       </p>
       {action && (
-        <Button variant="outline" size="sm" onClick={action.onClick}>
+        <Button variant="outline" size="sm" onClick={action.onClick} className="mt-4">
           {action.label}
         </Button>
       )}

@@ -1,5 +1,6 @@
 import type { TimeFilter, TimeFilterMode } from "@/types";
-import { Input } from "@/components/ui/input";
+
+const numberField = { width: 76 } as const;
 
 export function TimeFilterControl({
   value,
@@ -12,70 +13,76 @@ export function TimeFilterControl({
     onChange({ ...value, mode });
   };
 
+  const num = (raw: string) => (raw ? parseInt(raw) : undefined);
+
   return (
     <div className="flex items-center gap-2 flex-wrap">
       <select
         value={value.mode}
+        aria-label="Time filter"
         onChange={(e) => setMode(e.target.value as TimeFilterMode)}
-        className="rounded-md border border-input bg-background px-2 py-1 text-xs h-8"
+        className="field"
       >
-        <option value="any">Any Time</option>
-        <option value="max">&le; Max</option>
-        <option value="min">&ge; Min</option>
-        <option value="range">Range</option>
-        <option value="exact">Exact</option>
+        <option value="any">Any length</option>
+        <option value="max">At most…</option>
+        <option value="min">At least…</option>
+        <option value="range">Between…</option>
+        <option value="exact">Exactly…</option>
       </select>
 
       {(value.mode === "max" || value.mode === "min" || value.mode === "exact") && (
-        <Input
+        <input
           type="number"
           min={1}
+          aria-label="Minutes"
           value={value.value ?? ""}
-          onChange={(e) =>
-            onChange({ ...value, value: e.target.value ? parseInt(e.target.value) : undefined })
-          }
+          onChange={(e) => onChange({ ...value, value: num(e.target.value) })}
           placeholder="min"
-          className="w-20 h-8"
+          className="field"
+          style={numberField}
         />
       )}
 
       {value.mode === "range" && (
         <>
-          <Input
+          <input
             type="number"
             min={1}
+            aria-label="From minutes"
             value={value.min ?? ""}
-            onChange={(e) =>
-              onChange({ ...value, min: e.target.value ? parseInt(e.target.value) : undefined })
-            }
+            onChange={(e) => onChange({ ...value, min: num(e.target.value) })}
             placeholder="from"
-            className="w-20 h-8"
+            className="field"
+            style={numberField}
           />
-          <span className="text-xs text-muted-foreground">&ndash;</span>
-          <Input
+          <span style={{ fontSize: 13, color: "var(--ink-muted)" }}>&ndash;</span>
+          <input
             type="number"
             min={1}
+            aria-label="To minutes"
             value={value.max ?? ""}
-            onChange={(e) =>
-              onChange({ ...value, max: e.target.value ? parseInt(e.target.value) : undefined })
-            }
+            onChange={(e) => onChange({ ...value, max: num(e.target.value) })}
             placeholder="to"
-            className="w-20 h-8"
+            className="field"
+            style={numberField}
           />
         </>
       )}
 
       {value.mode !== "any" && (
-        <label className="flex items-center gap-1 text-xs text-muted-foreground">
+        <label
+          className="font-body flex items-center gap-2 w-full"
+          style={{ fontSize: 12, color: "var(--ink-muted)", marginTop: 4 }}
+        >
           <input
             type="checkbox"
             checked={value.includeNoDuration}
             onChange={(e) =>
               onChange({ ...value, includeNoDuration: e.target.checked })
             }
-            className="rounded"
+            style={{ accentColor: "var(--ds-accent)" }}
           />
-          Include no-duration
+          Include tasks with no time set
         </label>
       )}
     </div>

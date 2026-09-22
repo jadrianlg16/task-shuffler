@@ -2,9 +2,7 @@ import { useState } from "react";
 import { useCategoryStore } from "@/store/categoryStore";
 import { useActivityStore } from "@/store/activityStore";
 import { ColorPicker } from "./ColorPicker";
-import { EmojiPicker } from "./EmojiPicker";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +16,8 @@ import {
 } from "@/utils/exportImport";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
+import { CategoryDot } from "./CategoryBadge";
 
 export function CategoryManager({
   open,
@@ -41,16 +41,15 @@ export function CategoryManager({
 
   const [newName, setNewName] = useState("");
   const [newColor, setNewColor] = useState("#3B82F6");
-  const [newIcon, setNewIcon] = useState("*");
   const [showAddForm, setShowAddForm] = useState(false);
 
   const handleAddCategory = () => {
     const trimmed = newName.trim();
     if (!trimmed) return;
-    addCategory(trimmed, newColor, newIcon);
+    // Categories are identified by colour; the legacy icon field stays empty.
+    addCategory(trimmed, newColor, "");
     setNewName("");
     setNewColor("#3B82F6");
-    setNewIcon("*");
     setShowAddForm(false);
   };
 
@@ -107,116 +106,122 @@ export function CategoryManager({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto font-body">
         <DialogHeader>
-          <DialogTitle>Settings</DialogTitle>
+          <DialogTitle className="font-display font-normal" style={{ fontSize: 20 }}>
+            Settings
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold">Categories</h3>
-          <div className="space-y-2">
-            {sorted.map((cat, i) => (
-              <div
-                key={cat.id}
-                className="flex items-center gap-1.5 py-1.5 px-2 rounded-md hover:bg-muted/50"
-              >
-                <div className="flex flex-col">
+        <div className="space-y-5">
+          <div>
+            <div className="section-label" style={{ marginBottom: 8 }}>
+              Categories
+            </div>
+            <div>
+              {sorted.map((cat, i) => (
+                <div
+                  key={cat.id}
+                  className="flex items-center gap-2 rounded-lg hover:bg-muted/60"
+                  style={{ padding: "2px 4px", opacity: cat.isHidden ? 0.55 : 1 }}
+                >
                   <button
+                    className="icon-btn"
+                    style={{ width: 26, height: 26 }}
                     onClick={() => moveCategory(cat.id, "up")}
                     disabled={i === 0}
-                    className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-20 leading-none"
+                    aria-label={`Move ${cat.name} up`}
                   >
-                    {"▲"}
+                    <ChevronUp size={14} />
                   </button>
                   <button
+                    className="icon-btn"
+                    style={{ width: 26, height: 26, marginLeft: -6 }}
                     onClick={() => moveCategory(cat.id, "down")}
                     disabled={i === sorted.length - 1}
-                    className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-20 leading-none"
+                    aria-label={`Move ${cat.name} down`}
                   >
-                    {"▼"}
+                    <ChevronDown size={14} />
                   </button>
-                </div>
-                <span>{cat.icon}</span>
-                <span
-                  className="w-4 h-4 rounded-full shrink-0"
-                  style={{ backgroundColor: cat.color }}
-                />
-                <span className="flex-1 text-sm">{cat.name}</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 px-2 text-xs"
-                  onClick={() => toggleHidden(cat.id)}
-                >
-                  {cat.isHidden ? "Show" : "Hide"}
-                </Button>
-                {!cat.isDefault && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 px-2 text-xs text-destructive"
-                    onClick={() => handleDeleteCategory(cat.id)}
+                  <CategoryDot color={cat.color} size={10} />
+                  <span className="flex-1" style={{ fontSize: 14 }}>
+                    {cat.name}
+                    {cat.isHidden && (
+                      <span style={{ fontSize: 11, color: "var(--ink-muted)", marginLeft: 8 }}>
+                        hidden
+                      </span>
+                    )}
+                  </span>
+                  <button
+                    className="nav-tab"
+                    style={{ height: 28, fontSize: 12 }}
+                    onClick={() => toggleHidden(cat.id)}
                   >
-                    {"✕"}
-                  </Button>
-                )}
-              </div>
-            ))}
+                    {cat.isHidden ? "Show" : "Hide"}
+                  </button>
+                  {!cat.isDefault && (
+                    <button
+                      className="icon-btn danger"
+                      style={{ width: 28, height: 28 }}
+                      onClick={() => handleDeleteCategory(cat.id)}
+                      aria-label={`Delete ${cat.name}`}
+                      title="Delete category"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           {showAddForm ? (
-            <div className="space-y-3 p-3 border rounded-md">
-              <Input
+            <div
+              className="space-y-3"
+              style={{ padding: 14, borderRadius: 12, border: "1px solid var(--ink-faint)" }}
+            >
+              <input
                 placeholder="Category name"
+                aria-label="Category name"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                className="h-8"
+                onKeyDown={(e) => e.key === "Enter" && handleAddCategory()}
+                className="field w-full"
+                autoFocus
               />
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  Color
-                </label>
+                <div className="section-label" style={{ marginBottom: 6 }}>
+                  Colour
+                </div>
                 <ColorPicker value={newColor} onChange={setNewColor} />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  Icon
-                </label>
-                <EmojiPicker value={newIcon} onChange={setNewIcon} />
               </div>
               <div className="flex gap-2">
                 <Button size="sm" onClick={handleAddCategory}>
-                  Add Category
+                  Add category
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowAddForm(false)}
-                >
+                <Button variant="ghost" size="sm" onClick={() => setShowAddForm(false)}>
                   Cancel
                 </Button>
               </div>
             </div>
           ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowAddForm(true)}
-            >
-              + Add Category
+            <Button variant="outline" size="sm" onClick={() => setShowAddForm(true)}>
+              + New category
             </Button>
           )}
 
-          <hr className="border-border" />
-
-          <h3 className="text-sm font-semibold">Data</h3>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={handleExport}>
-              Export JSON
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleImport}>
-              Import JSON
-            </Button>
+          <div style={{ borderTop: "1px solid var(--ink-faint)", paddingTop: 16 }}>
+            <div className="section-label" style={{ marginBottom: 8 }}>
+              Backup
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={handleExport}>
+                Export JSON
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleImport}>
+                Import JSON
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>

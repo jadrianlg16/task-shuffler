@@ -8,9 +8,12 @@ import type { Activity } from "@/types";
 export function ActivityItem({
   activity,
   onSelect,
+  showCategory = true,
 }: {
   activity: Activity;
   onSelect?: (activity: Activity) => void;
+  /** Off inside a category group, where the group header already says it. */
+  showCategory?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(activity.name);
@@ -28,7 +31,7 @@ export function ActivityItem({
 
   const handleComplete = () => {
     completeActivity(activity.id);
-    toast("Activity completed!", {
+    toast("Task done.", {
       action: {
         label: "Undo",
         onClick: () => restoreActivity(activity.id),
@@ -118,7 +121,7 @@ export function ActivityItem({
             .sort((a, b) => a.sortOrder - b.sortOrder)
             .map((c) => (
               <option key={c.id} value={c.id}>
-                {c.icon} {c.name}
+                {c.name}
               </option>
             ))}
         </select>
@@ -162,17 +165,19 @@ export function ActivityItem({
         >
           {activity.name}
         </span>
-        <div className="flex items-center gap-2" style={{ marginTop: 2 }}>
-          {activity.durationMinutes && (
-            <span
-              className="font-body"
-              style={{ fontSize: 11, fontWeight: 300, color: "var(--ink-muted)" }}
-            >
-              {activity.durationMinutes} min
-            </span>
-          )}
-          {category && <CategoryBadge category={category} />}
-        </div>
+        {(activity.durationMinutes || (showCategory && category)) && (
+          <div className="flex items-center gap-3" style={{ marginTop: 2 }}>
+            {activity.durationMinutes && (
+              <span
+                className="font-body"
+                style={{ fontSize: 11, color: "var(--ink-muted)" }}
+              >
+                {activity.durationMinutes} min
+              </span>
+            )}
+            {showCategory && category && <CategoryBadge category={category} />}
+          </div>
+        )}
       </div>
 
       {/* Action buttons — hidden until hover */}
