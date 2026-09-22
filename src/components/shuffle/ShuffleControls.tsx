@@ -34,6 +34,9 @@ export function ShuffleControls({
     categories
   );
 
+  const needsPick =
+    (scope === "single" || scope === "multi") && selectedCategoryIds.length === 0;
+
   const handleShuffle = () => {
     const winner = shuffleSelect(candidates);
     if (winner) {
@@ -73,7 +76,7 @@ export function ShuffleControls({
           <select
             value={selectedCategoryIds[0] ?? ""}
             aria-label="Category"
-            onChange={(e) => setSelectedCategoryIds([e.target.value])}
+            onChange={(e) => setSelectedCategoryIds(e.target.value ? [e.target.value] : [])}
             className="field"
           >
             <option value="">Pick a category…</option>
@@ -114,9 +117,13 @@ export function ShuffleControls({
           Shuffle
         </Button>
         <span className="font-body" style={{ fontSize: 13, color: "var(--ink-muted)" }}>
-          {candidates.length === 0
-            ? "No tasks match. Loosen the filters or add one."
-            : `${candidates.length} task${candidates.length !== 1 ? "s" : ""} in the pool`}
+          {needsPick
+            ? scope === "single"
+              ? "Pick a category first."
+              : "Pick one or more categories."
+            : candidates.length === 0
+              ? "No tasks match. Loosen the filters or add one."
+              : `${candidates.length} task${candidates.length !== 1 ? "s" : ""} in the pool`}
         </span>
       </div>
     </section>

@@ -3,6 +3,7 @@ import { useActivityStore } from "@/store/activityStore";
 import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/categories/CategoryBadge";
 import { toast } from "sonner";
+import { Play } from "lucide-react";
 import type { Activity } from "@/types";
 
 export function ActivityItem({
@@ -54,91 +55,65 @@ export function ActivityItem({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") handleSaveEdit();
-    if (e.key === "Escape") {
-      setEditing(false);
-      setEditName(activity.name);
-      setEditDuration(activity.durationMinutes?.toString() ?? "");
-      setEditCategoryId(activity.categoryId);
-    }
+    if (e.key === "Escape") cancelEdit();
+  };
+
+  const cancelEdit = () => {
+    setEditing(false);
+    setEditName(activity.name);
+    setEditDuration(activity.durationMinutes?.toString() ?? "");
+    setEditCategoryId(activity.categoryId);
   };
 
   if (editing) {
     return (
-      <div className="task-card animate-task-in flex items-center gap-2" style={{ marginBottom: 6 }}>
+      <div className="task-card animate-task-in" style={{ marginBottom: 6 }}>
         <input
           value={editName}
           onChange={(e) => setEditName(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="font-body flex-1"
+          aria-label="Task name"
+          className="field w-full"
+          style={{ fontSize: 14 }}
           autoFocus
-          style={{
-            height: 32,
-            borderRadius: 8,
-            padding: "0 10px",
-            fontSize: 14,
-            background: "var(--bg)",
-            border: "1px solid var(--ink-faint)",
-            color: "var(--ink)",
-            outline: "none",
-          }}
         />
-        <input
-          type="number"
-          value={editDuration}
-          onChange={(e) => setEditDuration(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="min"
-          min={1}
-          className="font-body"
-          style={{
-            width: 60,
-            height: 32,
-            borderRadius: 8,
-            padding: "0 8px",
-            fontSize: 14,
-            background: "var(--bg)",
-            border: "1px solid var(--ink-faint)",
-            color: "var(--ink)",
-            outline: "none",
-          }}
-        />
-        <select
-          value={editCategoryId}
-          onChange={(e) => setEditCategoryId(e.target.value)}
-          className="font-body"
-          style={{
-            height: 32,
-            borderRadius: 8,
-            padding: "0 6px",
-            fontSize: 12,
-            background: "var(--bg)",
-            border: "1px solid var(--ink-faint)",
-            color: "var(--ink)",
-            outline: "none",
-          }}
-        >
-          {visibleCategories
-            .sort((a, b) => a.sortOrder - b.sortOrder)
-            .map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-        </select>
-        <button
-          onClick={handleSaveEdit}
-          className="font-body"
-          style={{ fontSize: 12, color: "var(--ds-accent)", background: "none", border: "none", cursor: "pointer" }}
-        >
-          Save
-        </button>
-        <button
-          onClick={() => setEditing(false)}
-          className="font-body"
-          style={{ fontSize: 12, color: "var(--ink-muted)", background: "none", border: "none", cursor: "pointer" }}
-        >
-          Cancel
-        </button>
+        <div className="flex flex-wrap items-center gap-2" style={{ marginTop: 8 }}>
+          <input
+            type="number"
+            value={editDuration}
+            onChange={(e) => setEditDuration(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="min"
+            aria-label="Minutes"
+            min={1}
+            className="field"
+            style={{ width: 72 }}
+          />
+          <select
+            value={editCategoryId}
+            onChange={(e) => setEditCategoryId(e.target.value)}
+            aria-label="Category"
+            className="field flex-1 min-w-0"
+          >
+            {visibleCategories
+              .sort((a, b) => a.sortOrder - b.sortOrder)
+              .map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+          </select>
+          <button
+            onClick={handleSaveEdit}
+            className="nav-tab"
+            style={{ color: "var(--ds-accent)", fontWeight: 500 }}
+          >
+            Save
+          </button>
+          <button onClick={cancelEdit} className="nav-tab">
+            Cancel
+          </button>
+        </div>
       </div>
     );
   }
@@ -152,13 +127,25 @@ export function ActivityItem({
       <button
         className="done-checkbox"
         onClick={handleComplete}
-        aria-label="Complete task"
+        aria-label={`Complete ${activity.name}`}
       >
         {/* Empty — shows border only */}
       </button>
 
       {/* Task content */}
-      <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setEditing(true)}>
+      <div
+        className="task-hit flex-1 min-w-0 cursor-pointer rounded-md"
+        role="button"
+        tabIndex={0}
+        title="Edit"
+        onClick={() => setEditing(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setEditing(true);
+          }
+        }}
+      >
         <span
           className="font-body block truncate"
           style={{ fontSize: 14, fontWeight: 400, color: "var(--ink)" }}
@@ -184,24 +171,13 @@ export function ActivityItem({
       <div className="task-actions flex items-center gap-1">
         {onSelect && (
           <button
+            className="icon-btn"
+            style={{ width: 36, height: 36 }}
             onClick={() => onSelect(activity)}
-            aria-label="Pick this task"
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 8,
-              background: "var(--bg)",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "background 0.15s ease",
-            }}
+            aria-label={`Pick ${activity.name}`}
+            title="Pick this task"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-muted)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="5 3 19 12 5 21 5 3" />
-            </svg>
+            <Play size={14} strokeWidth={1.8} />
           </button>
         )}
       </div>

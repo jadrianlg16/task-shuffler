@@ -13,6 +13,7 @@ import { CategoryManager } from "@/components/categories/CategoryManager";
 import { ShuffleControls } from "@/components/shuffle/ShuffleControls";
 import { ShuffleOverlay } from "@/components/shuffle/ShuffleOverlay";
 import { ShuffleResultScreen } from "@/components/shuffle/ShuffleResultScreen";
+import { PickDialog } from "@/components/shuffle/PickDialog";
 import type { Activity } from "@/types";
 
 export default function App() {
@@ -51,15 +52,16 @@ export default function App() {
         />
       )}
       {manualSelection && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-          <div className="overlay-card">
-            <ShuffleResultScreen
-              winner={manualSelection}
-              onShuffleAgain={() => setManualSelection(null)}
-              onClose={() => setManualSelection(null)}
-            />
-          </div>
-        </div>
+        <PickDialog
+          title={`Your next task: ${manualSelection.name}`}
+          onClose={() => setManualSelection(null)}
+        >
+          <ShuffleResultScreen
+            winner={manualSelection}
+            onShuffleAgain={() => setManualSelection(null)}
+            onClose={() => setManualSelection(null)}
+          />
+        </PickDialog>
       )}
       <CategoryManager
         open={settingsOpen}

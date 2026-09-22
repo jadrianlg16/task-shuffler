@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { RouletteWheel } from "./RouletteWheel";
 import { ShuffleResultScreen } from "./ShuffleResultScreen";
+import { PickDialog } from "./PickDialog";
 import { shuffleSelect } from "@/utils/shuffle";
 import type { Activity } from "@/types";
 
@@ -65,25 +66,26 @@ export function ShuffleOverlay({
   const availableCount = getAvailableCandidates().length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div className="overlay-card">
-        {phase === "animating" && (
-          <RouletteWheel
-            key={winner.id}
-            candidates={getAvailableCandidates()}
-            winner={winner}
-            onComplete={handleAnimationComplete}
-          />
-        )}
-        {phase === "result" && (
-          <ShuffleResultScreen
-            winner={winner}
-            onShuffleAgain={handleShuffleAgain}
-            onNotFeelingIt={availableCount > 1 ? handleNotFeelingIt : undefined}
-            onClose={onClose}
-          />
-        )}
-      </div>
-    </div>
+    <PickDialog
+      title={phase === "animating" ? "Shuffling" : `Your next task: ${winner.name}`}
+      onClose={onClose}
+    >
+      {phase === "animating" && (
+        <RouletteWheel
+          key={winner.id}
+          candidates={getAvailableCandidates()}
+          winner={winner}
+          onComplete={handleAnimationComplete}
+        />
+      )}
+      {phase === "result" && (
+        <ShuffleResultScreen
+          winner={winner}
+          onShuffleAgain={handleShuffleAgain}
+          onNotFeelingIt={availableCount > 1 ? handleNotFeelingIt : undefined}
+          onClose={onClose}
+        />
+      )}
+    </PickDialog>
   );
 }

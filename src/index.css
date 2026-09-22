@@ -409,14 +409,131 @@ select.field option {
   box-shadow: var(--shadow-card);
 }
 
-/* Centered card over a blurred page (shuffle + manual pick). */
-.overlay-card {
+
+/* ── Touch + keyboard ── */
+
+/* 22px circle, 44px hit area. */
+.done-checkbox {
+  position: relative;
+}
+
+.done-checkbox::after {
+  content: "";
+  position: absolute;
+  inset: -11px;
+  border-radius: 50%;
+}
+
+.done-checkbox:focus-visible,
+.icon-btn:focus-visible,
+.nav-tab:focus-visible,
+.chip:focus-visible,
+.theme-toggle:focus-visible,
+.task-hit:focus-visible,
+.quick-add-btn:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+
+/* Row actions: revealed on hover, but always there for keyboard and touch. */
+.task-card:focus-within .task-actions {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .task-card .task-actions {
+    opacity: 1;
+  }
+}
+
+/* ── Quick add ── */
+.quick-input {
+  height: 48px;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 15px;
   background: var(--surface);
-  border: 1px solid var(--ink-faint);
-  border-radius: 16px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
-  padding: 28px 24px 24px;
-  width: 100%;
-  max-width: 420px;
-  margin: 0 16px;
+  border: 1.5px solid var(--ink-faint);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quick-input::placeholder {
+  color: var(--ink-muted);
+}
+
+.quick-input:focus {
+  border-color: var(--ds-accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.quick-add-btn {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: none;
+  background: var(--ds-accent);
+  color: var(--primary-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.quick-add-btn:active {
+  transform: scale(0.95);
+}
+
+.quick-add-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ── App shell + header (tighter on phones) ── */
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+
+.app-header {
+  margin-bottom: 40px;
+}
+
+.app-header .wordmark {
+  font-size: 32px;
+}
+
+.app-header .stats {
+  margin-top: 32px;
+}
+
+.app-header .progress-track {
+  margin-top: 32px;
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding: 24px 16px 64px;
+  }
+
+  .app-header {
+    margin-bottom: 24px;
+  }
+
+  .app-header .wordmark {
+    font-size: 28px;
+  }
+
+  .app-header .stats {
+    margin-top: 20px;
+  }
+
+  .app-header .progress-track {
+    margin-top: 20px;
+  }
 }

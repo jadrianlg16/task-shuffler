@@ -1,6 +1,6 @@
-# Task Shuffler — dev-mode container.
+# done. (task shuffler) — dev-mode container.
 # Runs the Vite UI (3003) and the json-server API (3001) together, both bound to
-# 0.0.0.0 so they're reachable from the host. The UI calls the API on :3001.
+# 0.0.0.0. The browser only needs :3003 — Vite proxies /api to json-server.
 FROM node:20-alpine
 WORKDIR /app
 
@@ -15,6 +15,8 @@ ENV CHOKIDAR_USEPOLLING=true
 # container re-creation (the dashboard removes + recreates the container on
 # every Open/Stop). /app/db.json stays in the image as the first-run seed only.
 ENV DB_FILE=/app/data/db.json
+# json-server binds IPv4 0.0.0.0 below; point the /api proxy at it explicitly.
+ENV API_PROXY_TARGET=http://127.0.0.1:3001
 EXPOSE 3003 3001
 
 # Seed the data file once, then json-server on 0.0.0.0:3001 + vite on 0.0.0.0:3003.

@@ -20,6 +20,8 @@ export function getShuffleCandidates(
   switch (scope) {
     case "single":
     case "multi":
+      // No category picked yet means nothing to draw from, not "everything".
+      if (selectedCategoryIds.length === 0) return [];
       candidates = filterByCategories(candidates, selectedCategoryIds);
       break;
     case "unassigned":

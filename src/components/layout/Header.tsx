@@ -49,36 +49,40 @@ export function Header({
   const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   return (
-    <header style={{ marginBottom: 40 }}>
-      {/* Theme toggle — fixed top right */}
-      <button
-        className="theme-toggle fixed z-50"
-        style={{ top: 28, right: 28, color: "var(--ink)" }}
-        onClick={cycleTheme}
-        aria-label="Toggle theme"
-      >
-        {isDark ? <SunIcon /> : <MoonIcon />}
-      </button>
+    <header className="app-header">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          {/* Wordmark */}
+          <h1
+            className="wordmark font-display cursor-pointer"
+            style={{ fontWeight: 400, margin: 0, lineHeight: 1.2 }}
+            onClick={() => setCurrentView("main")}
+          >
+            done<span className="font-display italic">.</span>
+          </h1>
 
-      {/* Wordmark */}
-      <h1
-        className="font-display cursor-pointer"
-        style={{ fontSize: 32, fontWeight: 400, margin: 0, lineHeight: 1.2 }}
-        onClick={() => setCurrentView("main")}
-      >
-        done<span className="font-display italic">.</span>
-      </h1>
+          {/* Date line */}
+          <p
+            className="font-body"
+            style={{ fontSize: 13, fontWeight: 300, color: "var(--ink-muted)", marginTop: 6 }}
+          >
+            {format(new Date(), "EEEE, MMMM d")}
+          </p>
+        </div>
 
-      {/* Date line */}
-      <p
-        className="font-body"
-        style={{ fontSize: 13, fontWeight: 300, color: "var(--ink-muted)", marginTop: 6 }}
-      >
-        {format(new Date(), "EEEE, MMMM d")}
-      </p>
+        <button
+          className="theme-toggle shrink-0"
+          style={{ color: "var(--ink)" }}
+          onClick={cycleTheme}
+          aria-label={`Theme: ${theme}. Switch theme`}
+          title={`Theme: ${theme}`}
+        >
+          {isDark ? <SunIcon /> : <MoonIcon />}
+        </button>
+      </div>
 
       {/* Stats */}
-      <div className="flex items-baseline gap-8" style={{ marginTop: 32 }}>
+      <div className="stats flex items-baseline gap-8">
         <div>
           <span className="font-display" style={{ fontSize: 28, fontWeight: 700 }}>
             {activeCount}
@@ -106,7 +110,6 @@ export function Header({
       {/* Progress bar */}
       <div
         className="progress-track"
-        style={{ marginTop: 32 }}
         role="progressbar"
         aria-label="Done today"
         aria-valuenow={Math.round(progressPercent)}

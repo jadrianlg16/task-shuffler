@@ -13,10 +13,12 @@ export function ActivityListContainer({
 }: {
   onSelectActivity: (activity: Activity) => void;
 }) {
-  const activities = useActivityStore((s) => s.activities).filter(
-    (a) => a.status === "active"
-  );
   const categories = useCategoryStore((s) => s.categories);
+  // Hidden categories are hidden in both views (and from the shuffle).
+  const hiddenIds = new Set(categories.filter((c) => c.isHidden).map((c) => c.id));
+  const activities = useActivityStore((s) => s.activities).filter(
+    (a) => a.status === "active" && !hiddenIds.has(a.categoryId)
+  );
   const visibleCategories = categories
     .filter((c) => !c.isHidden)
     .sort((a, b) => a.sortOrder - b.sortOrder);

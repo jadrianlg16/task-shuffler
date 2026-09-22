@@ -1,6 +1,8 @@
 import type { Activity, Category } from "@/types";
 
-const API_URL = "http://localhost:3001";
+// Same-origin path, proxied to json-server by Vite (see vite.config.ts), so the
+// app works from any host that can reach the UI — not only the machine running it.
+const API_URL = import.meta.env.VITE_API_URL ?? "/api";
 
 export async function fetchActivities(): Promise<Activity[]> {
   const res = await fetch(`${API_URL}/activities`);

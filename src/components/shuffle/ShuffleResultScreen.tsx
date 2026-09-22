@@ -50,7 +50,7 @@ export function ShuffleResultScreen({
         {category && <CategoryBadge category={category} />}
       </div>
       <div className="flex flex-col items-stretch gap-2" style={{ marginTop: 24 }}>
-        <Button onClick={handleLetsDoIt} className="h-11 rounded-xl text-[15px]">
+        <Button autoFocus onClick={handleLetsDoIt} className="h-11 rounded-xl text-[15px]">
           Let's do it!
         </Button>
         <div className="flex gap-2">
