@@ -10,13 +10,18 @@ feel free to play.
 
 ## What it does
 
-- **Shuffle**: hit Shuffle and it picks one of your active tasks at random. You
-  can draw from all categories, one, several, or only unassigned tasks. A short
-  reel animation lands on the pick, and you can shuffle again or skip it with
-  "Not feeling it" (skipped tasks stay out until you close the card).
-- **Time filters**: "I have 30 minutes or less". Narrow the pool to at most, at
-  least, between or exactly N minutes, with or without tasks that have no time
-  set.
+- **Pick for me**: say how much time you have (any, 15, 30, 60 or 90 minutes,
+  or at least / between / exactly under "more…") and which categories to
+  draw from (none picked = all). The button shows how many tasks fit, and if
+  none do it offers the smallest change that works ("Try 30 min"). Your last
+  choice is remembered.
+- **Shuffle**: a short reel lands on one task. Older tasks come up a little
+  more often (up to 3× for a task that has waited 30+ days), so nothing sits
+  forever. Shuffle again, or skip it with "Not feeling it" (skipped tasks stay
+  out until you close the card).
+- **Start → Now**: starting a task pins it above the picker with how long
+  you've been at it against its estimate. Done archives it (with Undo), Drop
+  puts it back in the pool.
 - **Quick add**: type a name and press Enter. Minutes (5 / 15 / 30 / 60 or any
   number) and a category are optional and appear while you're adding.
 - **Categories**: colour-coded (School / Personal / Business / Hobby / Field /

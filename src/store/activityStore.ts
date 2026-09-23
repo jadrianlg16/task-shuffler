@@ -15,6 +15,10 @@ interface ActivityState {
   updateActivity: (id: string, updates: Partial<Omit<Activity, "id">>) => void;
   completeActivity: (id: string) => void;
   restoreActivity: (id: string) => void;
+  /** Make this the task you're doing now; any other in-progress task is dropped. */
+  startActivity: (id: string) => void;
+  /** Stop doing it without finishing; it goes back to the pool. */
+  dropActivity: (id: string) => void;
   deleteActivity: (id: string) => void;
   bulkReassignCategory: (fromCategoryId: string, toCategoryId: string) => void;
   importActivities: (activities: Activity[]) => void;
@@ -66,13 +70,40 @@ export const useActivityStore = create<ActivityState>()((set, get) => ({
   },
 
   restoreActivity: (id) => {
-    const updates = { status: "active" as const, completedAt: null };
+    const updates = { status: "active" as const, completedAt: null, startedAt: null };
     set((state) => ({
       activities: state.activities.map((a) =>
         a.id === id ? { ...a, ...updates } : a
       ),
     }));
     api.updateActivity(id, updates);
+  },
+
+  startActivity: (id) => {
+    const startedAt = new Date().toISOString();
+    const previous = get().activities.filter(
+      (a) => a.id !== id && a.status === "active" && a.startedAt
+    );
+    set((state) => ({
+      activities: state.activities.map((a) =>
+        a.id === id
+          ? { ...a, startedAt }
+          : previous.some((p) => p.id === a.id)
+            ? { ...a, startedAt: null }
+            : a
+      ),
+    }));
+    previous.forEach((a) => api.updateActivity(a.id, { startedAt: null }));
+    api.updateActivity(id, { startedAt });
+  },
+
+  dropActivity: (id) => {
+    set((state) => ({
+      activities: state.activities.map((a) =>
+        a.id === id ? { ...a, startedAt: null } : a
+      ),
+    }));
+    api.updateActivity(id, { startedAt: null });
   },
 
   deleteActivity: (id) => {

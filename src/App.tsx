@@ -14,6 +14,8 @@ import { ShuffleControls } from "@/components/shuffle/ShuffleControls";
 import { ShuffleOverlay } from "@/components/shuffle/ShuffleOverlay";
 import { ShuffleResultScreen } from "@/components/shuffle/ShuffleResultScreen";
 import { PickDialog } from "@/components/shuffle/PickDialog";
+import { NowCard } from "@/components/shuffle/NowCard";
+import { MotionConfig } from "framer-motion";
 import type { Activity } from "@/types";
 
 export default function App() {
@@ -34,10 +36,13 @@ export default function App() {
   const [manualSelection, setManualSelection] = useState<Activity | null>(null);
 
   return (
+    // Framer animations follow the OS "reduce motion" setting.
+    <MotionConfig reducedMotion="user">
     <MainLayout>
       <Header onOpenSettings={() => setSettingsOpen(true)} />
       {currentView === "main" && (
         <>
+          <NowCard />
           <ShuffleControls onShuffle={setShuffleResult} />
           <QuickAddForm />
           <ActivityListContainer onSelectActivity={setManualSelection} />
@@ -58,7 +63,6 @@ export default function App() {
         >
           <ShuffleResultScreen
             winner={manualSelection}
-            onShuffleAgain={() => setManualSelection(null)}
             onClose={() => setManualSelection(null)}
           />
         </PickDialog>
@@ -69,5 +73,6 @@ export default function App() {
       />
       <Toaster />
     </MainLayout>
+    </MotionConfig>
   );
 }

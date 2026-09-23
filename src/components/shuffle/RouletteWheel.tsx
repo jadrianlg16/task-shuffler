@@ -1,49 +1,79 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { Activity } from "@/types";
 
 const ITEM_HEIGHT = 48;
 const VISIBLE_COUNT = 5;
 const TOTAL_CYCLES = 4;
+const CENTER = Math.floor(VISIBLE_COUNT / 2);
+const SPIN_SECONDS = 2.5;
+/** How long the winner sits in the band before the result card takes over. */
+const HOLD_MS = 650;
+
+const shuffled = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
+
+/**
+ * Several shuffled passes over the candidates, then the winner, then enough
+ * rows to fill the window under the band so it never lands on blank space.
+ * Built once per spin: rebuilding on re-render would reshuffle the rows.
+ */
+function buildStrip(candidates: Activity[], winner: Activity): Activity[] {
+  const strip: Activity[] = [];
+  for (let i = 0; i < TOTAL_CYCLES; i++) strip.push(...shuffled(candidates));
+  const others = candidates.filter((c) => c.id !== winner.id);
+  // Keep the winner's own name out of the rows visible just above the band,
+  // or it lands looking like a duplicate.
+  for (let i = Math.max(0, strip.length - CENTER); i < strip.length && others.length; i++) {
+    if (strip[i].id === winner.id) strip[i] = others[Math.floor(Math.random() * others.length)];
+  }
+  strip.push(winner);
+  const tail = shuffled(others.length ? others : candidates);
+  for (let i = 0; i < CENTER; i++) strip.push(tail[i % tail.length]);
+  return strip;
+}
 
 export function RouletteWheel({
   candidates,
   winner,
+  layoutId,
   onComplete,
 }: {
   candidates: Activity[];
   winner: Activity;
+  /** Shared with the result card's title so the name grows into it. */
+  layoutId: string;
   onComplete: () => void;
 }) {
-  const [animating, setAnimating] = useState(true);
+  const [strip] = useState(() => buildStrip(candidates, winner));
+  const [landed, setLanded] = useState(false);
+  const landedRef = useRef(false);
+  const timers = useRef<number[]>([]);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
-  // Build a strip: repeat candidates several times, then end with the winner
-  const strip: Activity[] = [];
-  for (let i = 0; i < TOTAL_CYCLES; i++) {
-    // Shuffle order each cycle for visual variety
-    const shuffled = [...candidates].sort(() => Math.random() - 0.5);
-    strip.push(...shuffled);
-  }
-  // Ensure winner is at the final landing position
-  strip.push(winner);
+  const winnerIndex = strip.length - 1 - CENTER;
+  const targetY = -(winnerIndex - CENTER) * ITEM_HEIGHT;
 
-  const winnerIndex = strip.length - 1;
-  // Target Y to center the winner in the visible window
-  const centerOffset = Math.floor(VISIBLE_COUNT / 2);
-  const targetY = -(winnerIndex - centerOffset) * ITEM_HEIGHT;
+  const land = () => {
+    if (landedRef.current) return;
+    landedRef.current = true;
+    setLanded(true);
+    navigator.vibrate?.(12);
+    timers.current.push(window.setTimeout(() => onCompleteRef.current(), HOLD_MS));
+  };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimating(false);
-      onComplete();
-    }, 2800);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+    // Fallback in case the animation callback never fires (e.g. a hidden tab).
+    const list = timers.current;
+    list.push(window.setTimeout(land, SPIN_SECONDS * 1000 + 400));
+    return () => list.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col items-center">
-      <div className="section-label" style={{ marginBottom: 14 }}>
-        Shuffling…
+      <div className="section-label" style={{ marginBottom: 14 }} aria-live="polite">
+        {landed ? "Landed" : "Shuffling…"}
       </div>
       <div
         className="relative overflow-hidden"
@@ -60,7 +90,7 @@ export function RouletteWheel({
         <div
           className="absolute left-0 right-0 pointer-events-none"
           style={{
-            top: ITEM_HEIGHT * centerOffset,
+            top: ITEM_HEIGHT * CENTER,
             height: ITEM_HEIGHT,
             background: "var(--accent-light)",
             borderTop: "1px solid var(--ds-accent)",
@@ -82,30 +112,49 @@ export function RouletteWheel({
           className="relative"
           initial={{ y: 0 }}
           animate={{ y: targetY }}
-          transition={{
-            duration: 2.5,
-            ease: [0.15, 0.85, 0.35, 1],
-          }}
+          transition={{ duration: SPIN_SECONDS, ease: [0.15, 0.85, 0.35, 1] }}
+          onAnimationComplete={land}
         >
-          {strip.map((activity, i) => (
-            <div
-              key={`${activity.id}-${i}`}
-              className="flex items-center justify-center px-4 text-center"
-              style={{ height: ITEM_HEIGHT }}
-            >
-              <span
-                className="font-body truncate"
-                style={{
-                  fontSize: 14,
-                  color:
-                    !animating && i === winnerIndex ? "var(--ink)" : "var(--ink-muted)",
-                  fontWeight: !animating && i === winnerIndex ? 500 : 400,
-                }}
+          {strip.map((activity, i) => {
+            const isWinner = i === winnerIndex;
+            return (
+              <div
+                key={`${activity.id}-${i}`}
+                className="flex items-center justify-center px-4 text-center"
+                style={{ height: ITEM_HEIGHT }}
+                data-winner={isWinner || undefined}
               >
-                {activity.name}
-              </span>
-            </div>
-          ))}
+                {isWinner ? (
+                  <motion.span
+                    layoutId={layoutId}
+                    className="font-body truncate"
+                    animate={{ scale: landed ? 1.08 : 1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 18 }}
+                    style={{
+                      display: "inline-block",
+                      fontSize: 14,
+                      color: landed ? "var(--ink)" : "var(--ink-muted)",
+                      fontWeight: landed ? 500 : 400,
+                    }}
+                  >
+                    {activity.name}
+                  </motion.span>
+                ) : (
+                  <span
+                    className="font-body truncate"
+                    style={{
+                      fontSize: 14,
+                      color: "var(--ink-muted)",
+                      opacity: landed ? 0.45 : 1,
+                      transition: "opacity 0.2s ease",
+                    }}
+                  >
+                    {activity.name}
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </motion.div>
       </div>
     </div>

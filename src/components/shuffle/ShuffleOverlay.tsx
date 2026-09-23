@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useReducedMotion } from "framer-motion";
 import { RouletteWheel } from "./RouletteWheel";
 import { ShuffleResultScreen } from "./ShuffleResultScreen";
 import { PickDialog } from "./PickDialog";
@@ -16,54 +17,37 @@ export function ShuffleOverlay({
   winner: Activity;
   onClose: () => void;
 }) {
-  const skipAnimation = candidates.length <= 1;
-  const [phase, setPhase] = useState<Phase>(
-    skipAnimation ? "result" : "animating"
-  );
+  const reduceMotion = useReducedMotion();
+  // One candidate needs no suspense; reduced-motion users skip the reel.
+  const phaseFor = (poolSize: number): Phase =>
+    poolSize <= 1 || reduceMotion ? "result" : "animating";
+
+  const [phase, setPhase] = useState<Phase>(() => phaseFor(candidates.length));
   const [winner, setWinner] = useState<Activity>(initialWinner);
   const [excludedIds, setExcludedIds] = useState<Set<string>>(new Set());
+  // Each spin gets its own shared-layout id so the name only ever grows from
+  // the reel into the card, never back from an old card into a new reel.
+  const [round, setRound] = useState(0);
 
-  const getAvailableCandidates = () =>
-    candidates.filter((c) => !excludedIds.has(c.id));
+  const available = candidates.filter((c) => !excludedIds.has(c.id));
 
-  const handleAnimationComplete = useCallback(() => {
-    setPhase("result");
-  }, []);
+  const handleAnimationComplete = useCallback(() => setPhase("result"), []);
 
-  const handleShuffleAgain = () => {
-    const available = getAvailableCandidates();
-    const newWinner = shuffleSelect(available);
-    if (newWinner) {
-      setWinner(newWinner);
-      if (available.length <= 1) {
-        setPhase("result");
-      } else {
-        setPhase("animating");
-      }
-    }
+  const spin = (pool: Activity[]) => {
+    const next = shuffleSelect(pool);
+    if (!next) return onClose();
+    setWinner(next);
+    setRound((r) => r + 1);
+    setPhase(phaseFor(pool.length));
   };
 
   const handleNotFeelingIt = () => {
-    const newExcluded = new Set(excludedIds);
-    newExcluded.add(winner.id);
-    setExcludedIds(newExcluded);
-
-    const remaining = candidates.filter((c) => !newExcluded.has(c.id));
-    const newWinner = shuffleSelect(remaining);
-    if (newWinner) {
-      setWinner(newWinner);
-      if (remaining.length <= 1) {
-        setPhase("result");
-      } else {
-        setPhase("animating");
-      }
-    } else {
-      // All excluded — close overlay
-      onClose();
-    }
+    const skipped = new Set(excludedIds).add(winner.id);
+    setExcludedIds(skipped);
+    spin(candidates.filter((c) => !skipped.has(c.id)));
   };
 
-  const availableCount = getAvailableCandidates().length;
+  const layoutId = `pick-${round}`;
 
   return (
     <PickDialog
@@ -72,17 +56,20 @@ export function ShuffleOverlay({
     >
       {phase === "animating" && (
         <RouletteWheel
-          key={winner.id}
-          candidates={getAvailableCandidates()}
+          key={round}
+          candidates={available}
           winner={winner}
+          layoutId={layoutId}
           onComplete={handleAnimationComplete}
         />
       )}
       {phase === "result" && (
         <ShuffleResultScreen
           winner={winner}
-          onShuffleAgain={handleShuffleAgain}
-          onNotFeelingIt={availableCount > 1 ? handleNotFeelingIt : undefined}
+          layoutId={layoutId}
+          skippedCount={excludedIds.size}
+          onShuffleAgain={() => spin(available)}
+          onNotFeelingIt={available.length > 1 ? handleNotFeelingIt : undefined}
           onClose={onClose}
         />
       )}

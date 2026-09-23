@@ -152,8 +152,16 @@ export function ActivityItem({
         >
           {activity.name}
         </span>
-        {(activity.durationMinutes || (showCategory && category)) && (
+        {(activity.startedAt || activity.durationMinutes || (showCategory && category)) && (
           <div className="flex items-center gap-3" style={{ marginTop: 2 }}>
+            {activity.startedAt && (
+              <span
+                className="font-body"
+                style={{ fontSize: 11, fontWeight: 500, color: "var(--ds-accent)" }}
+              >
+                In progress
+              </span>
+            )}
             {activity.durationMinutes && (
               <span
                 className="font-body"

@@ -6,6 +6,8 @@ export type Activity = {
   status: "active" | "archived";
   createdAt: string;
   completedAt: string | null;
+  /** Set while this is the task you're doing now ("Start"). Older data lacks it. */
+  startedAt?: string | null;
 };
 
 export type Category = {
@@ -28,4 +30,3 @@ export type TimeFilter = {
   includeNoDuration: boolean;
 };
 
-export type ShuffleScope = "all" | "single" | "multi" | "unassigned";

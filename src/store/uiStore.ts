@@ -1,23 +1,30 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { TimeFilter } from "@/types";
 
 type ViewMode = "grouped" | "flat";
 type SortBy = "name" | "duration" | "category" | "date";
 type CurrentView = "main" | "archive";
+
+export const DEFAULT_TIME_FILTER: TimeFilter = { mode: "any", includeNoDuration: true };
 
 interface UIState {
   theme: "light" | "dark" | "system";
   viewMode: ViewMode;
   sortBy: SortBy;
   searchQuery: string;
-  selectedCategoryIds: string[];
   currentView: CurrentView;
+  /** Shuffle picker: categories to draw from (none = all). Remembered. */
+  shuffleCategoryIds: string[];
+  /** Shuffle picker: "I have N minutes" and friends. Remembered. */
+  shuffleTimeFilter: TimeFilter;
   setTheme: (theme: "light" | "dark" | "system") => void;
   setViewMode: (mode: ViewMode) => void;
   setSortBy: (sort: SortBy) => void;
   setSearchQuery: (query: string) => void;
-  setSelectedCategories: (ids: string[]) => void;
   setCurrentView: (view: CurrentView) => void;
+  setShuffleCategoryIds: (ids: string[]) => void;
+  setShuffleTimeFilter: (filter: TimeFilter) => void;
 }
 
 export const useUIStore = create<UIState>()(
@@ -27,15 +34,16 @@ export const useUIStore = create<UIState>()(
       viewMode: "grouped",
       sortBy: "date",
       searchQuery: "",
-      selectedCategoryIds: [],
       currentView: "main",
+      shuffleCategoryIds: [],
+      shuffleTimeFilter: DEFAULT_TIME_FILTER,
       setTheme: (theme) => set({ theme }),
       setViewMode: (viewMode) => set({ viewMode }),
       setSortBy: (sortBy) => set({ sortBy }),
       setSearchQuery: (searchQuery) => set({ searchQuery }),
-      setSelectedCategories: (selectedCategoryIds) =>
-        set({ selectedCategoryIds }),
       setCurrentView: (currentView) => set({ currentView }),
+      setShuffleCategoryIds: (shuffleCategoryIds) => set({ shuffleCategoryIds }),
+      setShuffleTimeFilter: (shuffleTimeFilter) => set({ shuffleTimeFilter }),
     }),
     {
       name: "task-shuffler-ui",
@@ -43,6 +51,8 @@ export const useUIStore = create<UIState>()(
         theme: state.theme,
         viewMode: state.viewMode,
         sortBy: state.sortBy,
+        shuffleCategoryIds: state.shuffleCategoryIds,
+        shuffleTimeFilter: state.shuffleTimeFilter,
       }),
     }
   )

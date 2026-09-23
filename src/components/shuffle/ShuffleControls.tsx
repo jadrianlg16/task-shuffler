@@ -1,131 +1,198 @@
 import { useState } from "react";
+import { Shuffle } from "lucide-react";
 import { useActivityStore } from "@/store/activityStore";
 import { useCategoryStore } from "@/store/categoryStore";
-import { getShuffleCandidates, shuffleSelect } from "@/utils/shuffle";
+import { useUIStore } from "@/store/uiStore";
+import {
+  getShuffleCandidates,
+  shuffleSelect,
+  suggestLoosening,
+  TIME_PRESETS,
+} from "@/utils/shuffle";
 import { TimeFilterControl } from "./TimeFilterControl";
 import { Button } from "@/components/ui/button";
 import { CategoryDot } from "@/components/categories/CategoryBadge";
-import { Shuffle } from "lucide-react";
-import type { Activity, ShuffleScope, TimeFilter } from "@/types";
+import type { Activity, TimeFilter } from "@/types";
+
+const isSimple = (f: TimeFilter) =>
+  f.mode === "any" || (f.mode === "max" && TIME_PRESETS.includes(f.value ?? -1));
+
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-3" style={{ marginBottom: 12 }}>
+      <span className="section-label shrink-0" style={{ width: 48, lineHeight: "28px" }}>
+        {label}
+      </span>
+      <div className="flex flex-wrap items-center gap-1.5 min-w-0 flex-1">{children}</div>
+    </div>
+  );
+}
 
 export function ShuffleControls({
   onShuffle,
 }: {
   onShuffle: (result: { candidates: Activity[]; winner: Activity }) => void;
 }) {
-  const [scope, setScope] = useState<ShuffleScope>("all");
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
-  const [timeFilter, setTimeFilter] = useState<TimeFilter>({
-    mode: "any",
-    includeNoDuration: true,
-  });
-
   const activities = useActivityStore((s) => s.activities);
   const categories = useCategoryStore((s) => s.categories);
+  const rememberedIds = useUIStore((s) => s.shuffleCategoryIds);
+  const setCategoryIds = useUIStore((s) => s.setShuffleCategoryIds);
+  const timeFilter = useUIStore((s) => s.shuffleTimeFilter);
+  const setTimeFilter = useUIStore((s) => s.setShuffleTimeFilter);
+  const [moreOpen, setMoreOpen] = useState(() => !isSimple(timeFilter));
+
   const visibleCategories = categories
     .filter((c) => !c.isHidden)
     .sort((a, b) => a.sortOrder - b.sortOrder);
-
-  const candidates = getShuffleCandidates(
-    activities,
-    scope,
-    selectedCategoryIds,
-    timeFilter,
-    categories
+  // A remembered pick may point at a category that was since hidden or deleted.
+  const categoryIds = rememberedIds.filter((id) =>
+    visibleCategories.some((c) => c.id === id)
   );
 
-  const needsPick =
-    (scope === "single" || scope === "multi") && selectedCategoryIds.length === 0;
+  const candidates = getShuffleCandidates(activities, categoryIds, timeFilter, categories);
+  const loosening =
+    candidates.length === 0
+      ? suggestLoosening(activities, categoryIds, timeFilter, categories)
+      : null;
 
   const handleShuffle = () => {
     const winner = shuffleSelect(candidates);
-    if (winner) {
-      onShuffle({ candidates, winner });
-    }
+    if (winner) onShuffle({ candidates, winner });
   };
 
-  const toggleCategoryId = (id: string) => {
-    setSelectedCategoryIds((prev) =>
-      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+  const toggleCategory = (id: string) =>
+    setCategoryIds(
+      categoryIds.includes(id) ? categoryIds.filter((c) => c !== id) : [...categoryIds, id]
+    );
+
+  const choosePreset = (minutes: number | null) => {
+    setMoreOpen(false);
+    setTimeFilter(
+      minutes === null
+        ? { ...timeFilter, mode: "any" }
+        : { ...timeFilter, mode: "max", value: minutes }
     );
   };
 
+  const presetPressed = (minutes: number | null) =>
+    !moreOpen &&
+    (minutes === null
+      ? timeFilter.mode === "any"
+      : timeFilter.mode === "max" && timeFilter.value === minutes);
+
+  const n = candidates.length;
+
   return (
     <section className="panel" style={{ padding: 20, marginBottom: 28 }}>
-      <div className="section-label" style={{ marginBottom: 12 }}>
+      <div className="section-label" style={{ marginBottom: 14 }}>
         Pick for me
       </div>
 
-      <div className="flex flex-wrap items-center gap-2" style={{ marginBottom: 10 }}>
-        <select
-          value={scope}
-          aria-label="Shuffle from"
-          onChange={(e) => {
-            setScope(e.target.value as ShuffleScope);
-            setSelectedCategoryIds([]);
-          }}
-          className="field"
-        >
-          <option value="all">All categories</option>
-          <option value="single">One category</option>
-          <option value="multi">Several categories</option>
-          <option value="unassigned">Unassigned only</option>
-        </select>
-
-        {scope === "single" && (
-          <select
-            value={selectedCategoryIds[0] ?? ""}
-            aria-label="Category"
-            onChange={(e) => setSelectedCategoryIds(e.target.value ? [e.target.value] : [])}
-            className="field"
+      <Row label="I have">
+        <button className="chip" aria-pressed={presetPressed(null)} onClick={() => choosePreset(null)}>
+          Any
+        </button>
+        {TIME_PRESETS.map((m) => (
+          <button
+            key={m}
+            className="chip"
+            aria-pressed={presetPressed(m)}
+            aria-label={`${m} minutes or less`}
+            onClick={() => choosePreset(m)}
           >
-            <option value="">Pick a category…</option>
-            {visibleCategories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+            {m}m
+          </button>
+        ))}
+        <button
+          className="chip"
+          aria-pressed={moreOpen}
+          aria-expanded={moreOpen}
+          onClick={() => setMoreOpen(!moreOpen)}
+        >
+          more…
+        </button>
+      </Row>
 
-      {scope === "multi" && (
-        <div className="flex flex-wrap gap-1.5" style={{ marginBottom: 10 }}>
-          {visibleCategories.map((c) => (
-            <button
-              key={c.id}
-              className="chip"
-              aria-pressed={selectedCategoryIds.includes(c.id)}
-              onClick={() => toggleCategoryId(c.id)}
-            >
-              <CategoryDot color={c.color} size={7} />
-              {c.name}
-            </button>
-          ))}
+      {moreOpen && (
+        <div style={{ margin: "-4px 0 12px 60px" }}>
+          <TimeFilterControl value={timeFilter} onChange={setTimeFilter} />
         </div>
       )}
 
-      <TimeFilterControl value={timeFilter} onChange={setTimeFilter} />
-
-      <div className="flex items-center gap-4" style={{ marginTop: 18 }}>
-        <Button
-          onClick={handleShuffle}
-          disabled={candidates.length === 0}
-          className="h-11 rounded-xl px-5 text-[15px]"
+      {!moreOpen && timeFilter.mode !== "any" && (
+        <label
+          className="font-body flex items-center gap-2"
+          style={{ fontSize: 12, color: "var(--ink-muted)", margin: "-4px 0 12px 60px" }}
         >
-          <Shuffle strokeWidth={2} />
-          Shuffle
-        </Button>
-        <span className="font-body" style={{ fontSize: 13, color: "var(--ink-muted)" }}>
-          {needsPick
-            ? scope === "single"
-              ? "Pick a category first."
-              : "Pick one or more categories."
-            : candidates.length === 0
-              ? "No tasks match. Loosen the filters or add one."
-              : `${candidates.length} task${candidates.length !== 1 ? "s" : ""} in the pool`}
-        </span>
-      </div>
+          <input
+            type="checkbox"
+            checked={timeFilter.includeNoDuration}
+            onChange={(e) => setTimeFilter({ ...timeFilter, includeNoDuration: e.target.checked })}
+            style={{ accentColor: "var(--ds-accent)" }}
+          />
+          Include tasks with no time set
+        </label>
+      )}
+
+      <Row label="From">
+        <button
+          className="chip"
+          aria-pressed={categoryIds.length === 0}
+          onClick={() => setCategoryIds([])}
+        >
+          All
+        </button>
+        {visibleCategories.map((c) => (
+          <button
+            key={c.id}
+            className="chip"
+            aria-pressed={categoryIds.includes(c.id)}
+            onClick={() => toggleCategory(c.id)}
+          >
+            <CategoryDot color={c.color} size={7} />
+            {c.name}
+          </button>
+        ))}
+      </Row>
+
+      <Button
+        onClick={handleShuffle}
+        disabled={n === 0}
+        className="h-11 rounded-xl px-5 text-[15px] w-full sm:w-auto"
+        style={{ marginTop: 4 }}
+      >
+        <Shuffle strokeWidth={2} />
+        {n === 0 ? "Shuffle" : `Shuffle ${n} task${n !== 1 ? "s" : ""}`}
+      </Button>
+
+      {loosening && (
+        <p
+          className="font-body"
+          role="status"
+          style={{ fontSize: 13, color: "var(--ink-muted)", marginTop: 12 }}
+        >
+          {loosening.kind === "none-in-categories" ? (
+            categoryIds.length === 0
+              ? "No tasks to pick from yet. Add one below."
+              : `No active tasks in ${categoryIds.length === 1 ? "that category" : "those categories"}.`
+          ) : (
+            <>
+              Nothing fits.{" "}
+              <button
+                className="underline underline-offset-2"
+                style={{ color: "var(--ds-accent)", fontWeight: 500 }}
+                onClick={() => {
+                  setMoreOpen(!isSimple(loosening.filter));
+                  setTimeFilter(loosening.filter);
+                }}
+              >
+                Try {loosening.label}
+              </button>{" "}
+              ({loosening.count} task{loosening.count !== 1 ? "s" : ""})
+            </>
+          )}
+        </p>
+      )}
     </section>
   );
 }
