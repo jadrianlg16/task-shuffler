@@ -34,6 +34,7 @@ export function ShuffleControls({
   onShuffle: (result: { candidates: Activity[]; winner: Activity }) => void;
 }) {
   const activities = useActivityStore((s) => s.activities);
+  const addExamples = useActivityStore((s) => s.addExamples);
   const categories = useCategoryStore((s) => s.categories);
   const rememberedIds = useUIStore((s) => s.shuffleCategoryIds);
   const setCategoryIds = useUIStore((s) => s.setShuffleCategoryIds);
@@ -176,7 +177,21 @@ export function ShuffleControls({
         >
           {loosening.kind === "none-in-categories" ? (
             categoryIds.length === 0
-              ? "No tasks to pick from yet. Add one below."
+              ? activities.length === 0
+                ? (
+                  <>
+                    No tasks yet. Add one below, or{" "}
+                    <button
+                      className="underline underline-offset-2"
+                      style={{ color: "var(--ds-accent)", fontWeight: 500 }}
+                      onClick={addExamples}
+                    >
+                      try the examples
+                    </button>
+                    .
+                  </>
+                )
+                : "No tasks to pick from yet. Add one below."
               : `No active tasks in ${categoryIds.length === 1 ? "that category" : "those categories"}.`
           ) : (
             <>
