@@ -71,6 +71,8 @@ backend at all.
 ```bash
 npm install
 npm run dev                # UI on :3003 (+ json-server on :3001 behind /api)
+                           # data: data/dev-db.json, a git-ignored copy of db.json
+                           # ports: PORT / API_PORT env vars
 npm test                   # unit tests (Vitest)
 
 # or, with hot reload in Docker (data in a named volume, not the repo)

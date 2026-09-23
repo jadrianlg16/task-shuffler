@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"json-server --watch db.json --port 3001\"",
-    "server": "json-server --watch db.json --port 3001",
+    "dev": "node scripts/dev.mjs",
+    "server": "node scripts/dev.mjs --api-only",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run"
