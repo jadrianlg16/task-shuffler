@@ -4,62 +4,66 @@ import type { Activity, Category } from "@/types";
 // app works from any host that can reach the UI — not only the machine running it.
 const API_URL = import.meta.env.VITE_API_URL ?? "/api";
 
-export async function fetchActivities(): Promise<Activity[]> {
-  const res = await fetch(`${API_URL}/activities`);
-  return res.json();
-}
-
-export async function saveActivity(activity: Activity): Promise<Activity> {
-  const res = await fetch(`${API_URL}/activities`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(activity),
+/** fetch() only rejects on network failure; treat any non-2xx as an error too. */
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${API_URL}${path}`, {
+    ...init,
+    headers: init?.body ? { "Content-Type": "application/json" } : undefined,
   });
-  return res.json();
+  if (!res.ok) throw new Error(`${init?.method ?? "GET"} ${path} failed: ${res.status}`);
+  return (res.status === 204 ? undefined : await res.json()) as T;
 }
 
-export async function updateActivity(
-  id: string,
-  updates: Partial<Activity>
-): Promise<Activity> {
-  const res = await fetch(`${API_URL}/activities/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updates),
-  });
-  return res.json();
+const send = (method: string, body: unknown): RequestInit => ({
+  method,
+  body: JSON.stringify(body),
+});
+
+export const fetchActivities = () => request<Activity[]>("/activities");
+export const saveActivity = (activity: Activity) =>
+  request<Activity>("/activities", send("POST", activity));
+export const updateActivity = (id: string, updates: Partial<Activity>) =>
+  request<Activity>(`/activities/${id}`, send("PATCH", updates));
+export const deleteActivity = async (id: string) => {
+  await request<unknown>(`/activities/${id}`, { method: "DELETE" });
+};
+
+export const fetchCategories = () => request<Category[]>("/categories");
+export const saveCategory = (category: Category) =>
+  request<Category>("/categories", send("POST", category));
+export const updateCategory = (id: string, updates: Partial<Category>) =>
+  request<Category>(`/categories/${id}`, send("PATCH", updates));
+export const deleteCategory = async (id: string) => {
+  await request<unknown>(`/categories/${id}`, { method: "DELETE" });
+};
+
+/**
+ * Replace everything with an imported backup. json-server has no transaction,
+ * so every imported item is written first and leftovers are deleted last:
+ * a failure part-way leaves extra old items behind, never missing ones.
+ */
+export async function replaceAll(activities: Activity[], categories: Category[]) {
+  const [oldCategories, oldActivities] = await Promise.all([
+    request<Category[]>("/categories"),
+    request<Activity[]>("/activities"),
+  ]);
+  await upsert("categories", categories, oldCategories);
+  await upsert("activities", activities, oldActivities);
+  await removeMissing("activities", activities, oldActivities);
+  await removeMissing("categories", categories, oldCategories);
 }
 
-export async function deleteActivity(id: string): Promise<void> {
-  await fetch(`${API_URL}/activities/${id}`, { method: "DELETE" });
+async function upsert<T extends { id: string }>(name: string, items: T[], existing: T[]) {
+  const existingIds = new Set(existing.map((e) => e.id));
+  for (const item of items) {
+    if (existingIds.has(item.id)) await request(`/${name}/${item.id}`, send("PUT", item));
+    else await request(`/${name}`, send("POST", item));
+  }
 }
 
-export async function fetchCategories(): Promise<Category[]> {
-  const res = await fetch(`${API_URL}/categories`);
-  return res.json();
-}
-
-export async function saveCategory(category: Category): Promise<Category> {
-  const res = await fetch(`${API_URL}/categories`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(category),
-  });
-  return res.json();
-}
-
-export async function updateCategory(
-  id: string,
-  updates: Partial<Category>
-): Promise<Category> {
-  const res = await fetch(`${API_URL}/categories/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updates),
-  });
-  return res.json();
-}
-
-export async function deleteCategory(id: string): Promise<void> {
-  await fetch(`${API_URL}/categories/${id}`, { method: "DELETE" });
+async function removeMissing<T extends { id: string }>(name: string, items: T[], existing: T[]) {
+  const keep = new Set(items.map((i) => i.id));
+  for (const old of existing) {
+    if (!keep.has(old.id)) await request(`/${name}/${old.id}`, { method: "DELETE" });
+  }
 }

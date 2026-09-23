@@ -99,3 +99,12 @@ export async function deleteCategory(id: string): Promise<void> {
   ensureSeeded();
   adapter.saveCategories(adapter.getCategories().filter((c) => c.id !== id));
 }
+
+/** Replace everything with an imported backup (both writes are synchronous). */
+export async function replaceAll(
+  activities: Activity[],
+  categories: Category[]
+): Promise<void> {
+  adapter.saveCategories(categories);
+  adapter.saveActivities(activities);
+}

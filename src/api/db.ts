@@ -16,3 +16,4 @@ export const fetchCategories = impl.fetchCategories;
 export const saveCategory = impl.saveCategory;
 export const updateCategory = impl.updateCategory;
 export const deleteCategory = impl.deleteCategory;
+export const replaceAll = impl.replaceAll;

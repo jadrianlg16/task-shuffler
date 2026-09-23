@@ -11,8 +11,10 @@ export function ActivityListToolbar() {
   return (
     <div className="flex items-center gap-2 font-body" style={{ marginBottom: 20 }}>
       <input
+        id="task-search"
         placeholder="Search…"
         aria-label="Search tasks"
+        aria-keyshortcuts="/"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="field flex-1 min-w-0"

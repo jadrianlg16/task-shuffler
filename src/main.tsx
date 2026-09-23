@@ -8,3 +8,13 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </StrictMode>
 );
+
+// Installable / offline-capable in production builds. Skipped inside an
+// iframe (the portfolio embed), where a worker would claim the host site's path.
+if (import.meta.env.PROD && "serviceWorker" in navigator && window.self === window.top) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(new URL("sw.js", document.baseURI))
+      .catch((err) => console.warn("[done.] service worker not registered:", err));
+  });
+}

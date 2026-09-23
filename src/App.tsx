@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { useTheme } from "@/hooks/useTheme";
+import { useShortcuts } from "@/hooks/useShortcuts";
 import { useUIStore } from "@/store/uiStore";
 import { useActivityStore } from "@/store/activityStore";
 import { useCategoryStore } from "@/store/categoryStore";
@@ -20,6 +21,7 @@ import type { Activity } from "@/types";
 
 export default function App() {
   useTheme();
+  useShortcuts();
   const currentView = useUIStore((s) => s.currentView);
   const loadActivities = useActivityStore((s) => s.loadActivities);
   const loadCategories = useCategoryStore((s) => s.loadCategories);

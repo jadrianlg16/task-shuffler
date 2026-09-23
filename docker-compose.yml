@@ -1,11 +1,15 @@
+# Local development with hot reload: `docker compose up`, then open :3003.
+# The Project Dashboard does not use this file; it runs the image directly
+# with the tasklists_data volume (see Project-Dashboard/registry.json).
 services:
   app:
     build: .
     ports:
-      - "3003:3003"
-      - "3001:3001"
+      - "3003:3003" # UI; the API is reached through /api on this same port
     volumes:
       - .:/app
       - /app/node_modules
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - devdata:/app/data # json-server's live file, kept out of the repo
+
+volumes:
+  devdata:

@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { useActivityStore } from "@/store/activityStore";
 import { useCategoryStore } from "@/store/categoryStore";
+import { CategoryDot } from "@/components/categories/CategoryBadge";
+import { parseQuickAdd } from "@/utils/quickAdd";
 
 const MINUTE_PRESETS = [5, 15, 30, 60];
 
@@ -20,15 +22,23 @@ export function QuickAddForm() {
     .filter((c) => !c.isHidden)
     .sort((a, b) => a.sortOrder - b.sortOrder);
 
+  // Typed shorthand ("30m", "#school") wins over the buttons below.
+  const parsed = parseQuickAdd(name, categories);
+  const hasShorthand = parsed.durationMinutes !== null || parsed.categoryId !== null;
+  const previewCategory = categories.find((c) => c.id === parsed.categoryId);
+
   const expanded =
     focused || name.trim() !== "" || duration !== "" || categoryId !== "unassigned";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = name.trim();
-    if (!trimmed) return;
-    const dur = duration ? parseInt(duration, 10) : null;
-    addActivity(trimmed, dur && !isNaN(dur) ? dur : null, categoryId);
+    if (!name.trim()) return;
+    const picked = duration ? parseInt(duration, 10) : null;
+    addActivity(
+      parsed.name,
+      parsed.durationMinutes ?? (picked && !isNaN(picked) ? picked : null),
+      parsed.categoryId ?? categoryId
+    );
     setName("");
     setDuration("");
     setCategoryId("unassigned");
@@ -53,8 +63,10 @@ export function QuickAddForm() {
     >
       <div className="flex gap-2">
         <input
+          id="quick-add-input"
           placeholder="Add a task…"
           aria-label="New task"
+          aria-keyshortcuts="N"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="quick-input flex-1 min-w-0"
@@ -69,7 +81,23 @@ export function QuickAddForm() {
         </button>
       </div>
 
-      {expanded && (
+      {hasShorthand && (
+        <p
+          className="font-body flex items-center flex-wrap gap-x-2"
+          aria-live="polite"
+          style={{ fontSize: 12, color: "var(--ink-muted)", margin: "8px 0 0 4px" }}
+        >
+          <span>Adds “{parsed.name}”</span>
+          {parsed.durationMinutes !== null && <span>· {parsed.durationMinutes} min</span>}
+          {previewCategory && (
+            <span className="inline-flex items-center gap-1.5">
+              · <CategoryDot color={previewCategory.color} size={7} /> {previewCategory.name}
+            </span>
+          )}
+        </p>
+      )}
+
+      {expanded && !hasShorthand && (
         <div
           className="flex flex-wrap items-center gap-1.5 animate-task-in"
           style={{ marginTop: 10 }}
@@ -109,6 +137,11 @@ export function QuickAddForm() {
               </option>
             ))}
           </select>
+          {!name && (
+            <span className="font-body w-full" style={{ fontSize: 11, color: "var(--ink-muted)", marginTop: 2 }}>
+              Tip: type <kbd>30m</kbd> or <kbd>#{categories.find((c) => c.id !== "unassigned")?.name.toLowerCase() ?? "school"}</kbd> right in the name.
+            </span>
+          )}
         </div>
       )}
     </form>

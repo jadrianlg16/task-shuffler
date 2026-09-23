@@ -23,14 +23,25 @@ feel free to play.
   you've been at it against its estimate. Done archives it (with Undo), Drop
   puts it back in the pool.
 - **Quick add**: type a name and press Enter. Minutes (5 / 15 / 30 / 60 or any
-  number) and a category are optional and appear while you're adding.
+  number) and a category are optional and appear while you're adding, or
+  type them inline: `Call mom 15m #personal` (also `1h`, `1h30`, `45 min`;
+  `#tags` match category names, and unknown tags stay in the name).
 - **Categories**: colour-coded (School / Personal / Business / Hobby / Field /
-  Unassigned by default). Add your own, reorder, hide, or delete custom ones;
-  deleting moves their tasks to Unassigned.
+  Unassigned by default). Add your own, rename, recolour, reorder, hide, or
+  delete custom ones; deleting moves their tasks to Unassigned.
 - **Today at a glance**: active count, tasks done today, and a bar that fills
   as today's work gets done.
-- **Archive**: completed tasks can be restored or deleted for good.
-- **Backup**: export and import everything as JSON from Settings.
+- **Archive**: completed tasks, newest first, grouped Today / This week /
+  Earlier. Restore them or delete them for good.
+- **Backup**: export everything as JSON from Settings. Importing validates the
+  file first and asks before replacing anything (with a one-click backup of
+  what you have now).
+- **Keyboard**: <kbd>N</kbd> new task, <kbd>S</kbd> shuffle, <kbd>/</kbd>
+  search, <kbd>Enter</kbd> start the picked task, <kbd>Esc</kbd> close.
+- **Safe saves**: if a change can't be saved (server down), it is undone on
+  screen and you're told, instead of vanishing on the next reload.
+- **Installable**: production builds ship a web manifest and an offline-capable
+  service worker (network-first; task data under `/api` is never cached).
 - Light, dark or system theme; works on phones.
 
 ## Storage: two backends, one flag
@@ -60,6 +71,10 @@ backend at all.
 ```bash
 npm install
 npm run dev                # UI on :3003 (+ json-server on :3001 behind /api)
+npm test                   # unit tests (Vitest)
+
+# or, with hot reload in Docker (data in a named volume, not the repo)
+docker compose up
 
 # serverless build (no backend, localStorage persistence)
 VITE_STORAGE=local npm run build

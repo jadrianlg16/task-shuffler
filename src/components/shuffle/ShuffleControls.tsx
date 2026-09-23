@@ -156,6 +156,9 @@ export function ShuffleControls({
       </Row>
 
       <Button
+        id="shuffle-button"
+        aria-keyshortcuts="S"
+        title="Shuffle (S)"
         onClick={handleShuffle}
         disabled={n === 0}
         className="h-11 rounded-xl px-5 text-[15px] w-full sm:w-auto"
