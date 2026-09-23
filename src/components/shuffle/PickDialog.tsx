@@ -22,6 +22,8 @@ export function PickDialog({
         aria-describedby={undefined}
         className={[
           "bg-card font-body rounded-2xl p-7 sm:max-w-[420px]",
+          // Never taller than the screen (landscape phones): scroll instead.
+          "max-h-[calc(100dvh-2rem)] overflow-y-auto max-sm:max-h-[92dvh]",
           // Phones: a bottom sheet in thumb reach instead of a centred card.
           "max-sm:top-auto max-sm:bottom-0 max-sm:left-0 max-sm:translate-x-0 max-sm:translate-y-0",
           "max-sm:max-w-none max-sm:rounded-b-none max-sm:border-x-0 max-sm:border-b-0",

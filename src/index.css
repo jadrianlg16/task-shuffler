@@ -203,9 +203,11 @@
   transition: border-color 0.15s ease, box-shadow 0.2s ease;
 }
 
-.task-card:hover {
-  border-left-color: var(--ink-faint);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+@media (hover: hover) {
+  .task-card:hover {
+    border-left-color: var(--ink-faint);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
 }
 
 .task-card.completed {
@@ -278,9 +280,11 @@
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.theme-toggle:hover {
-  border-color: var(--ds-accent);
-  transform: scale(1.05);
+@media (hover: hover) {
+  .theme-toggle:hover {
+    border-color: var(--ds-accent);
+    transform: scale(1.05);
+  }
 }
 
 @media (max-width: 640px) {
@@ -497,7 +501,8 @@ select.field option {
 .app-shell {
   max-width: 480px;
   margin: 0 auto;
-  padding: 48px 20px 80px;
+  padding: 48px max(20px, env(safe-area-inset-right)) max(80px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
 }
 
 .app-header {
@@ -518,7 +523,8 @@ select.field option {
 
 @media (max-width: 640px) {
   .app-shell {
-    padding: 24px 16px 64px;
+    padding: max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+      max(64px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   }
 
   .app-header {
@@ -545,4 +551,49 @@ kbd {
   border-radius: 5px;
   border: 1px solid var(--ink-faint);
   background: var(--bg);
+}
+
+/* ── Devices ── */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS Safari zooms the whole page when a field under 16px gets focus.
+   Touch screens get 16px fields (important: some fields size text inline). */
+@media (hover: none) and (pointer: coarse) {
+  input:not([type="checkbox"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Dual-screen devices spanned across a hinge (Surface Duo and similar).
+   Side by side: the app lives on the left screen, dialogs open on the right,
+   so nothing sits under the hinge. */
+@media (horizontal-viewport-segments: 2) {
+  .app-shell {
+    max-width: min(480px, env(viewport-segment-width 0 0));
+    margin-left: max(0px, calc((env(viewport-segment-width 0 0) - 480px) / 2));
+    margin-right: 0;
+  }
+
+  [data-slot="dialog-content"] {
+    left: calc(env(viewport-segment-left 1 0) + env(viewport-segment-width 1 0) / 2);
+    max-width: calc(env(viewport-segment-width 1 0) - 2rem);
+  }
+}
+
+/* Stacked (hinge across the middle): dialogs open on the bottom screen. */
+@media (vertical-viewport-segments: 2) {
+  [data-slot="dialog-content"] {
+    top: calc(env(viewport-segment-top 0 1) + env(viewport-segment-height 0 1) / 2);
+    max-height: calc(env(viewport-segment-height 0 1) - 2rem);
+  }
 }
