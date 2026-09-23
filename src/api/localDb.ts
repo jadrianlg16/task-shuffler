@@ -1,9 +1,11 @@
 import type { Activity, Category } from "@/types";
 import { LocalStorageAdapter } from "@/adapters/localStorage";
+import { makeExampleTasks } from "@/data/exampleTasks";
+import { isDemoRequested, isEmbedded } from "@/lib/platform";
 
 /**
  * localStorage-backed implementation of the db API, used for serverless
- * builds (VITE_STORAGE=local) such as the portfolio embed. Same signatures
+ * builds (VITE_STORAGE=local), including the portfolio embed. Same signatures
  * as httpDb.ts, no json-server required.
  */
 
@@ -11,26 +13,14 @@ const ACTIVITIES_KEY = "task-shuffler-activities";
 
 const adapter = new LocalStorageAdapter();
 
-function minutesAgo(minutes: number): string {
-  return new Date(Date.now() - minutes * 60_000).toISOString();
-}
-
-const SEED_ACTIVITIES: Activity[] = [
-  { id: "demo-01", name: "Study for calculus exam", durationMinutes: 90, categoryId: "school", status: "active", createdAt: minutesAgo(60), completedAt: null },
-  { id: "demo-02", name: "Morning run", durationMinutes: 45, categoryId: "personal", status: "active", createdAt: minutesAgo(120), completedAt: null },
-  { id: "demo-03", name: "Prepare client proposal", durationMinutes: 40, categoryId: "business", status: "active", createdAt: minutesAgo(180), completedAt: null },
-  { id: "demo-04", name: "Practice guitar", durationMinutes: 25, categoryId: "hobby", status: "active", createdAt: minutesAgo(240), completedAt: null },
-  { id: "demo-05", name: "Read 20 pages", durationMinutes: 30, categoryId: "personal", status: "active", createdAt: minutesAgo(300), completedAt: null },
-  { id: "demo-06", name: "Refactor side project", durationMinutes: 120, categoryId: "hobby", status: "active", createdAt: minutesAgo(360), completedAt: null },
-  { id: "demo-07", name: "Plan next week", durationMinutes: 30, categoryId: "business", status: "active", createdAt: minutesAgo(420), completedAt: null },
-  { id: "demo-08", name: "Water the plants", durationMinutes: 10, categoryId: "personal", status: "active", createdAt: minutesAgo(480), completedAt: null },
-  { id: "demo-09", name: "Sketch app wireframes", durationMinutes: null, categoryId: "hobby", status: "active", createdAt: minutesAgo(540), completedAt: null },
-  { id: "demo-10", name: "Review lecture notes", durationMinutes: 60, categoryId: "school", status: "active", createdAt: minutesAgo(600), completedAt: null },
-];
-
+/**
+ * First run: real users start with an empty list (examples are one tap away
+ * from the empty state). The portfolio embed, or a `?demo` link, starts with
+ * the examples so there is something to shuffle straight away.
+ */
 function ensureSeeded(): void {
   if (localStorage.getItem(ACTIVITIES_KEY) === null) {
-    adapter.saveActivities(SEED_ACTIVITIES);
+    adapter.saveActivities(isEmbedded() || isDemoRequested() ? makeExampleTasks() : []);
   }
   // getCategories() self-seeds DEFAULT_CATEGORIES on first read.
   adapter.getCategories();

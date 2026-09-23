@@ -16,6 +16,8 @@ import { ShuffleOverlay } from "@/components/shuffle/ShuffleOverlay";
 import { ShuffleResultScreen } from "@/components/shuffle/ShuffleResultScreen";
 import { PickDialog } from "@/components/shuffle/PickDialog";
 import { NowCard } from "@/components/shuffle/NowCard";
+import { ExamplesBanner } from "@/components/onboarding/ExamplesBanner";
+import { SafetyNotices } from "@/components/onboarding/SafetyNotices";
 import { MotionConfig } from "framer-motion";
 import type { Activity } from "@/types";
 
@@ -44,6 +46,8 @@ export default function App() {
       <Header onOpenSettings={() => setSettingsOpen(true)} />
       {currentView === "main" && (
         <>
+          <SafetyNotices />
+          <ExamplesBanner />
           <NowCard />
           <ShuffleControls onShuffle={setShuffleResult} />
           <QuickAddForm />

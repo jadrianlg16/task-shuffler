@@ -3,6 +3,7 @@ import type { Activity } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
 import { persist } from "./persist";
+import { isExampleTask, makeExampleTasks } from "@/data/exampleTasks";
 
 interface ActivityState {
   activities: Activity[];
@@ -21,6 +22,10 @@ interface ActivityState {
   /** Stop doing it without finishing; it goes back to the pool. */
   dropActivity: (id: string) => void;
   deleteActivity: (id: string) => void;
+  /** Add the example tasks (skipping any already there). */
+  addExamples: () => void;
+  /** Remove every example task, leaving the user's own tasks alone. */
+  clearExamples: () => void;
   bulkReassignCategory: (fromCategoryId: string, toCategoryId: string) => void;
   /** Swap in an imported list after it has been saved (see replaceAllData). */
   setActivities: (activities: Activity[]) => void;
@@ -113,6 +118,22 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
           return { activities: next };
         })
       );
+    },
+
+    addExamples: () => {
+      const existing = new Set(get().activities.map((a) => a.id));
+      const fresh = makeExampleTasks().filter((t) => !existing.has(t.id));
+      set((state) => ({ activities: [...state.activities, ...fresh] }));
+      for (const task of fresh) {
+        persist(api.saveActivity(task), () =>
+          set((state) => ({ activities: state.activities.filter((a) => a.id !== task.id) }))
+        );
+      }
+    },
+
+    clearExamples: () => {
+      const { activities, deleteActivity } = get();
+      activities.filter(isExampleTask).forEach((a) => deleteActivity(a.id));
     },
 
     bulkReassignCategory: (fromCategoryId, toCategoryId) =>

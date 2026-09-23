@@ -23,6 +23,8 @@ export function ActivityListContainer({
     .filter((c) => !c.isHidden)
     .sort((a, b) => a.sortOrder - b.sortOrder);
   const searchQuery = useUIStore((s) => s.searchQuery);
+  const noTasksAtAll = useActivityStore((s) => s.activities.length === 0);
+  const addExamples = useActivityStore((s) => s.addExamples);
   const sortBy = useUIStore((s) => s.sortBy);
   const viewMode = useUIStore((s) => s.viewMode);
 
@@ -40,6 +42,11 @@ export function ActivityListContainer({
             searchQuery.trim()
               ? `Nothing matches “${searchQuery.trim()}”.`
               : "Add your first task above to get started."
+          }
+          action={
+            !searchQuery.trim() && noTasksAtAll
+              ? { label: "Try it with example tasks", onClick: addExamples }
+              : undefined
           }
         />
       </>

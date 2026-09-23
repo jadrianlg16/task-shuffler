@@ -1,4 +1,6 @@
 import type { Activity, Category } from "@/types";
+import { format } from "date-fns";
+import { updateMeta } from "@/lib/safety";
 
 export function exportData(
   activities: Activity[],
@@ -85,12 +87,23 @@ export function parseImportData(json: string): {
   };
 }
 
+/** Download everything as a dated JSON file and remember when it happened. */
+export function downloadBackup(activities: Activity[], categories: Category[]): void {
+  const date = format(new Date(), "yyyy-MM-dd"); // local date, not UTC
+  downloadJson(exportData(activities, categories), `done-backup-${date}.json`);
+  updateMeta({ lastBackupAt: Date.now(), backupSnoozedUntil: 0 });
+}
+
 export function downloadJson(data: string, filename: string): void {
   const blob = new Blob([data], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+  // In the document and revoked a moment later: Firefox and Safari can drop
+  // a download whose link is detached or whose URL is revoked immediately.
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

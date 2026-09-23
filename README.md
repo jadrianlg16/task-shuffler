@@ -10,6 +10,9 @@ feel free to play.
 
 ## What it does
 
+- **First run**: starts empty. "Try it with example tasks" loads ten examples,
+  marked with a banner that clears them in one tap without touching your own
+  tasks. The portfolio embed and `?demo` links start with the examples.
 - **Pick for me**: say how much time you have (any, 15, 30, 60 or 90 minutes,
   or at least / between / exactly under "more…") and which categories to
   draw from (none picked = all). The button shows how many tasks fit, and if
@@ -38,6 +41,11 @@ feel free to play.
   what you have now).
 - **Keyboard**: <kbd>N</kbd> new task, <kbd>S</kbd> shuffle, <kbd>/</kbd>
   search, <kbd>Enter</kbd> start the picked task, <kbd>Esc</kbd> close.
+- **Keeping your data** (browser build): tasks live only in that browser on
+  that device, and the app says so in Settings. It asks the browser for
+  persistent storage, suggests Add to Home Screen on iPhone (Safari can clear
+  a site's data after 7 days without a visit) or Install elsewhere, and
+  reminds you to download a backup (after a week of use, then monthly).
 - **Safe saves**: if a change can't be saved (server down), it is undone on
   screen and you're told, instead of vanishing on the next reload.
 - **Installable**: production builds ship a web manifest and an offline-capable
@@ -63,8 +71,8 @@ In the Docker image the live data file is `$DB_FILE` (`/app/data/db.json`,
 seeded from `db.json` on first run), so a volume on `/app/data` keeps tasks
 across container re-creation.
 
-The localStorage build seeds a generic demo dataset on first run and needs no
-backend at all.
+The localStorage build needs no backend at all and starts empty (examples on
+request; the portfolio embed and `?demo` links start with them).
 
 ## Run it
 

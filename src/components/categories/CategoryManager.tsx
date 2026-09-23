@@ -10,13 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  exportData,
-  parseImportData,
-  downloadJson,
-} from "@/utils/exportImport";
+import { downloadBackup, parseImportData } from "@/utils/exportImport";
+import { StorageNote } from "@/components/onboarding/StorageNote";
 import { toast } from "sonner";
-import { format } from "date-fns";
 import { ChevronDown, ChevronUp, Pencil, X } from "lucide-react";
 import { CategoryDot } from "./CategoryBadge";
 import type { Activity, Category } from "@/types";
@@ -198,9 +194,7 @@ export function CategoryManager({
   };
 
   const handleExport = () => {
-    const data = exportData(activities, categories);
-    const date = format(new Date(), "yyyy-MM-dd");
-    downloadJson(data, `done-backup-${date}.json`);
+    downloadBackup(activities, categories);
     toast("Backup downloaded.");
   };
 
@@ -321,6 +315,7 @@ export function CategoryManager({
             <div className="section-label" style={{ marginBottom: 8 }}>
               Backup
             </div>
+            <StorageNote />
             {pendingImport ? (
               <div
                 role="alertdialog"
