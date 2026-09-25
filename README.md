@@ -96,6 +96,13 @@ npx vite preview
 React 19 · TypeScript · Zustand · Tailwind CSS 4 · shadcn/ui · framer-motion ·
 Vite · json-server (default storage mode)
 
+## iPhone and iPad (in progress)
+
+A native SwiftUI version lives in [`ios/`](ios/README.md). Its logic is a port
+of `src/utils` and is checked against the web code's own answers
+(`npm run parity:fixtures`). It uses the same backup format, so a JSON export
+from here imports there and back.
+
 ---
 
 Built by [Adrián Gaona](https://adriangaona.dev).

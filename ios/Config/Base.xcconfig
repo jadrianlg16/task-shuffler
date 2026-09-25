@@ -1,0 +1,7 @@
+// Shared build settings. Signing is per developer: put your Apple team id in
+// Config/Local.xcconfig (git-ignored), e.g.
+//
+//   DEVELOPMENT_TEAM = ABCDE12345
+//
+// Without it the app still builds for the simulator.
+#include? "Local.xcconfig"

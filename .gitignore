@@ -4,3 +4,11 @@ dist/
 node_modules
 *.tsbuildinfo
 /data/
+
+# iOS (the Xcode project is generated from ios/project.yml)
+ios/Done.xcodeproj/
+ios/Config/Local.xcconfig
+ios/**/.build/
+ios/**/.swiftpm/
+ios/**/xcuserdata/
+ios/**/DerivedData/

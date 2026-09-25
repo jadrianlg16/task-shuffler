@@ -1,0 +1,39 @@
+# The iPhone app's checks. Only runs on GitHub (macOS runners are free for
+# public repos); the same commands work on a Mac with Xcode 16.
+name: iOS
+
+on:
+  push:
+    paths: ["ios/**", "src/**", "scripts/parity-fixtures.ts", "package.json", "package-lock.json", ".github/workflows/ios.yml"]
+  pull_request:
+    paths: ["ios/**", "src/**", "scripts/parity-fixtures.ts", "package.json", "package-lock.json", ".github/workflows/ios.yml"]
+
+jobs:
+  # The web tests pass and the recorded answers match the web code as it is now.
+  parity-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run parity:fixtures -- --check
+
+  # DoneCore's tests (including parity), then the app builds for the simulator.
+  swift:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: DoneCore tests
+        working-directory: ios/DoneCore
+        run: swift test
+      - name: Build the app
+        working-directory: ios
+        run: |
+          brew install xcodegen
+          xcodegen
+          xcodebuild build -project Done.xcodeproj -scheme Done \
+            -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO

@@ -8,7 +8,8 @@
     "server": "node scripts/dev.mjs --api-only",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "parity:fixtures": "vite-node scripts/parity-fixtures.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
