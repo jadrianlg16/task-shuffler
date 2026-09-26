@@ -7,6 +7,10 @@ node_modules
 
 # iOS (the Xcode project is generated from ios/project.yml)
 ios/Done.xcodeproj/
+ios/Done/Info.plist
+ios/Done/Done.entitlements
+ios/DoneWidgets/Info.plist
+ios/DoneWidgets/DoneWidgets.entitlements
 ios/Config/Local.xcconfig
 ios/**/.build/
 ios/**/.swiftpm/

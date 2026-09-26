@@ -30,10 +30,10 @@ jobs:
       - name: DoneCore tests
         working-directory: ios/DoneCore
         run: swift test
-      - name: Build the app
+      - name: Build the app and widgets, run the UI tests
         working-directory: ios
         run: |
           brew install xcodegen
           xcodegen
-          xcodebuild build -project Done.xcodeproj -scheme Done \
-            -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
+          xcodebuild test -project Done.xcodeproj -scheme Done \
+            -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
