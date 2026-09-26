@@ -28,7 +28,8 @@ enum LiveActivities {
         let content = ActivityContent(state: state, staleDate: nil)
 
         var kept = false
-        for activity in running {
+        // Ended ones (after 8 hours, or swiped away) still show up here; start afresh instead.
+        for activity in running where activity.activityState == .active || activity.activityState == .stale {
             if activity.attributes.taskId == task.id && !kept {
                 kept = true
                 if activity.content.state != state {

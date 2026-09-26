@@ -18,8 +18,12 @@ struct QuickAddBar: View {
         let hasShorthand = parsed.durationMinutes != nil || parsed.categoryId != nil
         let canAdd = !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
 
+        // Open while typing, and while a minutes or category choice is waiting,
+        // so a hidden choice never lands on the next task by surprise.
+        let hasChoice = minutes != nil || categoryId != TaskCategory.unassignedId
+
         VStack(alignment: .leading, spacing: 10) {
-            if focused || canAdd {
+            if focused || canAdd || hasChoice {
                 if hasShorthand {
                     preview(parsed)
                 } else {
@@ -88,10 +92,18 @@ struct QuickAddBar: View {
                         Text("\(preset)m")
                     }
                 }
+                TextField("min", text: typedMinutes)
+                    .keyboardType(.numberPad)
+                    .font(.subheadline)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 48, height: 32)
+                    .background(Capsule().fill(Palette.surface))
+                    .overlay(Capsule().strokeBorder(Palette.inkFaint, lineWidth: 1))
+                    .accessibilityLabel("Minutes")
                 Spacer(minLength: 4)
                 Menu {
                     Picker("Category", selection: $categoryId) {
-                        ForEach(store.library.visibleCategories) { category in
+                        ForEach(store.library.sortedCategories.filter { !$0.isHidden || $0.id == categoryId }) { category in
                             Text(category.name).tag(category.id)
                         }
                     }
@@ -114,11 +126,20 @@ struct QuickAddBar: View {
         }
     }
 
+    /// Any number of minutes, typed.
+    private var typedMinutes: Binding<String> {
+        Binding(
+            get: { minutes.map { String($0) } ?? "" },
+            set: { typed in minutes = Int(typed.filter(\.isNumber)).flatMap { $0 > 0 ? $0 : nil } }
+        )
+    }
+
     private func add() {
         guard store.quickAdd(text, minutes: minutes, categoryId: categoryId) != nil else { return }
         text = ""
         minutes = nil
         categoryId = TaskCategory.unassignedId
-        focused = true // ready for the next one
+        // Ready for the next one. Return ends editing first, so ask again after it.
+        DispatchQueue.main.async { focused = true }
     }
 }

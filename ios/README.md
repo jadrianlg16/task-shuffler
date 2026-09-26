@@ -38,7 +38,7 @@ check; expect a round of compile fixes.
 | Live Activity | `Services/LiveActivities.swift`, `DoneWidgets/NowLiveActivity.swift` | The task in progress on the Lock Screen and in the Dynamic Island: elapsed timer, estimate bar, **Done** and **Drop** buttons that work without opening the app. |
 | Widgets | `DoneWidgets/NowWidget.swift` | Home Screen small and medium (now + timer, or done today + **Pick for me**; **Done** / **Drop** buttons), Lock Screen circular (done-today gauge), rectangular and inline. |
 | Control Center | `DoneWidgets/PickControl.swift` | iOS 18: a "Pick for Me" control for Control Center, the Lock Screen and the Action button. |
-| Siri and Shortcuts | `Intents/AppIntents.swift`, `Shared/SharedIntents.swift` | "Pick a task in done." (with minutes and category), "Add a task to done." (shorthand works), "Start a task", "I'm done in done.", "Drop my task". Works in Shortcuts and Spotlight too. |
+| Siri and Shortcuts | `Intents/AppIntents.swift`, `Shared/SharedIntents.swift` | "Pick a task in done." (with minutes and category), "Add a task to done." (shorthand works), "I'm done in done.", "Drop my task in done.". "Start a Task" (pick which) is in the Shortcuts app. All of them work in Shortcuts and Spotlight too. |
 | Focus filters | `Intents/AppIntents.swift` (`DoneFocusFilter`) | Settings → Focus → a Focus → Add Filter → done.: pick categories; while that Focus is on, the list and the shuffle only use them. |
 | Spotlight | `Services/Spotlight.swift` | Active tasks are searchable on the device; a result opens the task. Can be turned off. |
 | Deep links | `Model/Router.swift` | `done://shuffle`, `done://add`, `done://task/<id>`, `done://archive`, `done://settings`. |
@@ -80,8 +80,10 @@ iOS 17+, iPhone and iPad, Swift 5 language mode, bundle ids
    cd ios && xcodegen && open Done.xcodeproj
    ```
 
-4. **Simulator:** pick an iPhone and run. Unsigned simulator builds have no App
-   Group, so the app falls back to its own folder and widgets show sample data.
+4. **Simulator:** pick an iPhone and run. A build without signing has no App
+   Group, so the app falls back to its own folder and the widgets (which can't
+   see that folder) show 0 tasks. Sign with your team (step 5) to see real data
+   in the widgets, on the simulator too.
 5. **Real iPhone:** create `ios/Config/Local.xcconfig` with your team id, run
    `xcodegen` again, and in the Apple Developer portal register the App Group
    `group.dev.adriangaona.done` (Xcode's automatic signing usually does this
@@ -128,8 +130,10 @@ them.
   the name; the web app reads them as that many minutes.
 - **Case-insensitive `h`/`m` matching** uses full Unicode case folding in ICU,
   so the long s (`ſ`) counts as `s` (`2 hrſ`); JavaScript's doesn't.
-- **Active tasks can be deleted** (swipe, with Undo); the web app only deletes
-  from the archive.
+- **Small UI choices:** active tasks can be deleted (swipe, with Undo; the web
+  only deletes from the archive); deleting a category asks first; an emptied
+  list says "All clear"; one toast at a time (a new one replaces the last,
+  with its Undo); category groups start open on every launch.
 
 Where ICU's regex rules differ from JavaScript's, the port spells out
 JavaScript's: `[0-9]` for `\d`, JavaScript's whitespace set for `\s` and

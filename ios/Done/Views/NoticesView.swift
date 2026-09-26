@@ -13,7 +13,8 @@ struct NoticesView: View {
         }
         if store.library.exampleCount > 0 {
             examplesNote
-        } else if store.shouldRemindBackup {
+        }
+        if store.shouldRemindBackup {
             backupNote
         }
     }

@@ -28,8 +28,8 @@ final class LibraryStore {
     /// Set when the saved tasks couldn't be read (a copy was kept).
     var loadProblem: String?
 
-    @ObservationIgnored private let file: LibraryFile
-    @ObservationIgnored private let preferencesStore: PreferencesStore
+    private let file: LibraryFile
+    private let preferencesStore: PreferencesStore
     @ObservationIgnored private var observer: ChangeObserver?
 
     init(file: LibraryFile, preferencesStore: PreferencesStore) {
@@ -46,6 +46,7 @@ final class LibraryStore {
     private func load() {
         do {
             library = try file.load() ?? Library()
+            if library.categories.isEmpty { library.categories = TaskCategory.defaults }
         } catch {
             file.keepUnreadableCopy()
             library = Library()
@@ -62,6 +63,8 @@ final class LibraryStore {
     func reloadFromDisk() {
         let fresh = preferencesStore.load()
         if fresh != preferences { preferences = fresh }
+        // Cheap when nothing changed; restarts one that failed or that iOS ended.
+        LiveActivities.sync(library: library, enabled: preferences.liveActivities)
         guard let saved = try? file.load(), saved != library else { return }
         library = saved
         refreshSystemViews(announce: false)
@@ -69,21 +72,21 @@ final class LibraryStore {
 
     // MARK: - Saving
 
-    /// Applies a change, saves it, and puts it back if saving fails.
+    /// Applies a change to what's saved (read, change and write as one
+    /// coordinated step, so a widget's write in the meantime is never lost),
+    /// then shows it. If saving fails, nothing changes and you're told.
     @discardableResult
     private func change(_ edit: (inout Library) -> Void) -> Bool {
         let before = library
-        var next = library
-        edit(&next)
-        guard next != before else { return true }
-        library = next
+        let saved: Library
         do {
-            try file.save(next)
+            saved = try file.update { edit(&$0) }
         } catch {
-            library = before
             toast = Toast(message: "Couldn't save that change. Try again.")
             return false
         }
+        guard saved != before else { return true }
+        library = saved
         refreshSystemViews(announce: true)
         return true
     }
@@ -131,23 +134,34 @@ final class LibraryStore {
         change { $0.updateTask(id: id, name: name, durationMinutes: durationMinutes, categoryId: categoryId) }
     }
 
-    /// Archives a task, with Undo.
-    func complete(_ id: String, showUndo: Bool = true) {
+    /// Archives a task, with Undo. False when it couldn't be saved.
+    ///
+    /// Undo from the list puts the task back not started (the web's
+    /// restoreActivity); from the Now card it goes back in progress, unless
+    /// another task was started since.
+    @discardableResult
+    func complete(_ id: String, showUndo: Bool = true, undoKeepsInProgress: Bool = false) -> Bool {
         var previous: TaskItem?
-        guard change({ previous = $0.complete(id: id) }), let before = previous else { return }
+        guard change({ previous = $0.complete(id: id) }), let before = previous else { return false }
         Feedback.shared.play(.done)
         if showUndo {
             toast = Toast(message: "Task done.") { [weak self] in
-                self?.change { $0.replace(before) }
+                self?.change { library in
+                    var restored = before
+                    let anotherStarted = library.current.map { $0.id != restored.id } ?? false
+                    if !undoKeepsInProgress || anotherStarted { restored.startedAt = nil }
+                    library.replace(restored)
+                }
             }
         }
+        return true
     }
 
-    /// For Siri, widgets and notifications. Returns the finished task's name.
+    /// For Siri, widgets and notifications. The finished task's name, or nil
+    /// when nothing was in progress or it couldn't be saved.
     @discardableResult
     func completeCurrent(showUndo: Bool = true) -> String? {
-        guard let current = library.current else { return nil }
-        complete(current.id, showUndo: showUndo)
+        guard let current = library.current, complete(current.id, showUndo: showUndo) else { return nil }
         return current.name
     }
 
@@ -156,15 +170,16 @@ final class LibraryStore {
         Feedback.shared.play(.start)
     }
 
-    func drop(_ id: String) {
-        guard change({ $0.drop(id: id) }) else { return }
+    @discardableResult
+    func drop(_ id: String) -> Bool {
+        guard change({ $0.drop(id: id) }) else { return false }
         Feedback.shared.play(.drop)
+        return true
     }
 
     @discardableResult
     func dropCurrent() -> String? {
-        guard let current = library.current else { return nil }
-        drop(current.id)
+        guard let current = library.current, drop(current.id) else { return nil }
         return current.name
     }
 
@@ -274,7 +289,9 @@ final class LibraryStore {
     }
 
     func toggleShuffleCategory(_ id: String) {
-        var ids = pickerCategoryIds
+        // The remembered choice, not the Focus-narrowed one, so a Focus never sticks.
+        let visible = Set(library.visibleCategories.map(\.id))
+        var ids = preferences.shuffleCategoryIds.filter { visible.contains($0) }
         if let index = ids.firstIndex(of: id) { ids.remove(at: index) } else { ids.append(id) }
         updatePreferences { $0.shuffleCategoryIds = ids }
     }
@@ -283,11 +300,10 @@ final class LibraryStore {
 
     func updatePreferences(_ edit: (inout Preferences) -> Void) {
         let before = preferences
-        var next = preferences
-        edit(&next)
+        // Change what's saved: a widget or Focus filter may have written since.
+        let next = preferencesStore.update { edit(&$0) }
         guard next != before else { return }
         preferences = next
-        preferencesStore.save(next)
         Feedback.shared.configure(soundsOn: next.soundsOn, hapticsOn: next.hapticsOn)
         if next.liveActivities != before.liveActivities {
             LiveActivities.sync(library: library, enabled: next.liveActivities)

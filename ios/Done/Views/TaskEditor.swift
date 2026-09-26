@@ -20,8 +20,14 @@ struct TaskEditor: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Task name", text: $name, axis: .vertical)
+                    TextField("Task name", text: $name)
                         .font(.body)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+                            save()
+                            dismiss()
+                        }
                         .accessibilityIdentifier("editName")
                 }
 
@@ -44,7 +50,7 @@ struct TaskEditor: View {
 
                 Section("Category") {
                     Picker("Category", selection: $categoryId) {
-                        ForEach(store.library.visibleCategories) { category in
+                        ForEach(store.library.sortedCategories.filter { !$0.isHidden || $0.id == categoryId }) { category in
                             HStack {
                                 CategoryDot(color: category.color)
                                 Text(category.name)

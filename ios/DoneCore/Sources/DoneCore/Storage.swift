@@ -44,6 +44,7 @@ public struct LibraryFile: Sendable {
     }
 
     public func save(_ library: Library) throws {
+        try createFolder()
         var result: Result<Void, Error> = .success(())
         var coordinationError: NSError?
         NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: url, options: .forReplacing, error: &coordinationError) { writeURL in
@@ -56,6 +57,7 @@ public struct LibraryFile: Sendable {
     /// Read, change and write back as one step. Returns the saved library.
     @discardableResult
     public func update(_ change: (inout Library) -> Void) throws -> Library {
+        try createFolder()
         var result: Result<Library, Error> = .success(Library())
         var coordinationError: NSError?
         NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: url, options: .forMerging, error: &coordinationError) { fileURL in
@@ -89,8 +91,12 @@ public struct LibraryFile: Sendable {
         return try JSONDecoder().decode(Library.self, from: Data(contentsOf: url))
     }
 
-    private static func write(_ library: Library, to url: URL) throws {
+    /// The folder must exist before a write is coordinated on a file in it.
+    private func createFolder() throws {
         try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+    }
+
+    private static func write(_ library: Library, to url: URL) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
         try encoder.encode(library).write(to: url, options: .atomic)

@@ -9,6 +9,7 @@ final class DoneUITests: XCTestCase {
         continueAfterFailure = false
     }
 
+    @MainActor
     private func launch(reset: Bool) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-ui-testing"]
@@ -17,10 +18,30 @@ final class DoneUITests: XCTestCase {
         return app
     }
 
+    @MainActor
     private func element(_ id: String, in app: XCUIApplication) -> XCUIElement {
-        app.descendants(matching: .any)[id]
+        app.descendants(matching: .any)[id].firstMatch
     }
 
+    /// Adding keeps the keyboard up for the next task; an empty Return puts it away.
+    @MainActor
+    private func closeKeyboard(_ field: XCUIElement, in app: XCUIApplication) {
+        if app.keyboards.count > 0 {
+            field.typeText("\n")
+        }
+    }
+
+    /// Off-screen List rows don't exist for UI tests, so scroll until it does.
+    @MainActor
+    private func scrollTo(_ target: XCUIElement, in app: XCUIApplication) {
+        var tries = 0
+        while !target.exists && tries < 8 {
+            app.swipeUp()
+            tries += 1
+        }
+    }
+
+    @MainActor
     func testAddShuffleStartFinishAndItStaysArchived() {
         var app = launch(reset: true)
 
@@ -28,6 +49,7 @@ final class DoneUITests: XCTestCase {
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.tap()
         field.typeText("Write report 15m\n")
+        closeKeyboard(field, in: app)
         XCTAssertTrue(element("task-Write report", in: app).waitForExistence(timeout: 3), "the task is in the list")
 
         let shuffle = app.buttons["shuffleButton"]
@@ -44,7 +66,7 @@ final class DoneUITests: XCTestCase {
         XCTAssertEqual(nowTitle.label, "Write report")
 
         app.buttons["nowDone"].tap()
-        XCTAssertFalse(nowTitle.waitForExistence(timeout: 2), "the Now card goes away when it's done")
+        XCTAssertTrue(nowTitle.waitForNonExistence(timeout: 3), "the Now card goes away when it's done")
 
         // Saved, not just on screen: a fresh launch still has it in the archive.
         app.terminate()
@@ -55,17 +77,28 @@ final class DoneUITests: XCTestCase {
         XCTAssertTrue(element("archived-Write report", in: app).waitForExistence(timeout: 3))
     }
 
+    @MainActor
     func testExamplesCanBeTriedAndCleared() {
         let app = launch(reset: true)
 
         let tryExamples = app.buttons["tryExamples"]
         XCTAssertTrue(tryExamples.waitForExistence(timeout: 5))
         tryExamples.tap()
-        XCTAssertTrue(element("task-Practice guitar", in: app).waitForExistence(timeout: 3))
 
+        let guitar = element("task-Practice guitar", in: app)
+        scrollTo(guitar, in: app)
+        XCTAssertTrue(guitar.exists, "an example task is in the list")
+
+        // Back to the top, where the examples banner is.
+        for _ in 0..<8 where !app.buttons["clearExamples"].exists {
+            app.swipeDown()
+        }
         let clear = app.buttons["clearExamples"]
         XCTAssertTrue(clear.waitForExistence(timeout: 3))
         clear.tap()
-        XCTAssertFalse(element("task-Practice guitar", in: app).waitForExistence(timeout: 2))
+
+        // Empty again, so the picker offers the examples again.
+        XCTAssertTrue(app.buttons["tryExamples"].waitForExistence(timeout: 3))
+        XCTAssertTrue(clear.waitForNonExistence(timeout: 3))
     }
 }

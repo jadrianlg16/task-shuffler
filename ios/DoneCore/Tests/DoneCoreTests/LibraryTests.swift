@@ -23,6 +23,9 @@ final class LibraryTests: XCTestCase {
         XCTAssertNil(lib.task(id: "a")?.startedAt)
         lib.drop(id: "b")
         XCTAssertNil(lib.current)
+        lib.complete(id: "a", now: now)
+        lib.start(id: "a", now: now)
+        XCTAssertNil(lib.current, "an archived task can't be started")
     }
 
     func testCompleteReturnsTheTaskAsItWasForUndo() {
@@ -51,9 +54,10 @@ final class LibraryTests: XCTestCase {
         XCTAssertEqual(lib.tasks.map(\.id), ["a", "b", "c"])
     }
 
-    func testDeletingACategoryMovesItsTasksAndKeepsTheStartingOnes() {
+    func testDeletingACategoryMovesItsTasksAndKeepsTheStartingOnes() throws {
         var lib = library([Make.task("a", category: "school")])
-        let custom = lib.addCategory(name: " Side ", color: "#EC4899", id: "side")
+        XCTAssertNil(lib.addCategory(name: "   ", color: "#EC4899"), "a blank name adds nothing")
+        let custom = try XCTUnwrap(lib.addCategory(name: " Side ", color: "#EC4899", id: "side"))
         XCTAssertEqual(custom.name, "Side")
         XCTAssertEqual(custom.sortOrder, 6)
         lib.updateTask(id: "a", name: "a", durationMinutes: nil, categoryId: "side")

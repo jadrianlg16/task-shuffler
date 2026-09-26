@@ -130,7 +130,7 @@ public struct Library: Codable, Equatable, Sendable {
 
     /// Makes this the task you're doing now; any other one in progress is dropped.
     public mutating func start(id: String, now: Date = Date()) {
-        guard tasks.contains(where: { $0.id == id }) else { return }
+        guard tasks.contains(where: { $0.id == id && $0.status == .active }) else { return }
         for index in tasks.indices where tasks[index].id != id && tasks[index].status == .active && tasks[index].isStarted {
             tasks[index].startedAt = nil
         }
@@ -169,11 +169,14 @@ public struct Library: Codable, Equatable, Sendable {
 
     // MARK: - Categories
 
+    /// Adds a category at the end. A blank name is ignored (nil).
     @discardableResult
-    public mutating func addCategory(name: String, color: String, id: String = UUID().uuidString.lowercased()) -> TaskCategory {
+    public mutating func addCategory(name: String, color: String, id: String = UUID().uuidString.lowercased()) -> TaskCategory? {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
         let category = TaskCategory(
             id: id,
-            name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+            name: trimmed,
             color: color,
             sortOrder: categories.count
         )

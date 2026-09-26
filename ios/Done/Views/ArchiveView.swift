@@ -106,7 +106,8 @@ struct ArchiveView: View {
                 .tint(Palette.accent)
         }
         .swipeActions(edge: .trailing) {
-            Button(role: .destructive) { pendingDelete = task } label: { Label("Delete", systemImage: "trash") }
+            Button { pendingDelete = task } label: { Label("Delete", systemImage: "trash") }
+                .tint(Palette.danger)
         }
         .accessibilityIdentifier("archived-\(task.name)")
     }

@@ -29,10 +29,11 @@ struct RootView: View {
             .toolbar { toolbarItems }
             .searchable(text: $search, isPresented: $searching, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Search tasks")
         }
-        .overlay(alignment: .bottom) { toastOverlay }
-        .animation(.snappy, value: store.toast)
+        // Toasts show on top of whatever is in front: here, or on the open sheet.
+        .modifier(ToastHost(bottomPadding: 100, isActive: router.sheet == nil))
         .sheet(item: $router.sheet) { sheet in
             sheetContent(sheet)
+                .modifier(ToastHost(bottomPadding: 24))
                 .environment(store)
                 .environment(router)
                 .preferredColorScheme(colorScheme)
@@ -48,10 +49,10 @@ struct RootView: View {
         .onOpenURL { router.open($0) }
         .onContinueUserActivity(CSSearchableItemActionType) { activity in
             if let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
-                router.sheet = .edit(taskId: id)
+                router.openTask(id)
             }
         }
-        .onChange(of: scenePhase) {
+        .onChange(of: scenePhase, initial: true) {
             if scenePhase == .active { becameActive() }
         }
         .onChange(of: router.focusSearch) {
@@ -64,26 +65,41 @@ struct RootView: View {
     // MARK: - Layouts
 
     private var compactLayout: some View {
-        List {
-            Section {
-                HeaderView()
-                NoticesView()
-                if let current = store.library.current {
-                    NowCard(task: current)
+        ScrollViewReader { proxy in
+            List {
+                // While searching, the results come first.
+                if search.isEmpty {
+                    Section {
+                        HeaderView()
+                            .id(Self.top)
+                        NoticesView()
+                        if let current = store.library.current {
+                            NowCard(task: current)
+                        }
+                        PickerCard()
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                 }
-                PickerCard()
-            }
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
 
-            TaskSections(search: search)
+                TaskSections(search: search)
+            }
+            .listStyle(.insetGrouped)
+            // Each button reacts only to taps on itself, not anywhere in its row.
+            .buttonStyle(.borderless)
+            .scrollContentBackground(.hidden)
+            .scrollDismissesKeyboard(.interactively)
+            .safeAreaInset(edge: .bottom, spacing: 0) { QuickAddBar() }
+            .onChange(of: store.library.current?.id) {
+                // A task just started (maybe picked from far down the list): show its card.
+                guard store.library.current != nil else { return }
+                withAnimation { proxy.scrollTo(Self.top, anchor: .top) }
+            }
         }
-        .listStyle(.insetGrouped)
-        .scrollContentBackground(.hidden)
-        .scrollDismissesKeyboard(.interactively)
-        .safeAreaInset(edge: .bottom, spacing: 0) { QuickAddBar() }
     }
+
+    private static let top = "top"
 
     private var wideLayout: some View {
         HStack(alignment: .top, spacing: 0) {
@@ -106,6 +122,7 @@ struct RootView: View {
                 TaskSections(search: search)
             }
             .listStyle(.insetGrouped)
+            .buttonStyle(.borderless)
             .scrollContentBackground(.hidden)
             .scrollDismissesKeyboard(.interactively)
             .safeAreaInset(edge: .bottom, spacing: 0) { QuickAddBar() }
@@ -162,19 +179,6 @@ struct RootView: View {
             ArchiveView()
         case .settings:
             SettingsView()
-        }
-    }
-
-    @ViewBuilder
-    private var toastOverlay: some View {
-        if let toast = store.toast {
-            ToastView(toast: toast) { store.toast = nil }
-                .padding(.bottom, 92)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-                .task(id: toast.id) {
-                    try? await Task.sleep(nanoseconds: 4_000_000_000)
-                    if store.toast?.id == toast.id { store.toast = nil }
-                }
         }
     }
 

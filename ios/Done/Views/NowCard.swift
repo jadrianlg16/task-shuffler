@@ -50,7 +50,7 @@ struct NowCard: View {
 
             HStack(spacing: 10) {
                 Button {
-                    store.complete(task.id)
+                    store.complete(task.id, undoKeepsInProgress: true)
                 } label: {
                     Label("Done", systemImage: "checkmark")
                         .primaryButtonStyle()
@@ -58,13 +58,19 @@ struct NowCard: View {
                 .buttonStyle(.plain)
                 .accessibilityIdentifier("nowDone")
 
-                Button("Drop") { store.drop(task.id) }
-                    .font(.subheadline)
-                    .foregroundStyle(Palette.inkMuted)
-                    .padding(.horizontal, 14)
-                    .frame(minHeight: 44)
-                    .accessibilityHint("Stops without finishing; it goes back in the pool")
-                    .accessibilityIdentifier("nowDrop")
+                Button {
+                    store.drop(task.id)
+                } label: {
+                    Text("Drop")
+                        .font(.subheadline)
+                        .foregroundStyle(Palette.inkMuted)
+                        .padding(.horizontal, 14)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderless)
+                .accessibilityHint("Stops without finishing; it goes back in the pool")
+                .accessibilityIdentifier("nowDrop")
             }
             .padding(.top, 4)
         }

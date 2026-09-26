@@ -27,6 +27,9 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      # Newest Xcode 16.x on the runner (the widget bundle needs 16.1 or later).
+      - name: Choose Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app | tail -1)"
       - name: DoneCore tests
         working-directory: ios/DoneCore
         run: swift test

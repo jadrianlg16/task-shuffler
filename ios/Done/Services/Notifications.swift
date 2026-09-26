@@ -47,10 +47,30 @@ enum Notifications {
 
     /// Keeps the one "time's up" notification in step with the task in progress.
     static func syncTimesUp(current: TaskItem?, enabled: Bool) {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [timesUpId])
-        guard enabled, let task = current, let end = NowStatus.endDate(for: task), end > Date() else { return }
+        let center = UNUserNotificationCenter.current()
+        guard enabled, let task = current, let end = NowStatus.endDate(for: task) else {
+            // Nothing in progress: no alert waiting, and none left in Notification
+            // Center whose Done button would act on a finished task.
+            center.removePendingNotificationRequests(withIdentifiers: [timesUpId])
+            center.removeDeliveredNotifications(withIdentifiers: [timesUpId])
+            return
+        }
+        guard end > Date() else {
+            // Already past the estimate: keep a "5 more minutes" reminder for
+            // this task, but not one left over from another.
+            let id = timesUpId
+            Task {
+                let pending = await center.pendingNotificationRequests()
+                if pending.contains(where: { $0.identifier == id && ($0.content.userInfo["taskId"] as? String) != task.id }) {
+                    center.removePendingNotificationRequests(withIdentifiers: [id])
+                }
+            }
+            return
+        }
+        center.removePendingNotificationRequests(withIdentifiers: [timesUpId])
         Task {
-            guard await requestPermission() else { return }
+            // The prompt can take a while; only schedule if it's still the task in progress.
+            guard await requestPermission(), LibraryStore.shared.library.current == task else { return }
             await scheduleTimesUp(for: task, at: end, again: false)
         }
     }
@@ -91,7 +111,8 @@ enum Notifications {
     static func handle(action: String, category: String, taskId: String?) async {
         let store = LibraryStore.shared
         if category == Category.timesUp.rawValue {
-            if action == Action.done.rawValue, let taskId {
+            // An old alert can outlive its task; only act on one still active.
+            if action == Action.done.rawValue, let taskId, store.library.task(id: taskId)?.status == .active {
                 store.complete(taskId, showUndo: false)
             } else if action == Action.extend.rawValue, let taskId, let task = store.library.task(id: taskId), task.isStarted {
                 await scheduleTimesUp(for: task, at: Date().addingTimeInterval(5 * 60), again: true)

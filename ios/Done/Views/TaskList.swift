@@ -7,6 +7,8 @@ struct TaskSections: View {
     @Environment(LibraryStore.self) private var store
     @Environment(Router.self) private var router
     let search: String
+    /// Category groups folded shut (the web's collapse chevron). Not remembered.
+    @State private var collapsed: Set<String> = []
 
     var body: some View {
         let focus = store.preferences.focusCategoryIds.map { Set($0) }
@@ -24,21 +26,42 @@ struct TaskSections: View {
             ForEach(store.library.visibleCategories) { category in
                 let items = tasks.filter { $0.categoryId == category.id }
                 if !items.isEmpty {
+                    let isOpen = !collapsed.contains(category.id) || !search.isEmpty
                     Section {
-                        ForEach(items) { task in
-                            row(task, showCategory: false)
+                        if isOpen {
+                            ForEach(items) { task in
+                                row(task, showCategory: false)
+                            }
                         }
                     } header: {
-                        HStack(spacing: 8) {
-                            CategoryDot(color: category.color, size: 8)
-                            Text(category.name)
-                            Spacer()
-                            Text("\(items.count)")
-                                .foregroundStyle(Palette.inkMuted)
+                        Button {
+                            withAnimation(.snappy) {
+                                if collapsed.contains(category.id) {
+                                    collapsed.remove(category.id)
+                                } else {
+                                    collapsed.insert(category.id)
+                                }
+                            }
+                        } label: {
+                            HStack(spacing: 8) {
+                                CategoryDot(color: category.color, size: 8)
+                                Text(category.name)
+                                Spacer()
+                                Text("\(items.count)")
+                                    .foregroundStyle(Palette.inkMuted)
+                                Image(systemName: "chevron.down")
+                                    .font(.caption2.weight(.semibold))
+                                    .foregroundStyle(Palette.inkMuted)
+                                    .rotationEffect(.degrees(isOpen ? 0 : -90))
+                            }
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(Palette.ink)
+                            .textCase(nil)
+                            .contentShape(Rectangle())
                         }
-                        .font(.footnote.weight(.semibold))
-                        .foregroundStyle(Palette.ink)
-                        .textCase(nil)
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("\(category.name), \(items.count) tasks")
+                        .accessibilityValue(isOpen ? "expanded" : "collapsed")
                     }
                 }
             }

@@ -20,18 +20,20 @@ public enum Reel {
         winner: TaskItem,
         using generator: inout G
     ) -> [TaskItem] {
+        // Never empty, or the winner couldn't reach the band.
+        let pool = candidates.isEmpty ? [winner] : candidates
         var strip: [TaskItem] = []
         for _ in 0..<passes {
-            strip.append(contentsOf: candidates.shuffled(using: &generator))
+            strip.append(contentsOf: pool.shuffled(using: &generator))
         }
-        let others = candidates.filter { $0.id != winner.id }
+        let others = pool.filter { $0.id != winner.id }
         if !others.isEmpty {
             for index in max(0, strip.count - centerRow)..<strip.count where strip[index].id == winner.id {
                 strip[index] = others[Int.random(in: 0..<others.count, using: &generator)]
             }
         }
         strip.append(winner)
-        let tail = (others.isEmpty ? candidates : others).shuffled(using: &generator)
+        let tail = (others.isEmpty ? pool : others).shuffled(using: &generator)
         for index in 0..<centerRow where !tail.isEmpty {
             strip.append(tail[index % tail.count])
         }

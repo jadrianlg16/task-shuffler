@@ -12,6 +12,7 @@ struct SettingsView: View {
     @State private var exporting = false
     @State private var importing = false
     @State private var pendingImport: PendingImport?
+    @State private var confirmingImport = false
     @State private var importError: String?
 
     var body: some View {
@@ -39,12 +40,13 @@ struct SettingsView: View {
                 }
             }
             .backupExporter(isPresented: $exporting)
-            .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
-                readImport(result)
+            // The import stays pending while you save a backup first, then asks again.
+            .onChange(of: exporting) {
+                if !exporting, pendingImport != nil { confirmingImport = true }
             }
             .confirmationDialog(
                 "Replace your tasks?",
-                isPresented: Binding(get: { pendingImport != nil }, set: { if !$0 { pendingImport = nil } }),
+                isPresented: $confirmingImport,
                 titleVisibility: .visible,
                 presenting: pendingImport
             ) { pending in
@@ -55,6 +57,9 @@ struct SettingsView: View {
                 Button("Save a backup of the current ones first") {
                     exporting = true
                 }
+                Button("Cancel", role: .cancel) {
+                    pendingImport = nil
+                }
             } message: { pending in
                 Text("Replace your \(plural(store.library.tasks.count, "task")) and \(plural(store.library.categories.count, "category", "categories")) with \(plural(pending.backup.activities.count, "task")) and \(plural(pending.backup.categories.count, "category", "categories")) from \(pending.fileName)?")
             }
@@ -63,6 +68,10 @@ struct SettingsView: View {
             } message: {
                 Text(importError ?? "")
             }
+        }
+        // On a different view from the exporter: two file panels on one view can clash.
+        .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
+            readImport(result)
         }
         .tint(Palette.accent)
     }
@@ -214,6 +223,7 @@ struct SettingsView: View {
             do {
                 let backup = try Backup.parse(Data(contentsOf: url))
                 pendingImport = PendingImport(fileName: url.lastPathComponent, backup: backup)
+                confirmingImport = true
             } catch let error as BackupError {
                 importError = error.message
             } catch {
@@ -345,6 +355,7 @@ struct CategoryEditor: View {
                         }
                     }
                     .padding(.vertical, 6)
+                    ColorPicker("Custom colour", selection: customColor, supportsOpacity: false)
                 }
                 if let category {
                     Section {
@@ -383,6 +394,19 @@ struct CategoryEditor: View {
             }
         }
         .tint(Palette.accent)
+    }
+
+    /// Any colour, stored as "#RRGGBB" like the presets.
+    private var customColor: Binding<Color> {
+        Binding(
+            get: { Color(hex: color) },
+            set: { newValue in
+                var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+                guard UIColor(newValue).getRed(&red, green: &green, blue: &blue, alpha: &alpha) else { return }
+                func byte(_ value: CGFloat) -> Int { Int((min(1, max(0, value)) * 255).rounded()) }
+                color = String(format: "#%02X%02X%02X", byte(red), byte(green), byte(blue))
+            }
+        )
     }
 
     private func save() {

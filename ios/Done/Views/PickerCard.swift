@@ -8,6 +8,7 @@ struct PickerCard: View {
     @Environment(LibraryStore.self) private var store
     @Environment(Router.self) private var router
     @State private var moreOpen = false
+    @State private var didSetUp = false
 
     private var filter: TimeFilter { store.preferences.shuffleTimeFilter }
 
@@ -37,11 +38,11 @@ struct PickerCard: View {
             }
 
             row("From") {
-                Chip(isOn: store.pickerCategoryIds.isEmpty, action: { store.updatePreferences { $0.shuffleCategoryIds = [] } }) {
+                Chip(isOn: selectedIds.isEmpty, action: { store.updatePreferences { $0.shuffleCategoryIds = [] } }) {
                     Text("All")
                 }
-                ForEach(store.library.visibleCategories) { category in
-                    Chip(isOn: store.pickerCategoryIds.contains(category.id), action: { store.toggleShuffleCategory(category.id) }) {
+                ForEach(chipCategories) { category in
+                    Chip(isOn: selectedIds.contains(category.id), action: { store.toggleShuffleCategory(category.id) }) {
                         HStack(spacing: 6) {
                             CategoryDot(color: category.color, size: 7)
                             Text(category.name)
@@ -66,7 +67,30 @@ struct PickerCard: View {
             }
         }
         .card()
-        .onAppear { moreOpen = !isSimple(filter) }
+        .onAppear {
+            // Only the first time: rows scrolling back into view shouldn't reset it.
+            guard !didSetUp else { return }
+            didSetUp = true
+            moreOpen = !isSimple(filter)
+        }
+    }
+
+    // MARK: - Categories
+
+    /// Focus filter categories, if one is on.
+    private var focus: Set<String>? { store.preferences.focusCategoryIds.map { Set($0) } }
+
+    /// The chips: every visible category, or only the Focus's while one is on.
+    private var chipCategories: [TaskCategory] {
+        let visible = store.library.visibleCategories
+        guard let focus else { return visible }
+        return visible.filter { focus.contains($0.id) }
+    }
+
+    /// Chips shown as on: your remembered choice (within the Focus, if one is on).
+    private var selectedIds: [String] {
+        let shown = Set(chipCategories.map(\.id))
+        return store.preferences.shuffleCategoryIds.filter { shown.contains($0) }
     }
 
     // MARK: - Pieces
@@ -214,7 +238,9 @@ struct FlowLayout: Layout {
         for row in arrange(subviews, width: bounds.width) {
             var x = bounds.minX
             for index in row.indices {
-                let size = subviews[index].sizeThatFits(.unspecified)
+                // A chip wider than the row (a long category name) is squeezed to fit.
+                let natural = subviews[index].sizeThatFits(.unspecified)
+                let size = CGSize(width: min(natural.width, bounds.width), height: natural.height)
                 subviews[index].place(at: CGPoint(x: x, y: y + (row.height - size.height) / 2), proposal: ProposedViewSize(size))
                 x += size.width + spacing
             }
@@ -232,7 +258,8 @@ struct FlowLayout: Layout {
         var rows: [Row] = []
         var current = Row()
         for index in subviews.indices {
-            let size = subviews[index].sizeThatFits(.unspecified)
+            let natural = subviews[index].sizeThatFits(.unspecified)
+            let size = CGSize(width: min(natural.width, width), height: natural.height)
             let needed = current.indices.isEmpty ? size.width : current.width + spacing + size.width
             if needed > width && !current.indices.isEmpty {
                 rows.append(current)

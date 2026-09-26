@@ -103,11 +103,12 @@ struct CardStyle: ViewModifier {
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Palette.surface)
             )
-            .overlay(alignment: .leading) {
+            .overlay {
+                // A 3 pt stripe down the left edge, clipped to the card's corners.
                 if accentEdge {
-                    UnevenRoundedRectangle(topLeadingRadius: 16, bottomLeadingRadius: 16, style: .continuous)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .fill(Palette.accent)
-                        .frame(width: 3)
+                        .mask(alignment: .leading) { Rectangle().frame(width: 3) }
                 }
             }
             .overlay(
@@ -168,6 +169,31 @@ struct ToastView: View {
         .shadow(color: .black.opacity(0.15), radius: 12, y: 4)
         .padding(.horizontal, 16)
         .accessibilityElement(children: .contain)
+    }
+}
+
+/// Shows the store's toast at the bottom of whatever it's attached to, and
+/// clears it after a few seconds. On the main screen and on every sheet, so a
+/// message raised inside a sheet is seen there.
+struct ToastHost: ViewModifier {
+    @Environment(LibraryStore.self) private var store
+    var bottomPadding: CGFloat = 96
+    var isActive = true
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(alignment: .bottom) {
+                if isActive, let toast = store.toast {
+                    ToastView(toast: toast) { store.toast = nil }
+                        .padding(.bottom, bottomPadding)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .task(id: toast.id) {
+                            try? await Task.sleep(nanoseconds: 4_000_000_000)
+                            if store.toast?.id == toast.id { store.toast = nil }
+                        }
+                }
+            }
+            .animation(.snappy, value: store.toast)
     }
 }
 

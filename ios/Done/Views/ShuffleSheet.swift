@@ -25,24 +25,28 @@ struct ShuffleSheet: View {
     private var available: [TaskItem] { request.candidates.filter { !skipped.contains($0.id) } }
 
     var body: some View {
-        VStack {
-            switch phase {
-            case .pending:
-                Color.clear.frame(height: Reel.rowHeight * Double(Reel.visibleRows))
-            case .spinning:
-                ReelView(candidates: available, winner: winner) {
-                    withAnimation(.spring(response: 0.45, dampingFraction: 0.8)) { phase = .result }
+        ScrollView {
+            VStack {
+                switch phase {
+                case .pending:
+                    Color.clear.frame(height: Reel.rowHeight * Double(Reel.visibleRows))
+                case .spinning:
+                    ReelView(candidates: available, winner: winner) {
+                        withAnimation(.spring(response: 0.45, dampingFraction: 0.8)) { phase = .result }
+                    }
+                    .id(round)
+                case .result:
+                    result
+                        .transition(.opacity.combined(with: .scale(scale: 0.96)))
                 }
-                .id(round)
-            case .result:
-                result
-                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
             }
+            .padding(.horizontal, 24)
+            .padding(.top, 28)
+            .padding(.bottom, 16)
+            .frame(maxWidth: 480)
+            .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 28)
-        .padding(.bottom, 16)
-        .frame(maxWidth: 480)
+        .scrollBounceBehavior(.basedOnSize)
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
         .presentationBackground(Palette.background)
@@ -93,23 +97,28 @@ struct ShuffleSheet: View {
 
                 if !request.isManual {
                     HStack(spacing: 10) {
-                        Button("Shuffle again") { spin(available) }
-                            .secondaryButtonStyle()
-                            .buttonStyle(.plain)
-                            .keyboardShortcut("r", modifiers: .command)
+                        Button { spin(available) } label: {
+                            Text("Shuffle again").secondaryButtonStyle()
+                        }
+                        .buttonStyle(.plain)
                         if available.count > 1 {
-                            Button("Not feeling it") { notFeelingIt() }
-                                .secondaryButtonStyle()
-                                .buttonStyle(.plain)
+                            Button { notFeelingIt() } label: {
+                                Text("Not feeling it").secondaryButtonStyle()
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }
 
-                Button("Back to list") { dismiss() }
-                    .font(.subheadline)
-                    .foregroundStyle(Palette.inkMuted)
-                    .frame(minHeight: 40)
-                    .keyboardShortcut(.cancelAction)
+                Button { dismiss() } label: {
+                    Text("Back to list")
+                        .font(.subheadline)
+                        .foregroundStyle(Palette.inkMuted)
+                        .frame(maxWidth: .infinity, minHeight: 40)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .keyboardShortcut(.cancelAction)
 
                 if !skipped.isEmpty {
                     Text("\(skipped.count) skipped until you close this")

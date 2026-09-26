@@ -41,6 +41,10 @@ targets:
         CFBundleDisplayName: done.
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        # Helps Siri hear "done." as the app's name.
+        INAlternativeAppNames:
+          - INAlternativeAppName: Done
+            INAlternativeAppNamePronunciationHint: done
         LSApplicationCategoryType: public.app-category.productivity
         ITSAppUsesNonExemptEncryption: false
         NSSupportsLiveActivities: true

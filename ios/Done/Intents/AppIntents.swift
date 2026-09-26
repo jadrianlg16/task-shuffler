@@ -73,9 +73,11 @@ struct CategoryQuery: EntityQuery {
     }
 }
 
+/// The tasks as saved, including anything a widget changed while the app slept.
 @MainActor
 private func currentLibrary() -> Library {
-    LibraryStore.shared.library
+    LibraryStore.shared.reloadFromDisk()
+    return LibraryStore.shared.library
 }
 
 enum DoneIntentError: Error, CustomLocalizedStringResourceConvertible {

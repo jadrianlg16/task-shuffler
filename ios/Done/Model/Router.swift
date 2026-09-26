@@ -79,9 +79,15 @@ final class Router {
         case "archive": sheet = .archive
         case "settings": sheet = .settings
         case "task":
-            let id = url.pathComponents.dropFirst().first ?? ""
-            if LibraryStore.shared.library.task(id: id) != nil { sheet = .edit(taskId: id) }
+            openTask(url.pathComponents.dropFirst().first ?? "")
         default: break
         }
+    }
+
+    /// Opens a task's editor, if it still exists (a Spotlight result or widget
+    /// link can outlive the task).
+    func openTask(_ id: String) {
+        guard LibraryStore.shared.library.task(id: id) != nil else { return }
+        sheet = .edit(taskId: id)
     }
 }
