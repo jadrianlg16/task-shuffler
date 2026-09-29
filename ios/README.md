@@ -32,8 +32,8 @@ check; expect a round of compile fixes.
 **Apple features**
 | Feature | Where | Notes |
 |---|---|---|
-| Sounds | `Services/Feedback.swift`, `Resources/Sounds` | A tick per row as the reel spins, a chime when it lands, a note on Start, an arpeggio on Done. Ambient session: follows the silent switch. Made from sine tones by `scripts/make_sounds.py`, so nothing to license. |
-| Haptics | `Services/Feedback.swift` | Selection ticks during the reel, success on landing and Done, soft impact on Start. |
+| Sounds | `Services/Feedback.swift`, `Resources/Sounds` | A tick per row as the reel spins, a chime when it lands, a whoosh and a note on Start, an arpeggio on Done, a pop on Add, two falling notes on Drop. Ambient session: follows the silent switch. The same six sounds as the web app, synthesized by the repo's `scripts/make_sounds.py` (`python ios/scripts/make_sounds.py` writes the WAVs here), so nothing to license. |
+| Haptics | `Services/Feedback.swift` | Selection ticks during the reel, success on landing and Done, soft impact on Start, light taps on Add and Drop. |
 | Notifications | `Services/Notifications.swift`, `AppDelegate.swift` | "Time's up" when a started task reaches its estimate, with **Done** and **5 more minutes** buttons; an optional daily nudge with **Pick for me**. Local only. Permission is asked the first time it's needed. |
 | Live Activity | `Services/LiveActivities.swift`, `DoneWidgets/NowLiveActivity.swift` | The task in progress on the Lock Screen and in the Dynamic Island: elapsed timer, estimate bar, **Done** and **Drop** buttons that work without opening the app. |
 | Widgets | `DoneWidgets/NowWidget.swift` | Home Screen small and medium (now + timer, or done today + **Pick for me**; **Done** / **Drop** buttons), Lock Screen circular (done-today gauge), rectangular and inline. |

@@ -19,7 +19,7 @@ final class Feedback {
         case done
         /// Dropping a task back into the pool.
         case drop
-        /// Adding a task, small confirmations.
+        /// Adding a task.
         case tap
     }
 
@@ -73,8 +73,10 @@ final class Feedback {
             playSound("done")
         case .drop:
             if hapticsOn { light.impactOccurred(intensity: 0.6) }
+            playSound("drop")
         case .tap:
             if hapticsOn { light.impactOccurred(intensity: 0.5) }
+            playSound("add")
         }
     }
 
@@ -86,7 +88,7 @@ final class Feedback {
             try? AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
             sessionReady = true
         }
-        for name in ["land", "start", "done"] {
+        for name in ["land", "start", "done", "drop", "add"] {
             if let player = makePlayer(name) { players[name] = player }
         }
         tickPlayers = (0..<4).compactMap { _ in makePlayer("tick") }

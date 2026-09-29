@@ -103,7 +103,7 @@ struct SettingsView: View {
         } header: {
             Text("Sound and touch")
         } footer: {
-            Text("A tick as the reel spins, a chime when it lands and when you finish. Sounds follow the silent switch.")
+            Text("A tick as the reel spins, a chime when it lands, a small cheer when you finish, and a sound when you start, add or drop a task. Sounds follow the silent switch.")
         }
     }
 
