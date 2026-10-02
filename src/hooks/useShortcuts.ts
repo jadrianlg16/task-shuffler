@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useUIStore } from "@/store/uiStore";
+import { scrollBehavior } from "@/lib/platform";
 
 export const SHORTCUTS = [
   { keys: "N", label: "New task" },
@@ -49,7 +50,7 @@ export function useShortcuts() {
           if (!(el as HTMLButtonElement).disabled) el.click();
         } else {
           el.focus();
-          el.scrollIntoView({ block: "center", behavior: "smooth" });
+          el.scrollIntoView({ block: "center", behavior: scrollBehavior() });
         }
       };
 

@@ -4,6 +4,7 @@ import { useActivityStore } from "@/store/activityStore";
 import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/categories/CategoryBadge";
 import { Button } from "@/components/ui/button";
+import { scrollBehavior } from "@/lib/platform";
 import type { Activity } from "@/types";
 
 export function ShuffleResultScreen({
@@ -30,7 +31,7 @@ export function ShuffleResultScreen({
   const handleStart = () => {
     startActivity(winner.id);
     onClose();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: scrollBehavior() });
   };
 
   return (

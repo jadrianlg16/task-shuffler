@@ -585,3 +585,19 @@ button,
     max-height: calc(env(viewport-segment-height 0 1) - 2rem);
   }
 }
+
+/* ── Reduced motion ──
+   framer-motion follows this setting through MotionConfig; this covers the CSS
+   keyframes and transitions, including the dialog animations. Durations go
+   near zero rather than to "none" so animationend still fires for code that
+   waits on it (Radix unmounts closing dialogs on it). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
