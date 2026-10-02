@@ -18,9 +18,7 @@ export function ActivityItem({
 }) {
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(activity.name);
-  const [editDuration, setEditDuration] = useState(
-    activity.durationMinutes?.toString() ?? ""
-  );
+  const [editDuration, setEditDuration] = useState(activity.durationMinutes?.toString() ?? "");
   const [editCategoryId, setEditCategoryId] = useState(activity.categoryId);
 
   const updateActivity = useActivityStore((s) => s.updateActivity);
@@ -163,10 +161,7 @@ export function ActivityItem({
               </span>
             )}
             {activity.durationMinutes && (
-              <span
-                className="font-body"
-                style={{ fontSize: 11, color: "var(--ink-muted)" }}
-              >
+              <span className="font-body" style={{ fontSize: 11, color: "var(--ink-muted)" }}>
                 {activity.durationMinutes} min
               </span>
             )}

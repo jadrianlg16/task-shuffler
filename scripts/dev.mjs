@@ -28,7 +28,8 @@ if (!existsSync(dbFile)) {
   console.log(`[dev] seeded ${dbFile} from db.json`);
 }
 
-const bin = (name) => join(root, "node_modules", ".bin", process.platform === "win32" ? `${name}.cmd` : name);
+const bin = (name) =>
+  join(root, "node_modules", ".bin", process.platform === "win32" ? `${name}.cmd` : name);
 const run = (name, args, env = {}) =>
   spawn(bin(name), args, {
     cwd: root,
@@ -40,9 +41,13 @@ const run = (name, args, env = {}) =>
 const apiOnly = process.argv.includes("--api-only"); // `npm run server`
 const children = [
   run("json-server", [
-    dbFile, "--port", apiPort,
+    dbFile,
+    "--port",
+    apiPort,
     // --noCors: json-server 0.17 ignores its own documented --no-cors spelling.
-    "--noCors", "--middlewares", "scripts/api-guard.cjs", // path relative to cwd (root)
+    "--noCors",
+    "--middlewares",
+    "scripts/api-guard.cjs", // path relative to cwd (root)
   ]),
   ...(apiOnly
     ? []

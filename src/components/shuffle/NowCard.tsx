@@ -30,9 +30,7 @@ function StartedTask({ current, startedAt }: { current: Activity; startedAt: str
   const completeActivity = useActivityStore((s) => s.completeActivity);
   const updateActivity = useActivityStore((s) => s.updateActivity);
   const dropActivity = useActivityStore((s) => s.dropActivity);
-  const category = useCategoryStore((s) =>
-    s.categories.find((c) => c.id === current.categoryId)
-  );
+  const category = useCategoryStore((s) => s.categories.find((c) => c.id === current.categoryId));
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -58,8 +56,7 @@ function StartedTask({ current, startedAt }: { current: Activity; startedAt: str
     toast("Task done.", {
       action: {
         label: "Undo",
-        onClick: () =>
-          updateActivity(id, { status: "active", completedAt: null, startedAt }),
+        onClick: () => updateActivity(id, { status: "active", completedAt: null, startedAt }),
       },
       duration: 4000,
     });

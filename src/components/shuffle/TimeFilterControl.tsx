@@ -77,9 +77,7 @@ export function TimeFilterControl({
           <input
             type="checkbox"
             checked={value.includeNoDuration}
-            onChange={(e) =>
-              onChange({ ...value, includeNoDuration: e.target.checked })
-            }
+            onChange={(e) => onChange({ ...value, includeNoDuration: e.target.checked })}
             style={{ accentColor: "var(--ds-accent)" }}
           />
           Include tasks with no time set

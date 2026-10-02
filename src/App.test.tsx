@@ -51,7 +51,11 @@ afterEach(cleanup);
 /** The picked task's name, from the dialog title ("Your next task: …"). */
 async function pickedName(): Promise<string> {
   // The dialog code is lazy-loaded, so the first one can take a moment.
-  const dialog = await screen.findByRole("dialog", { name: /^Your next task: / }, { timeout: 5000 });
+  const dialog = await screen.findByRole(
+    "dialog",
+    { name: /^Your next task: / },
+    { timeout: 5000 }
+  );
   const title = within(dialog)
     .getAllByRole("heading")
     .map((h) => h.textContent ?? "")
@@ -67,7 +71,9 @@ describe("shuffle flow", () => {
     const first = await pickedName();
     expect(TASKS.map((t) => t.name)).toContain(first);
 
-    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Not feeling it" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog")).getByRole("button", { name: "Not feeling it" })
+    );
     await waitFor(async () => expect(await pickedName()).not.toBe(first));
     const second = await pickedName();
     expect(screen.getByText("1 skipped until you close this")).toBeTruthy();

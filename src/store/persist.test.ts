@@ -36,7 +36,9 @@ describe("persist", () => {
 
 describe("describeError", () => {
   it("uses an Error's message and stringifies anything else", () => {
-    expect(describeError(new Error("GET /activities failed: 502"))).toBe("GET /activities failed: 502");
+    expect(describeError(new Error("GET /activities failed: 502"))).toBe(
+      "GET /activities failed: 502"
+    );
     expect(describeError("offline")).toBe("offline");
   });
 });

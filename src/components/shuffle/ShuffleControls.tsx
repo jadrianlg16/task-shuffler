@@ -46,9 +46,7 @@ export function ShuffleControls({
     .filter((c) => !c.isHidden)
     .sort((a, b) => a.sortOrder - b.sortOrder);
   // A remembered pick may point at a category that was since hidden or deleted.
-  const categoryIds = rememberedIds.filter((id) =>
-    visibleCategories.some((c) => c.id === id)
-  );
+  const categoryIds = rememberedIds.filter((id) => visibleCategories.some((c) => c.id === id));
 
   const candidates = getShuffleCandidates(activities, categoryIds, timeFilter, categories);
   const loosening =
@@ -90,7 +88,11 @@ export function ShuffleControls({
       </div>
 
       <Row label="I have">
-        <button className="chip" aria-pressed={presetPressed(null)} onClick={() => choosePreset(null)}>
+        <button
+          className="chip"
+          aria-pressed={presetPressed(null)}
+          onClick={() => choosePreset(null)}
+        >
           Any
         </button>
         {TIME_PRESETS.map((m) => (
@@ -176,23 +178,25 @@ export function ShuffleControls({
           style={{ fontSize: 13, color: "var(--ink-muted)", marginTop: 12 }}
         >
           {loosening.kind === "none-in-categories" ? (
-            categoryIds.length === 0
-              ? activities.length === 0
-                ? (
-                  <>
-                    No tasks yet. Add one below, or{" "}
-                    <button
-                      className="underline underline-offset-2"
-                      style={{ color: "var(--ds-accent)", fontWeight: 500 }}
-                      onClick={addExamples}
-                    >
-                      try the examples
-                    </button>
-                    .
-                  </>
-                )
-                : "No tasks to pick from yet. Add one below."
-              : `No active tasks in ${categoryIds.length === 1 ? "that category" : "those categories"}.`
+            categoryIds.length === 0 ? (
+              activities.length === 0 ? (
+                <>
+                  No tasks yet. Add one below, or{" "}
+                  <button
+                    className="underline underline-offset-2"
+                    style={{ color: "var(--ds-accent)", fontWeight: 500 }}
+                    onClick={addExamples}
+                  >
+                    try the examples
+                  </button>
+                  .
+                </>
+              ) : (
+                "No tasks to pick from yet. Add one below."
+              )
+            ) : (
+              `No active tasks in ${categoryIds.length === 1 ? "that category" : "those categories"}.`
+            )
           ) : (
             <>
               Nothing fits.{" "}

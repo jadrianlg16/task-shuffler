@@ -12,11 +12,7 @@ interface ActivityState {
   loadError: string | null;
   /** Fetch every task. Never rejects: a failure is recorded in `loadError`. */
   loadActivities: () => Promise<void>;
-  addActivity: (
-    name: string,
-    durationMinutes: number | null,
-    categoryId: string
-  ) => void;
+  addActivity: (name: string, durationMinutes: number | null, categoryId: string) => void;
   updateActivity: (id: string, updates: Partial<Omit<Activity, "id">>) => void;
   completeActivity: (id: string) => void;
   restoreActivity: (id: string) => void;
@@ -94,9 +90,7 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
     updateActivity: (id, updates) => patch([{ id, updates }]),
 
     completeActivity: (id) =>
-      patch([
-        { id, updates: { status: "archived", completedAt: new Date().toISOString() } },
-      ]),
+      patch([{ id, updates: { status: "archived", completedAt: new Date().toISOString() } }]),
 
     restoreActivity: (id) =>
       patch([{ id, updates: { status: "active", completedAt: null, startedAt: null } }]),

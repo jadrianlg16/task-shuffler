@@ -58,9 +58,7 @@ export function ActivityListContainer({
       <>
         <ActivityListToolbar />
         {visibleCategories.map((cat) => {
-          const catActivities = filtered.filter(
-            (a) => a.categoryId === cat.id
-          );
+          const catActivities = filtered.filter((a) => a.categoryId === cat.id);
           if (catActivities.length === 0) return null;
           return (
             <CategoryGroup
@@ -80,11 +78,7 @@ export function ActivityListContainer({
       <ActivityListToolbar />
       <div>
         {filtered.map((a) => (
-          <ActivityItem
-            key={a.id}
-            activity={a}
-            onSelect={onSelectActivity}
-          />
+          <ActivityItem key={a.id} activity={a} onSelect={onSelectActivity} />
         ))}
       </div>
     </>

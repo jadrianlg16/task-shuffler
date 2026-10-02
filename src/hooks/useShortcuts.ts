@@ -30,7 +30,10 @@ export function useShortcuts() {
       if (isTyping(target)) {
         // Esc leaves the quick-add or search field so the next shortcut works.
         const id = (target as HTMLElement).id;
-        if (e.key === "Escape" && (id === SHORTCUT_TARGETS.newTask || id === SHORTCUT_TARGETS.search)) {
+        if (
+          e.key === "Escape" &&
+          (id === SHORTCUT_TARGETS.newTask || id === SHORTCUT_TARGETS.search)
+        ) {
           (target as HTMLElement).blur();
         }
         return;
@@ -38,8 +41,7 @@ export function useShortcuts() {
       if (document.querySelector('[role="dialog"]')) return; // dialogs own the keyboard
 
       const action = { n: "newTask", "/": "search", s: "shuffle" }[e.key.toLowerCase()] as
-        | keyof typeof SHORTCUT_TARGETS
-        | undefined;
+        keyof typeof SHORTCUT_TARGETS | undefined;
       if (!action) return;
       e.preventDefault(); // otherwise the key lands in the field we focus
 

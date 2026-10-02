@@ -27,8 +27,7 @@ export function QuickAddForm() {
   const hasShorthand = parsed.durationMinutes !== null || parsed.categoryId !== null;
   const previewCategory = categories.find((c) => c.id === parsed.categoryId);
 
-  const expanded =
-    focused || name.trim() !== "" || duration !== "" || categoryId !== "unassigned";
+  const expanded = focused || name.trim() !== "" || duration !== "" || categoryId !== "unassigned";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,8 +137,15 @@ export function QuickAddForm() {
             ))}
           </select>
           {!name && (
-            <span className="font-body w-full" style={{ fontSize: 11, color: "var(--ink-muted)", marginTop: 2 }}>
-              Tip: type <kbd>30m</kbd> or <kbd>#{categories.find((c) => c.id !== "unassigned")?.name.toLowerCase() ?? "school"}</kbd> right in the name.
+            <span
+              className="font-body w-full"
+              style={{ fontSize: 11, color: "var(--ink-muted)", marginTop: 2 }}
+            >
+              Tip: type <kbd>30m</kbd> or{" "}
+              <kbd>
+                #{categories.find((c) => c.id !== "unassigned")?.name.toLowerCase() ?? "school"}
+              </kbd>{" "}
+              right in the name.
             </span>
           )}
         </div>

@@ -58,7 +58,11 @@ export default function App() {
       {error ? (
         <LoadError message={error} />
       ) : !ready ? (
-        <p className="load-pending font-body" role="status" style={{ fontSize: 13, color: "var(--ink-muted)" }}>
+        <p
+          className="load-pending font-body"
+          role="status"
+          style={{ fontSize: 13, color: "var(--ink-muted)" }}
+        >
           Loading your tasks…
         </p>
       ) : currentView === "main" ? (

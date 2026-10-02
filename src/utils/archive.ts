@@ -15,9 +15,7 @@ export function groupArchive(activities: Activity[], now = new Date()): ArchiveG
     { label: "Earlier", items: [] },
   ];
   for (const a of done) {
-    const days = a.completedAt
-      ? differenceInCalendarDays(now, new Date(a.completedAt))
-      : Infinity;
+    const days = a.completedAt ? differenceInCalendarDays(now, new Date(a.completedAt)) : Infinity;
     buckets[days <= 0 ? 0 : days < 7 ? 1 : 2].items.push(a);
   }
   return buckets.filter((b) => b.items.length > 0);

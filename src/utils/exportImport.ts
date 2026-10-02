@@ -2,10 +2,7 @@ import type { Activity, Category } from "@/types";
 import { format } from "date-fns";
 import { updateMeta } from "@/lib/safety";
 
-export function exportData(
-  activities: Activity[],
-  categories: Category[]
-): string {
+export function exportData(activities: Activity[], categories: Category[]): string {
   return JSON.stringify({ activities, categories }, null, 2);
 }
 

@@ -30,8 +30,7 @@ export function useTheme() {
   const isDark = theme === "dark" || (theme === "system" && systemDark);
 
   const cycleTheme = () => {
-    const next =
-      theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
+    const next = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
     setTheme(next);
   };
 

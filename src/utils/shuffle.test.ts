@@ -1,11 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Activity, Category, TimeFilter } from "@/types";
-import {
-  getShuffleCandidates,
-  shuffleSelect,
-  suggestLoosening,
-  taskWeight,
-} from "./shuffle";
+import { getShuffleCandidates, shuffleSelect, suggestLoosening, taskWeight } from "./shuffle";
 
 const NOW = Date.parse("2026-09-22T12:00:00Z");
 const daysAgo = (d: number) => new Date(NOW - d * 86_400_000).toISOString();
@@ -96,10 +91,7 @@ describe("getShuffleCandidates", () => {
 });
 
 describe("suggestLoosening", () => {
-  const acts = [
-    act("short", { durationMinutes: 10 }),
-    act("long", { durationMinutes: 45 }),
-  ];
+  const acts = [act("short", { durationMinutes: 10 }), act("long", { durationMinutes: 45 })];
   const max = (value: number): TimeFilter => ({ mode: "max", value, includeNoDuration: false });
 
   it("offers the next preset that fits", () => {

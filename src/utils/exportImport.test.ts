@@ -29,12 +29,17 @@ describe("parseImportData", () => {
   });
 
   it("rejects malformed tasks instead of importing half a file", () => {
-    const json = exportData([task(), task({ id: "t2", status: "done" as never })], DEFAULT_CATEGORIES);
+    const json = exportData(
+      [task(), task({ id: "t2", status: "done" as never })],
+      DEFAULT_CATEGORIES
+    );
     expect(() => parseImportData(json)).toThrow(/Task #2/);
   });
 
   it("rejects duplicate ids and a missing Unassigned category", () => {
-    expect(() => parseImportData(exportData([task(), task()], DEFAULT_CATEGORIES))).toThrow(/duplicate/);
+    expect(() => parseImportData(exportData([task(), task()], DEFAULT_CATEGORIES))).toThrow(
+      /duplicate/
+    );
     const noUnassigned = DEFAULT_CATEGORIES.filter((c) => c.id !== "unassigned");
     expect(() => parseImportData(exportData([], noUnassigned))).toThrow(/Unassigned/);
   });

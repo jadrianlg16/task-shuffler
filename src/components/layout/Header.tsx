@@ -5,7 +5,16 @@ import { format, isToday } from "date-fns";
 
 function SunIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <circle cx="12" cy="12" r="5" />
       <line x1="12" y1="1" x2="12" y2="3" />
       <line x1="12" y1="21" x2="12" y2="23" />
@@ -21,17 +30,22 @@ function SunIcon() {
 
 function MoonIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
     </svg>
   );
 }
 
-export function Header({
-  onOpenSettings,
-}: {
-  onOpenSettings: () => void;
-}) {
+export function Header({ onOpenSettings }: { onOpenSettings: () => void }) {
   const { theme, isDark, cycleTheme } = useTheme();
   const currentView = useUIStore((s) => s.currentView);
   const setCurrentView = useUIStore((s) => s.setCurrentView);
@@ -87,7 +101,13 @@ export function Header({
           </span>
           <span
             className="font-body uppercase"
-            style={{ fontSize: 11, fontWeight: 500, color: "var(--ink-muted)", marginLeft: 8, letterSpacing: "0.06em" }}
+            style={{
+              fontSize: 11,
+              fontWeight: 500,
+              color: "var(--ink-muted)",
+              marginLeft: 8,
+              letterSpacing: "0.06em",
+            }}
           >
             Active
           </span>
@@ -98,7 +118,13 @@ export function Header({
           </span>
           <span
             className="font-body uppercase"
-            style={{ fontSize: 11, fontWeight: 500, color: "var(--ink-muted)", marginLeft: 8, letterSpacing: "0.06em" }}
+            style={{
+              fontSize: 11,
+              fontWeight: 500,
+              color: "var(--ink-muted)",
+              marginLeft: 8,
+              letterSpacing: "0.06em",
+            }}
           >
             Done today
           </span>
@@ -114,10 +140,7 @@ export function Header({
         aria-valuemin={0}
         aria-valuemax={100}
       >
-        <div
-          className="progress-fill"
-          style={{ width: `${progressPercent}%` }}
-        />
+        <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
       </div>
 
       {/* Navigation row */}
@@ -136,11 +159,7 @@ export function Header({
         >
           Archive
         </button>
-        <button
-          className="nav-tab"
-          style={{ marginLeft: "auto" }}
-          onClick={onOpenSettings}
-        >
+        <button className="nav-tab" style={{ marginLeft: "auto" }} onClick={onOpenSettings}>
           Settings
         </button>
       </nav>

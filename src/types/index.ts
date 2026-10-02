@@ -28,4 +28,3 @@ export type TimeFilter = {
   max?: number;
   includeNoDuration: boolean;
 };
-

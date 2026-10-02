@@ -93,7 +93,8 @@ export function shouldRemindBackup(o: {
  */
 export async function requestPersistentStorage(): Promise<PersistStatus> {
   const storage = navigator.storage;
-  if (!storage?.persist || !storage.persisted) return updateMeta({ persist: "unsupported" }).persist;
+  if (!storage?.persist || !storage.persisted)
+    return updateMeta({ persist: "unsupported" }).persist;
   try {
     const granted = (await storage.persisted()) || (await storage.persist());
     return updateMeta({ persist: granted ? "granted" : "denied" }).persist;

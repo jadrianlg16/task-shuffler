@@ -149,7 +149,11 @@ describe("bulk changes", () => {
   it("moves every task in a category to another one", async () => {
     store().bulkReassignCategory("school", "unassigned");
     await settle();
-    expect(store().activities.filter((x) => x.categoryId === "unassigned").map((x) => x.id)).toEqual(["a", "c"]);
+    expect(
+      store()
+        .activities.filter((x) => x.categoryId === "unassigned")
+        .map((x) => x.id)
+    ).toEqual(["a", "c"]);
     expect(byId("b")?.categoryId).toBe("hobby");
   });
 

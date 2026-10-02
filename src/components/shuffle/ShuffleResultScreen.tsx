@@ -69,12 +69,20 @@ export function ShuffleResultScreen({
           {(onShuffleAgain || onNotFeelingIt) && (
             <div className="flex gap-2">
               {onShuffleAgain && (
-                <Button variant="outline" onClick={onShuffleAgain} className="flex-1 h-10 rounded-xl">
+                <Button
+                  variant="outline"
+                  onClick={onShuffleAgain}
+                  className="flex-1 h-10 rounded-xl"
+                >
                   Shuffle again
                 </Button>
               )}
               {onNotFeelingIt && (
-                <Button variant="outline" onClick={onNotFeelingIt} className="flex-1 h-10 rounded-xl">
+                <Button
+                  variant="outline"
+                  onClick={onNotFeelingIt}
+                  className="flex-1 h-10 rounded-xl"
+                >
                   Not feeling it
                 </Button>
               )}

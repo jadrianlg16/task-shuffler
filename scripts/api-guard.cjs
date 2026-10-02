@@ -66,10 +66,12 @@ function rejectReason(req, { appHost, loopbackOnly = false }) {
       /* refused below */
     }
     const expected = appHost ? normalizeHost(appHost) : null;
-    if (originHost === null || expected === null || originHost !== expected) return "cross-origin request";
+    if (originHost === null || expected === null || originHost !== expected)
+      return "cross-origin request";
   }
 
-  if (new URL(req.url ?? "/", "http://localhost").searchParams.has("callback")) return "JSONP is disabled";
+  if (new URL(req.url ?? "/", "http://localhost").searchParams.has("callback"))
+    return "JSONP is disabled";
 
   return null;
 }

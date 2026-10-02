@@ -24,9 +24,7 @@ export const PickedTaskDialog = lazy(() =>
 export const CategoryManager = lazy(() =>
   loaders.settings().then((m) => ({ default: m.CategoryManager }))
 );
-export const ArchiveView = lazy(() =>
-  loaders.archive().then((m) => ({ default: m.ArchiveView }))
-);
+export const ArchiveView = lazy(() => loaders.archive().then((m) => ({ default: m.ArchiveView })));
 
 export function preloadLazyViews(): void {
   // A failed preload is harmless: the view loads again when it is first opened.
@@ -48,7 +46,11 @@ export class LazyView extends Component<{ children: ReactNode }, { failed: boole
   render() {
     if (this.state.failed) {
       return (
-        <div role="alert" className="panel font-body" style={{ padding: 16, marginBottom: 16, fontSize: 13 }}>
+        <div
+          role="alert"
+          className="panel font-body"
+          style={{ padding: 16, marginBottom: 16, fontSize: 13 }}
+        >
           This part of the app didn't load. Check your connection, then reload.
           <div style={{ marginTop: 10 }}>
             <Button size="sm" onClick={() => window.location.reload()}>

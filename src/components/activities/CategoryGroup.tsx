@@ -48,12 +48,7 @@ export function CategoryGroup({
       </button>
       {!collapsed &&
         activities.map((a) => (
-          <ActivityItem
-            key={a.id}
-            activity={a}
-            onSelect={onSelectActivity}
-            showCategory={false}
-          />
+          <ActivityItem key={a.id} activity={a} onSelect={onSelectActivity} showCategory={false} />
         ))}
     </section>
   );

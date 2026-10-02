@@ -17,7 +17,15 @@ import {
 import { downloadBackup } from "@/utils/exportImport";
 import { Button } from "@/components/ui/button";
 
-function Card({ icon, children, actions }: { icon: React.ReactNode; children: React.ReactNode; actions: React.ReactNode }) {
+function Card({
+  icon,
+  children,
+  actions,
+}: {
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  actions: React.ReactNode;
+}) {
   return (
     <section
       role="note"
@@ -92,10 +100,15 @@ export function SafetyNotices() {
     return ios ? (
       <Card
         icon={<Smartphone size={18} />}
-        actions={<Button size="sm" onClick={dismiss}>Got it</Button>}
+        actions={
+          <Button size="sm" onClick={dismiss}>
+            Got it
+          </Button>
+        }
       >
-        <strong style={{ fontWeight: 500 }}>Keep your tasks on this iPhone.</strong> Safari can erase a
-        site's data if you don't open it for 7 days. Tap <strong style={{ fontWeight: 500 }}>Share</strong>, then{" "}
+        <strong style={{ fontWeight: 500 }}>Keep your tasks on this iPhone.</strong> Safari can
+        erase a site's data if you don't open it for 7 days. Tap{" "}
+        <strong style={{ fontWeight: 500 }}>Share</strong>, then{" "}
         <strong style={{ fontWeight: 500 }}>Add to Home Screen</strong>, and done. keeps them.
       </Card>
     ) : (
@@ -103,10 +116,7 @@ export function SafetyNotices() {
         icon={<Smartphone size={18} />}
         actions={
           <>
-            <Button
-              size="sm"
-              onClick={() => void handleInstall()}
-            >
+            <Button size="sm" onClick={() => void handleInstall()}>
               Install app
             </Button>
             <Button variant="ghost" size="sm" onClick={dismiss}>
@@ -115,8 +125,8 @@ export function SafetyNotices() {
           </>
         }
       >
-        <strong style={{ fontWeight: 500 }}>Install done.</strong> so it opens like an app and your tasks
-        stay safe on this device.
+        <strong style={{ fontWeight: 500 }}>Install done.</strong> so it opens like an app and your
+        tasks stay safe on this device.
       </Card>
     );
   }
@@ -150,8 +160,10 @@ export function SafetyNotices() {
           </>
         }
       >
-        <strong style={{ fontWeight: 500 }}>Your {ownTaskCount} tasks live only in this browser.</strong> A
-        backup is one small file you can import on any device.
+        <strong style={{ fontWeight: 500 }}>
+          Your {ownTaskCount} tasks live only in this browser.
+        </strong>{" "}
+        A backup is one small file you can import on any device.
       </Card>
     );
   }

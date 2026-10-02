@@ -21,7 +21,9 @@ export async function replaceAllData(
   } catch (err) {
     console.warn("[done.] import failed:", err);
     await loadAll(); // if this fails too, the load-error panel takes over
-    toast.error("Import didn't finish. Some old items may still be there; check the server and try again.");
+    toast.error(
+      "Import didn't finish. Some old items may still be there; check the server and try again."
+    );
     return false;
   }
 }

@@ -5,12 +5,7 @@ import { replaceAllData } from "@/store/replaceAllData";
 import { useLoadStatus } from "@/store/loadAll";
 import { ColorPicker } from "./ColorPicker";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { downloadBackup, parseImportData } from "@/utils/exportImport";
 import { StorageNote } from "@/components/onboarding/StorageNote";
 import { toast } from "sonner";
@@ -65,7 +60,12 @@ function CategoryRow({
     return (
       <div
         className="space-y-3"
-        style={{ padding: 12, margin: "4px 0", borderRadius: 12, border: "1px solid var(--ink-faint)" }}
+        style={{
+          padding: 12,
+          margin: "4px 0",
+          borderRadius: 12,
+          border: "1px solid var(--ink-faint)",
+        }}
       >
         <input
           value={name}
@@ -121,9 +121,7 @@ function CategoryRow({
       <span className="flex-1 min-w-0 truncate" style={{ fontSize: 14 }}>
         {cat.name}
         {cat.isHidden && (
-          <span style={{ fontSize: 11, color: "var(--ink-muted)", marginLeft: 8 }}>
-            hidden
-          </span>
+          <span style={{ fontSize: 11, color: "var(--ink-muted)", marginLeft: 8 }}>hidden</span>
         )}
       </span>
       <button
@@ -337,10 +335,20 @@ export function CategoryManager({
                   <Button variant="outline" size="sm" onClick={handleExport} disabled={importing}>
                     Download current first
                   </Button>
-                  <Button variant="destructive" size="sm" onClick={() => void handleConfirmImport()} disabled={importing}>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => void handleConfirmImport()}
+                    disabled={importing}
+                  >
                     {importing ? "Importing…" : "Replace"}
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => setPendingImport(null)} disabled={importing}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setPendingImport(null)}
+                    disabled={importing}
+                  >
                     Cancel
                   </Button>
                 </div>
@@ -361,7 +369,10 @@ export function CategoryManager({
             <div className="section-label" style={{ marginBottom: 8 }}>
               Keyboard
             </div>
-            <dl className="grid gap-y-1.5" style={{ gridTemplateColumns: "auto 1fr", columnGap: 12, fontSize: 13 }}>
+            <dl
+              className="grid gap-y-1.5"
+              style={{ gridTemplateColumns: "auto 1fr", columnGap: 12, fontSize: 13 }}
+            >
               {SHORTCUTS.map(({ keys, label }) => (
                 <div key={label} className="contents">
                   <dt>

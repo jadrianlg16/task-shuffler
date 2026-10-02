@@ -1,13 +1,7 @@
 import type { Category } from "@/types";
 
 /** The category's identity is its colour; this dot is how it shows up everywhere. */
-export function CategoryDot({
-  color,
-  size = 8,
-}: {
-  color: string;
-  size?: number;
-}) {
+export function CategoryDot({ color, size = 8 }: { color: string; size?: number }) {
   return (
     <span
       aria-hidden

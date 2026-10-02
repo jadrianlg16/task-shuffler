@@ -4,7 +4,12 @@ import { usesLocalStorage } from "@/lib/platform";
 
 /** Settings → Backup: where the tasks actually live, in plain words. */
 export function StorageNote() {
-  const style = { fontSize: 12, color: "var(--ink-muted)", lineHeight: 1.5, marginBottom: 12 } as const;
+  const style = {
+    fontSize: 12,
+    color: "var(--ink-muted)",
+    lineHeight: 1.5,
+    marginBottom: 12,
+  } as const;
   if (!usesLocalStorage) {
     return <p style={style}>Your tasks are saved on your done. server.</p>;
   }
@@ -12,8 +17,8 @@ export function StorageNote() {
   return (
     <div style={style} data-testid="storage-note">
       <p>
-        Your tasks are saved only in this browser, on this device. They don't sync to other
-        devices; use Export and Import to move them.
+        Your tasks are saved only in this browser, on this device. They don't sync to other devices;
+        use Export and Import to move them.
       </p>
       <p style={{ marginTop: 6 }}>
         {meta.persist === "granted"
