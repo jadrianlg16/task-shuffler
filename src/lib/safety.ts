@@ -38,7 +38,7 @@ export function readMeta(now = Date.now()): SafetyMeta {
       localStorage.setItem(META_KEY, JSON.stringify(fallback));
       return fallback;
     }
-    return { ...fallback, ...JSON.parse(raw) };
+    return { ...fallback, ...(JSON.parse(raw) as Partial<SafetyMeta>) };
   } catch {
     return fallback; // storage blocked (private mode etc.): behave as a first visit
   }

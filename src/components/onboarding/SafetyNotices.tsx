@@ -63,7 +63,7 @@ export function SafetyNotices() {
     if (!usesLocalStorage || embedded || asked.current || ownTaskCount === 0) return;
     if (readMeta().persist === "granted") return;
     asked.current = true;
-    requestPersistentStorage();
+    void requestPersistentStorage(); // never rejects; the result is stored in meta
   }, [embedded, ownTaskCount]);
 
   if (!usesLocalStorage || !isLoaded || embedded) return null;
@@ -82,6 +82,13 @@ export function SafetyNotices() {
       updateMeta({ installHintDismissed: true });
       rerender();
     };
+    const handleInstall = async () => {
+      if (await install()) {
+        updateMeta({ installHintDismissed: true });
+        await requestPersistentStorage();
+      }
+      rerender();
+    };
     return ios ? (
       <Card
         icon={<Smartphone size={18} />}
@@ -98,13 +105,7 @@ export function SafetyNotices() {
           <>
             <Button
               size="sm"
-              onClick={async () => {
-                if (await install()) {
-                  updateMeta({ installHintDismissed: true });
-                  requestPersistentStorage().then(rerender);
-                }
-                rerender();
-              }}
+              onClick={() => void handleInstall()}
             >
               Install app
             </Button>

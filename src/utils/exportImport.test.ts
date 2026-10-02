@@ -45,7 +45,9 @@ describe("parseImportData", () => {
   });
 
   it("accepts old backups without startedAt", () => {
-    const old = JSON.parse(exportData([task()], DEFAULT_CATEGORIES));
+    const old = JSON.parse(exportData([task()], DEFAULT_CATEGORIES)) as {
+      activities: Partial<Activity>[];
+    };
     delete old.activities[0].startedAt;
     expect(parseImportData(JSON.stringify(old)).activities).toHaveLength(1);
   });

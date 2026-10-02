@@ -9,6 +9,10 @@ import { isDemoRequested, isEmbedded } from "@/lib/platform";
  * as httpDb.ts, no json-server required.
  */
 
+/* eslint-disable @typescript-eslint/require-await --
+   async with no await is deliberate: it keeps httpDb's signatures and turns a
+   throw (e.g. "not found") into a rejection the stores already roll back on. */
+
 const ACTIVITIES_KEY = "task-shuffler-activities";
 
 const adapter = new LocalStorageAdapter();

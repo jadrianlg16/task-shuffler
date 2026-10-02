@@ -206,16 +206,16 @@ export function CategoryManager({
     const input = document.createElement("input");
     input.type = "file";
     input.accept = ".json,application/json";
-    input.onchange = (e) => {
+    input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
-      file.text().then((json) => {
-        try {
-          setPendingImport({ fileName: file.name, ...parseImportData(json) });
-        } catch (err) {
-          toast.error((err as Error).message);
-        }
-      });
+      try {
+        const json = await file.text();
+        setPendingImport({ fileName: file.name, ...parseImportData(json) });
+      } catch (err) {
+        // parseImportData explains what's wrong; a failed read also lands here.
+        toast.error(err instanceof Error ? err.message : "Couldn't read that file.");
+      }
     };
     input.click();
   };
@@ -338,7 +338,7 @@ export function CategoryManager({
                   <Button variant="outline" size="sm" onClick={handleExport} disabled={importing}>
                     Download current first
                   </Button>
-                  <Button variant="destructive" size="sm" onClick={handleConfirmImport} disabled={importing}>
+                  <Button variant="destructive" size="sm" onClick={() => void handleConfirmImport()} disabled={importing}>
                     {importing ? "Importing…" : "Replace"}
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => setPendingImport(null)} disabled={importing}>
