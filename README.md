@@ -28,32 +28,29 @@ You keep a list of tasks, each with a rough length and a category. When a free h
 
 ## Features
 
-- **Pick for me.** Choose how much time you have (any, 15, 30, 60 or 90 minutes; or at least, between or exactly under "more…") and which categories to draw from (none picked means all). The button shows how many tasks fit. If none do, it offers the smallest change that works, such as "Try 30 min". Your last choice is remembered.
-- **Weighted shuffle.** A short reel lands on one task. Older tasks come up more often (up to 3× for a task that has waited 30 days or more), so nothing sits forever. You can shuffle again, or skip a task with "Not feeling it"; skipped tasks stay out until you close the card.
-- **Start, then Now.** Starting a task pins it above the picker, showing how long you've been at it against its estimate. Done archives it (with Undo), and Drop puts it back in the pool.
-- **Quick add with shorthand.** Type `Call mom 15m #personal` and press Enter. It also understands `1h`, `1h30` and `45 min`. `#tags` match category names, and unknown tags stay in the name. Or set them with the minute chips and category picker that appear while you add a task.
-- **Categories.** There are six colour-coded defaults. You can add, rename, recolour, reorder and hide categories, and delete the ones you added; deleting a category moves its tasks to Unassigned.
-- **Today at a glance.** The header shows the number of active tasks, the number done today, and a bar that fills as today's work gets done.
-- **Archive.** Completed tasks are listed newest first, grouped as Today, This week and Earlier. You can restore them or delete them for good.
-- **Backup.** Settings exports everything as JSON. Import validates the file first, then asks before replacing anything and offers to download the current data first.
-- **Keyboard shortcuts.** `N` new task, `S` shuffle, `/` search, `Enter` start the picked task, `Esc` close.
-- **First run.** The browser build starts empty, with a "Try it with example tasks" button. Embedded in an iframe, or opened with `?demo`, it starts with the examples. A banner clears them without touching your own tasks.
-- **Keeping browser-only data.** The browser build asks for persistent storage and suggests installing the app (Add to Home Screen on iPhone, where Safari can clear a site's data after 7 days without a visit). It also reminds you to download a backup after a week of use, then monthly.
-- **Installable.** Production builds ship a web manifest and a network-first service worker. Requests under `/api` are never cached, and the worker is not registered inside an iframe.
-- **Themes and phones.** Light, dark and system themes. On small screens the pick card opens as a bottom sheet, and the layout respects safe-area insets.
+- **Pick for me.** Say how much time you have (any, 15, 30, 60 or 90 minutes, or at least / between / exactly N) and which categories to draw from. The button shows how many tasks fit; if none do, it suggests the smallest change that works ("Try 30 min").
+- **Weighted shuffle.** A short reel lands on one task. Tasks that have waited longer come up more often (up to 3× after 30 days). Shuffle again, or skip with "Not feeling it".
+- **Start, then Now.** The started task is pinned above the picker with elapsed time against its estimate. Done archives it (with Undo); Drop returns it to the pool.
+- **Quick add and shortcuts.** Typing `Call mom 15m #personal` sets the length and category (`1h`, `1h30` and `45 min` work too). Shortcuts: `N` new task, `S` shuffle, `/` search, `Enter` start, `Esc` close.
+- **Categories.** Six colour-coded defaults; add, rename, recolour, reorder or hide them. Deleting a custom one moves its tasks to Unassigned.
+- **Today and Archive.** The header counts active tasks and tasks done today. The archive groups finished tasks as Today, This week and Earlier, with restore and delete.
+- **Backup.** Export everything as JSON. Import validates the file and asks before replacing anything.
+- **Browser-only mode.** Starts empty, or with example tasks on `?demo` or when embedded. It asks for persistent storage, suggests installing the app (production builds ship a web manifest and a network-first service worker), and reminds you to download a backup.
+
+Light, dark and system themes are built in, and on phones the pick card opens as a bottom sheet.
 
 ## How it works
 
 ```mermaid
 flowchart LR
-  UI["React components"] --> Stores["Zustand stores<br/>activities · categories · UI prefs"]
+  UI["React components"] --> Stores["Zustand stores<br/>tasks · categories · UI prefs · install prompt"]
   Stores -->|"update screen, then save"| Facade["src/api/db.ts<br/>storage façade"]
   Facade -->|"default build"| Http["httpDb.ts<br/>fetch /api"]
   Facade -->|"VITE_STORAGE=local"| Local["localDb.ts<br/>localStorage"]
   Http --> Proxy["Vite proxy /api"] --> Json["json-server<br/>JSON data file"]
 ```
 
-The components read from three Zustand stores. The stores update the screen first and then save through a storage façade. Which backend the façade uses is decided at build time:
+The components read from Zustand stores (tasks, categories, UI preferences and the browser's install prompt). The task and category stores update the screen first and then save through a storage façade. Which backend the façade uses is decided at build time:
 
 | Build | Storage | Good for |
 | --- | --- | --- |
@@ -96,10 +93,10 @@ The rules that matter (shuffle weighting, time filters, the quick-add parser, ba
 ## Engineering highlights
 
 - **The backend is chosen at build time.** [`src/api/db.ts`](src/api/db.ts) puts two implementations behind one async API and picks one from `import.meta.env.VITE_STORAGE`. Vite inlines the flag, so the static build ships without the HTTP client.
-- **Optimistic updates with a targeted rollback.** The stores snapshot only the items a change touches, update the screen, then save. [`src/store/persist.ts`](src/store/persist.ts) restores just the change that failed and shows a single "Couldn't save that change" toast, so the screen never shows data that wasn't stored.
+- **Optimistic updates with a targeted rollback.** The stores snapshot only the items a change touches, update the screen, then save. [`src/store/persist.ts`](src/store/persist.ts) restores just the change that failed and shows a single "Couldn't save that change" toast, so a failed save never leaves unsaved data on screen.
 - **HTTP errors are errors.** `fetch` only rejects on network failure, so [`src/api/httpDb.ts`](src/api/httpDb.ts) throws on any non-2xx response, and a 404 or 500 triggers the same rollback. Importing a backup writes every incoming item before deleting leftovers, so a failure part-way can leave extra old items behind but never deletes anything before the new data is written.
 - **Shuffle logic that can be tested.** [`src/utils/shuffle.ts`](src/utils/shuffle.ts) weights each task linearly from 1 to 3 over 30 days. When nothing fits, it searches the time presets for the smallest change that would. Tests inject `random` and `now`, so the 3× claim is checked, not assumed.
-- **Accessibility and strictness.** The pick card is a Radix dialog ([`PickDialog.tsx`](src/components/shuffle/PickDialog.tsx)) with a focus trap and Escape to close. Chips use `aria-pressed`, the progress bars have `progressbar` roles, and focus rings use `:focus-visible`. The framer-motion animations follow the OS reduced-motion setting, so reduced-motion users skip the reel; the small CSS entrance animations don't yet. TypeScript runs in strict mode with `noUnusedLocals` and `noUnusedParameters`, and most modules are under 150 lines.
+- **Accessibility and strictness.** The pick card is a Radix dialog ([`PickDialog.tsx`](src/components/shuffle/PickDialog.tsx)) with a focus trap and Escape to close. Chips use `aria-pressed`, the progress bars have `progressbar` roles, and focus rings use `:focus-visible`. The framer-motion animations follow the OS reduced-motion setting, so reduced-motion users skip the reel. TypeScript runs in strict mode with `noUnusedLocals` and `noUnusedParameters`.
 
 ## Getting started
 
@@ -161,9 +158,8 @@ Vitest runs once over the pure logic: shuffle weighting, candidate filtering and
 - **Browser-only data lives in one browser on one device.** It does not sync, and browsers can evict site data. The app requests persistent storage and nudges you to install and back up, but it cannot guarantee the data survives.
 - **Server mode loads the list once.** If json-server isn't reachable when the page opens, the list looks empty, with no error message, until you reload. Changes made while it is down are rolled back with a toast. The app doesn't poll, so edits from another device appear only after a reload.
 - **Imports in server mode are not atomic,** because json-server has no transactions. If an import fails part-way, the app reloads what the server holds and says so, and some old items may remain.
-- **One JavaScript bundle** of about 500 kB (about 158 kB gzipped). There is no code splitting yet, and Vite prints a chunk-size warning.
-- **Fonts load from Google Fonts.** There are no analytics, no cookies and no other third-party requests.
-- **The portfolio demo is built and deployed separately** from this repo, so it can lag behind `main`.
+- **The app itself has no analytics and sets no cookies.** Its only third-party requests are for Google Fonts.
+- **The hosted demo is rebuilt separately from this repo** and currently shows an older UI than the screenshots.
 
 ## License
 
