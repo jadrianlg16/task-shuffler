@@ -36,20 +36,4 @@ export class LocalStorageAdapter implements StorageAdapter {
   saveCategories(categories: Category[]): void {
     localStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories));
   }
-
-  exportAll(): string {
-    return JSON.stringify({
-      activities: this.getActivities(),
-      categories: this.getCategories(),
-    });
-  }
-
-  importAll(json: string): { activities: Activity[]; categories: Category[] } {
-    const data = JSON.parse(json);
-    const activities = (data.activities ?? []) as Activity[];
-    const categories = (data.categories ?? DEFAULT_CATEGORIES) as Category[];
-    this.saveActivities(activities);
-    this.saveCategories(categories);
-    return { activities, categories };
-  }
 }
