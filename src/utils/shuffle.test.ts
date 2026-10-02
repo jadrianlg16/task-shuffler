@@ -25,7 +25,6 @@ const cat = (id: string, isHidden = false): Category => ({
   id,
   name: id,
   color: "#000000",
-  icon: "",
   isDefault: true,
   isHidden,
   sortOrder: 0,

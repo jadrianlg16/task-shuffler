@@ -183,8 +183,7 @@ export function CategoryManager({
   const handleAddCategory = () => {
     const trimmed = newName.trim();
     if (!trimmed) return;
-    // Categories are identified by colour; the legacy icon field stays empty.
-    addCategory(trimmed, newColor, "");
+    addCategory(trimmed, newColor);
     setNewName("");
     setNewColor("#3B82F6");
     setShowAddForm(false);

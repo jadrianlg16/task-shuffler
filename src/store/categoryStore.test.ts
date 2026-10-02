@@ -39,7 +39,7 @@ describe("loadCategories", () => {
 describe("optimistic changes", () => {
   it("adds a category at the end, and removes it again if the save fails", async () => {
     backend.fail("saveCategory");
-    store().addCategory("Health", "#10B981", "");
+    store().addCategory("Health", "#10B981");
     expect(store().categories[DEFAULT_CATEGORIES.length]).toMatchObject({
       name: "Health",
       isDefault: false,

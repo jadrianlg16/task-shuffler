@@ -12,7 +12,7 @@ interface CategoryState {
   loadError: string | null;
   /** Fetch every category. Never rejects: a failure is recorded in `loadError`. */
   loadCategories: () => Promise<void>;
-  addCategory: (name: string, color: string, icon: string) => void;
+  addCategory: (name: string, color: string) => void;
   updateCategory: (id: string, updates: Partial<Omit<Category, "id">>) => void;
   deleteCategory: (id: string) => void;
   toggleHidden: (id: string) => void;
@@ -64,12 +64,11 @@ export const useCategoryStore = create<CategoryState>()((set, get) => {
       }
     },
 
-    addCategory: (name, color, icon) => {
+    addCategory: (name, color) => {
       const category: Category = {
         id: uuidv4(),
         name,
         color,
-        icon,
         isDefault: false,
         isHidden: false,
         sortOrder: get().categories.length,

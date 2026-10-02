@@ -51,4 +51,15 @@ describe("parseImportData", () => {
     delete old.activities[0].startedAt;
     expect(parseImportData(JSON.stringify(old)).activities).toHaveLength(1);
   });
+
+  it("accepts old backups whose categories still carry the retired icon field", () => {
+    const old = JSON.parse(exportData([task()], DEFAULT_CATEGORIES)) as {
+      categories: Record<string, unknown>[];
+    };
+    old.categories = old.categories.map((c) => ({ ...c, icon: "S" }));
+    const { categories } = parseImportData(JSON.stringify(old));
+    expect(categories).toHaveLength(DEFAULT_CATEGORIES.length);
+    expect(categories.every((c) => !("icon" in c))).toBe(true);
+    expect(categories).toEqual(DEFAULT_CATEGORIES);
+  });
 });

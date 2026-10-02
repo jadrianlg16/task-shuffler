@@ -5,7 +5,7 @@ import { matchCategory, parseQuickAdd } from "./quickAdd";
 
 const cats: Category[] = [
   ...DEFAULT_CATEGORIES,
-  { id: "x1", name: "Side Hustle", color: "#000000", icon: "", isDefault: false, isHidden: false, sortOrder: 6 },
+  { id: "x1", name: "Side Hustle", color: "#000000", isDefault: false, isHidden: false, sortOrder: 6 },
 ];
 const p = (s: string) => parseQuickAdd(s, cats);
 

@@ -39,12 +39,15 @@ function checkCategory(c: unknown, i: number): Category {
     /^#[0-9a-f]{3,8}$/i.test(x.color) &&
     typeof x.sortOrder === "number";
   if (!ok) throw new Error(`Category #${i + 1} is missing fields or has the wrong types.`);
-  // Older backups may lack the optional flags; default them.
+  // Keep only the known fields: older backups may lack the optional flags
+  // (defaulted here) or carry the retired `icon` field (dropped).
   return {
-    ...(x as unknown as Category),
-    icon: typeof x.icon === "string" ? x.icon : "",
+    id: x.id as string,
+    name: x.name as string,
+    color: x.color as string,
     isDefault: x.isDefault === true,
     isHidden: x.isHidden === true,
+    sortOrder: x.sortOrder as number,
   };
 }
 
