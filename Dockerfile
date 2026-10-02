@@ -12,8 +12,8 @@ COPY . .
 # Polling makes file-watching reliable inside a container.
 ENV CHOKIDAR_USEPOLLING=true
 # Live data lives under /app/data so it can be mounted as a volume and survive
-# container re-creation (the dashboard removes + recreates the container on
-# every Open/Stop). /app/db.json stays in the image as the first-run seed only.
+# the container being removed and re-created. /app/db.json stays in the image
+# as the first-run seed only.
 ENV DB_FILE=/app/data/db.json
 # json-server binds IPv4 0.0.0.0 below; point the /api proxy at it explicitly.
 ENV API_PROXY_TARGET=http://127.0.0.1:3001

@@ -1,6 +1,5 @@
 # Local development with hot reload: `docker compose up`, then open :3003.
-# The Project Dashboard does not use this file; it runs the image directly
-# with the tasklists_data volume (see Project-Dashboard/registry.json).
+# The source is bind-mounted; to run the image on its own, see the README.
 services:
   app:
     build: .
