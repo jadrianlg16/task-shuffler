@@ -66,7 +66,7 @@ The rules that matter (shuffle weighting, time filters, the quick-add parser, ba
 - **json-server 0.17** as the default backend. It gives a REST API over a JSON file with no backend code, which is enough for a single-user tool on your own machine or network.
 - **Tailwind CSS 4 and shadcn/ui (Radix)** for the dialog, buttons and toasts (sonner). The visual system lives in CSS variables in `src/index.css`.
 - **framer-motion** for the shuffle reel and the shared-layout transition that grows the winning name into the result card. It ships in a lazy chunk with the dialogs ([`src/components/lazyViews.tsx`](src/components/lazyViews.tsx)), which takes about a third off the main JavaScript chunk. The chunks are preloaded right after startup, so dialogs still open instantly and the service worker can cache them. Also used: date-fns, uuid and lucide-react.
-- **Vitest, Testing Library and ESLint** (typescript-eslint with type-aware rules, plus the React hooks rules). Tests run in Node; the component test uses jsdom.
+- **Vitest, Testing Library, ESLint and Prettier** (typescript-eslint with type-aware rules, plus the React hooks rules). Tests run in Node; the component test uses jsdom.
 
 ### Project structure
 
@@ -93,13 +93,13 @@ The rules that matter (shuffle weighting, time filters, the quick-add parser, ba
 ├── db.json                    # seed data for server mode (generic sample tasks)
 ├── index.html
 ├── Dockerfile · docker-compose.yml
-└── vite.config.ts · tsconfig.json · eslint.config.js
+└── vite.config.ts · tsconfig.json · eslint.config.js · .prettierrc.json
 ```
 
 ## Engineering highlights
 
 - **The backend is chosen at build time.** [`src/api/db.ts`](src/api/db.ts) puts two implementations behind one async API and picks one from `import.meta.env.VITE_STORAGE`. Vite inlines the flag, so the static build ships without the HTTP client.
-- **Optimistic updates with a targeted rollback.** The stores snapshot only the items a change touches, update the screen, then save. [`src/store/persist.ts`](src/store/persist.ts) restores just the change that failed and shows a single "Couldn't save that change" toast, so a failed save never leaves unsaved data on screen. The store tests run each kind of change against a fake backend that fails on demand.
+- **Optimistic updates with a targeted rollback.** The stores update the screen, then save. If a save fails, `applyUpdates` in [`src/store/persist.ts`](src/store/persist.ts) puts back only the fields that change wrote, and only where they still hold the value it wrote, so overlapping changes (start a task, then complete it, both failing) unwind to what the server holds. One "Couldn't save that change" toast covers any number of failures. The store tests run each kind of change, including overlapping failures, against a fake backend that fails on demand.
 - **Failures are visible.** `fetch` only rejects on network failure, so [`src/api/httpDb.ts`](src/api/httpDb.ts) throws on any non-2xx response, and a 404 or 500 triggers the same rollback. If the lists can't be loaded at startup, [`src/store/loadAll.ts`](src/store/loadAll.ts) records why, and the app shows an error with a retry instead of an empty list. Importing a backup writes every incoming item before deleting leftovers, so a failure part-way can leave extra old items behind but never deletes anything before the new data is written.
 - **Shuffle logic that can be tested.** [`src/utils/shuffle.ts`](src/utils/shuffle.ts) weights each task linearly from 1 to 3 over 30 days. When nothing fits, it searches the time presets for the smallest change that would. Tests inject `random` and `now`, so the 3× claim is checked, not assumed.
 - **Accessibility and strictness.** The pick card is a Radix dialog ([`PickDialog.tsx`](src/components/shuffle/PickDialog.tsx)) with a focus trap and Escape to close. Chips use `aria-pressed`, the progress bars have `progressbar` roles, and focus rings use `:focus-visible`. With the OS reduced-motion setting on, the shuffle skips the reel, CSS animations and transitions drop to near zero, and scrolling jumps instead of gliding. TypeScript runs in strict mode with `noUnusedLocals` and `noUnusedParameters`, and ESLint's type-aware rules reject unhandled promises.
@@ -152,14 +152,15 @@ All variables are optional.
 ## Tests
 
 ```bash
-npm test          # Vitest, single run
-npm run lint      # ESLint; warnings fail it too
-npx tsc -b        # type-check (npm run build runs this first as well)
+npm test              # Vitest, single run
+npm run lint          # ESLint; warnings fail it too
+npm run format:check  # Prettier (npm run format rewrites the files)
+npx tsc -b            # type-check (npm run build runs this first as well)
 ```
 
 The unit tests cover the pure logic: shuffle weighting, candidate filtering and the "nothing fits" suggestion; the quick-add parser; backup validation; the install and backup reminder rules; the example tasks; and archive grouping. The store tests run against [`src/test/fakeApi.ts`](src/test/fakeApi.ts): loading (and failing to load), optimistic add, update and delete with their rollbacks, start and drop, category changes, and backup import. [`src/App.test.tsx`](src/App.test.tsx) renders the whole app in jsdom to shuffle, skip a pick, start a task, and recover from a failed startup load. [`scripts/api-guard.test.mjs`](scripts/api-guard.test.mjs) covers the same-origin guard. The two storage backends themselves (`httpDb.ts`, `localDb.ts`) have no unit tests.
 
-The [CI workflow](.github/workflows/ci.yml) runs `npm ci`, the three commands above and both builds (`npm run build`, and again with `VITE_STORAGE=local`) on Node 20 and 22, for pushes to `main` and for pull requests.
+The [CI workflow](.github/workflows/ci.yml) runs `npm ci`, the four commands above and both builds (`npm run build`, and again with `VITE_STORAGE=local`) on Node 20 and 22, for pushes to `main` and for pull requests. It has not run on GitHub yet; every step has been run locally, on Windows and in Linux containers. The one formatting-only commit is listed in `.git-blame-ignore-revs`.
 
 ## Limitations
 
@@ -169,7 +170,7 @@ The [CI workflow](.github/workflows/ci.yml) runs `npm ci`, the three commands ab
 - **Server mode doesn't sync live.** The lists load once, at startup (with an error and a retry if json-server can't be reached), and changes made while it is down are rolled back with a toast. The app doesn't poll, so edits from another device appear only after a reload.
 - **Imports in server mode are not atomic,** because json-server has no transactions. If an import fails part-way, the app reloads what the server holds and says so, and some old items may remain.
 - **The app itself has no analytics and sets no cookies.** Its only third-party requests are for Google Fonts.
-- **The hosted demo is rebuilt separately from this repo** and currently shows an older UI than the screenshots.
+- **The hosted demo is built from this repo by the portfolio site's build script,** so between portfolio deploys it can trail `main`.
 
 ## License
 
