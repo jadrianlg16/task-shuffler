@@ -15,7 +15,7 @@ const TASKS = [
   task({ id: "c", name: "Read a chapter", durationMinutes: null, categoryId: "hobby" }),
 ];
 
-beforeAll(() => {
+beforeAll(async () => {
   // jsdom has no matchMedia. Report "reduce" for the motion query, so the
   // shuffle goes straight to its result instead of spinning the reel.
   window.matchMedia = (query: string) =>
@@ -30,7 +30,13 @@ beforeAll(() => {
       dispatchEvent: () => false,
     }) as MediaQueryList;
   window.scrollTo = () => {};
-});
+  // The dialogs are lazy-loaded. Import them once here, under a generous
+  // timeout, so a cold first import can't eat into a test's own 5 s budget.
+  await Promise.all([
+    import("@/components/shuffle/ShuffleOverlay"),
+    import("@/components/shuffle/PickedTaskDialog"),
+  ]);
+}, 60_000);
 
 beforeEach(() => {
   vi.spyOn(console, "warn").mockImplementation(() => {});
