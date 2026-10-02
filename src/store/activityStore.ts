@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { Activity } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
-import { describeError, persist } from "./persist";
+import { applyUpdates, describeError, persist } from "./persist";
 import { isExampleTask, makeExampleTasks } from "@/data/exampleTasks";
 
 interface ActivityState {
@@ -35,25 +35,24 @@ interface ActivityState {
 }
 
 export const useActivityStore = create<ActivityState>()((set, get) => {
-  /** Apply field updates to some tasks now; put the old values back if saving fails. */
+  /** Apply field updates to some tasks now; undo each one whose save fails. */
   const patch = (changes: { id: string; updates: Partial<Activity> }[]) => {
-    const before = new Map(
-      get()
-        .activities.filter((a) => changes.some((c) => c.id === a.id))
-        .map((a) => [a.id, a])
-    );
+    const undos = new Map<string, (current: Activity) => Activity>();
     set((state) => ({
       activities: state.activities.map((a) => {
         const change = changes.find((c) => c.id === a.id);
-        return change ? { ...a, ...change.updates } : a;
+        if (!change) return a;
+        const { next, undo } = applyUpdates(a, change.updates);
+        undos.set(a.id, undo);
+        return next;
       }),
     }));
     for (const { id, updates } of changes) {
+      const undo = undos.get(id);
+      if (!undo) continue; // not in the list (already gone): nothing to save
       persist(api.updateActivity(id, updates), () =>
         set((state) => ({
-          activities: state.activities.map((a) =>
-            a.id === id && before.has(id) ? before.get(id)! : a
-          ),
+          activities: state.activities.map((a) => (a.id === id ? undo(a) : a)),
         }))
       );
     }

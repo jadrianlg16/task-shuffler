@@ -3,7 +3,7 @@ import type { Category } from "@/types";
 import { DEFAULT_CATEGORIES } from "@/data/defaultCategories";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
-import { describeError, persist } from "./persist";
+import { applyUpdates, describeError, persist } from "./persist";
 
 interface CategoryState {
   categories: Category[];
@@ -22,25 +22,24 @@ interface CategoryState {
 }
 
 export const useCategoryStore = create<CategoryState>()((set, get) => {
-  /** Apply field updates now; put the old values back if saving fails. */
+  /** Apply field updates now; undo each one whose save fails. */
   const patch = (changes: { id: string; updates: Partial<Category> }[]) => {
-    const before = new Map(
-      get()
-        .categories.filter((c) => changes.some((ch) => ch.id === c.id))
-        .map((c) => [c.id, c])
-    );
+    const undos = new Map<string, (current: Category) => Category>();
     set((state) => ({
       categories: state.categories.map((c) => {
         const change = changes.find((ch) => ch.id === c.id);
-        return change ? { ...c, ...change.updates } : c;
+        if (!change) return c;
+        const { next, undo } = applyUpdates(c, change.updates);
+        undos.set(c.id, undo);
+        return next;
       }),
     }));
     for (const { id, updates } of changes) {
+      const undo = undos.get(id);
+      if (!undo) continue; // not in the list (already gone): nothing to save
       persist(api.updateCategory(id, updates), () =>
         set((state) => ({
-          categories: state.categories.map((c) =>
-            c.id === id && before.has(id) ? before.get(id)! : c
-          ),
+          categories: state.categories.map((c) => (c.id === id ? undo(c) : c)),
         }))
       );
     }

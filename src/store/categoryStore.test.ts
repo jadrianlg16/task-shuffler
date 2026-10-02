@@ -83,3 +83,23 @@ describe("optimistic changes", () => {
     expect(calls.every(([, opts]) => opts?.id === "save-failed")).toBe(true);
   });
 });
+
+describe("overlapping changes to one category", () => {
+  it("rolls two failed changes back field by field", async () => {
+    backend.fail("updateCategory");
+    store().updateCategory("hobby", { name: "Hobbies" });
+    store().toggleHidden("hobby");
+    await settle();
+    expect(byId("hobby")).toMatchObject({ name: "Hobby", isHidden: false });
+  });
+
+  it("keeps a later saved change when an earlier one to another field fails", async () => {
+    backend.fail("updateCategory");
+    store().updateCategory("hobby", { name: "Hobbies" });
+    backend.recover();
+    store().toggleHidden("hobby");
+    await settle();
+    expect(byId("hobby")).toMatchObject({ name: "Hobby", isHidden: true });
+    expect(backend.categories.find((c) => c.id === "hobby")?.isHidden).toBe(true);
+  });
+});

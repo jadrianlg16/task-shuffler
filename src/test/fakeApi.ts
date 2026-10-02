@@ -21,7 +21,7 @@ export const backend = {
     this.failing.clear();
     this.calls = [];
   },
-  /** Make these methods reject (like a 500) until `recover()`. */
+  /** Calls to these methods made from now until `recover()` reject (like a 500). */
   fail(...methods: Method[]) {
     for (const m of methods) this.failing.add(m);
   },
@@ -32,8 +32,10 @@ export const backend = {
 
 async function call<T>(method: Method, run: () => T): Promise<T> {
   backend.calls.push(method);
+  // Decided when the call is made, so a test can fail one call and not the next.
+  const fails = backend.failing.has(method);
   await Promise.resolve(); // never settle synchronously, like a real request
-  if (backend.failing.has(method)) throw new Error(`${method} failed: 500`);
+  if (fails) throw new Error(`${method} failed: 500`);
   return structuredClone(run());
 }
 

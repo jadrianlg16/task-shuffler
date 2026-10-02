@@ -92,6 +92,37 @@ describe("optimistic changes", () => {
   });
 });
 
+describe("overlapping changes to one task", () => {
+  it("rolls two failed changes back to what the server holds", async () => {
+    backend.fail("updateActivity");
+    store().startActivity("a");
+    store().completeActivity("a");
+    await settle();
+    expect(byId("a")).toMatchObject({ status: "active", completedAt: null });
+    expect(byId("a")?.startedAt ?? null).toBeNull(); // not shown as "Now"
+    expect(backend.activities.find((x) => x.id === "a")?.startedAt ?? null).toBeNull();
+  });
+
+  it("keeps a later saved value when an earlier change to the same field fails", async () => {
+    backend.fail("updateActivity");
+    store().updateActivity("a", { name: "First" });
+    backend.recover();
+    store().updateActivity("a", { name: "Second" });
+    await settle();
+    expect(byId("a")?.name).toBe("Second");
+    expect(backend.activities.find((x) => x.id === "a")?.name).toBe("Second");
+  });
+
+  it("rolls back only the fields the failed change wrote", async () => {
+    backend.fail("updateActivity");
+    store().updateActivity("a", { name: "Renamed" });
+    backend.recover();
+    store().updateActivity("a", { durationMinutes: 99 });
+    await settle();
+    expect(byId("a")).toMatchObject({ name: "A", durationMinutes: 99 });
+  });
+});
+
 describe("start and drop", () => {
   it("starting a task stops any other started task", async () => {
     store().startActivity("a");
