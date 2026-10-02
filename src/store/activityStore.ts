@@ -2,12 +2,15 @@ import { create } from "zustand";
 import type { Activity } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
-import { persist } from "./persist";
+import { describeError, persist } from "./persist";
 import { isExampleTask, makeExampleTasks } from "@/data/exampleTasks";
 
 interface ActivityState {
   activities: Activity[];
   isLoaded: boolean;
+  /** Why the last load failed, or null. While set, `activities` can't be trusted. */
+  loadError: string | null;
+  /** Fetch every task. Never rejects: a failure is recorded in `loadError`. */
   loadActivities: () => Promise<void>;
   addActivity: (
     name: string,
@@ -59,10 +62,16 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
   return {
     activities: [],
     isLoaded: false,
+    loadError: null,
 
     loadActivities: async () => {
-      const activities = await api.fetchActivities();
-      set({ activities, isLoaded: true });
+      try {
+        const activities = await api.fetchActivities();
+        set({ activities, isLoaded: true, loadError: null });
+      } catch (err) {
+        console.warn("[done.] loading tasks failed:", err);
+        set({ loadError: describeError(err) });
+      }
     },
 
     addActivity: (name, durationMinutes, categoryId) => {

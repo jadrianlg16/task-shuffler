@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCategoryStore } from "@/store/categoryStore";
 import { useActivityStore } from "@/store/activityStore";
 import { replaceAllData } from "@/store/replaceAllData";
+import { useLoadStatus } from "@/store/loadAll";
 import { ColorPicker } from "./ColorPicker";
 import { Button } from "@/components/ui/button";
 import {
@@ -170,6 +171,8 @@ export function CategoryManager({
 
   const activities = useActivityStore((s) => s.activities);
   const bulkReassignCategory = useActivityStore((s) => s.bulkReassignCategory);
+  // Lists that never loaded would export as an empty backup.
+  const { ready } = useLoadStatus();
 
   const [newName, setNewName] = useState("");
   const [newColor, setNewColor] = useState("#3B82F6");
@@ -345,7 +348,7 @@ export function CategoryManager({
               </div>
             ) : (
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={handleExport}>
+                <Button variant="outline" size="sm" onClick={handleExport} disabled={!ready}>
                   Export JSON
                 </Button>
                 <Button variant="outline" size="sm" onClick={handleChooseFile}>

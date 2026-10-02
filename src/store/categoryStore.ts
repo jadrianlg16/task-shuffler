@@ -3,11 +3,14 @@ import type { Category } from "@/types";
 import { DEFAULT_CATEGORIES } from "@/data/defaultCategories";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
-import { persist } from "./persist";
+import { describeError, persist } from "./persist";
 
 interface CategoryState {
   categories: Category[];
   isLoaded: boolean;
+  /** Why the last load failed, or null. */
+  loadError: string | null;
+  /** Fetch every category. Never rejects: a failure is recorded in `loadError`. */
   loadCategories: () => Promise<void>;
   addCategory: (name: string, color: string, icon: string) => void;
   updateCategory: (id: string, updates: Partial<Omit<Category, "id">>) => void;
@@ -46,13 +49,20 @@ export const useCategoryStore = create<CategoryState>()((set, get) => {
   return {
     categories: DEFAULT_CATEGORIES,
     isLoaded: false,
+    loadError: null,
 
     loadCategories: async () => {
-      const categories = await api.fetchCategories();
-      set({
-        categories: categories.length > 0 ? categories : DEFAULT_CATEGORIES,
-        isLoaded: true,
-      });
+      try {
+        const categories = await api.fetchCategories();
+        set({
+          categories: categories.length > 0 ? categories : DEFAULT_CATEGORIES,
+          isLoaded: true,
+          loadError: null,
+        });
+      } catch (err) {
+        console.warn("[done.] loading categories failed:", err);
+        set({ loadError: describeError(err) });
+      }
     },
 
     addCategory: (name, color, icon) => {

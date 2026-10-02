@@ -3,10 +3,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { useTheme } from "@/hooks/useTheme";
 import { useShortcuts } from "@/hooks/useShortcuts";
 import { useUIStore } from "@/store/uiStore";
-import { useActivityStore } from "@/store/activityStore";
-import { useCategoryStore } from "@/store/categoryStore";
+import { loadAll, useLoadStatus } from "@/store/loadAll";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Header } from "@/components/layout/Header";
+import { LoadError } from "@/components/layout/LoadError";
 import { QuickAddForm } from "@/components/activities/QuickAddForm";
 import { ActivityListContainer } from "@/components/activities/ActivityListContainer";
 import { ArchiveView } from "@/components/activities/ArchiveView";
@@ -25,13 +25,11 @@ export default function App() {
   useTheme();
   useShortcuts();
   const currentView = useUIStore((s) => s.currentView);
-  const loadActivities = useActivityStore((s) => s.loadActivities);
-  const loadCategories = useCategoryStore((s) => s.loadCategories);
+  const { ready, error } = useLoadStatus();
 
   useEffect(() => {
-    loadActivities();
-    loadCategories();
-  }, [loadActivities, loadCategories]);
+    void loadAll(); // failures surface through useLoadStatus, not as rejections
+  }, []);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [shuffleResult, setShuffleResult] = useState<{
     candidates: Activity[];
@@ -44,7 +42,13 @@ export default function App() {
     <MotionConfig reducedMotion="user">
     <MainLayout>
       <Header onOpenSettings={() => setSettingsOpen(true)} />
-      {currentView === "main" && (
+      {error ? (
+        <LoadError message={error} />
+      ) : !ready ? (
+        <p className="load-pending font-body" role="status" style={{ fontSize: 13, color: "var(--ink-muted)" }}>
+          Loading your tasks…
+        </p>
+      ) : currentView === "main" ? (
         <>
           <SafetyNotices />
           <ExamplesBanner />
@@ -53,8 +57,9 @@ export default function App() {
           <QuickAddForm />
           <ActivityListContainer onSelectActivity={setManualSelection} />
         </>
+      ) : (
+        <ArchiveView />
       )}
-      {currentView === "archive" && <ArchiveView />}
       {shuffleResult && (
         <ShuffleOverlay
           candidates={shuffleResult.candidates}

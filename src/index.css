@@ -170,6 +170,17 @@
   animation: taskIn 0.25s ease;
 }
 
+/* "Loading…" only appears if loading takes long enough to notice. */
+.load-pending {
+  animation: fadeIn 0.2s ease 0.4s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
 /* ── Task card styles ── */
 .task-card {
   background: var(--surface);
