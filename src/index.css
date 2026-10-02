@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* json-server's data file isn't source; don't scan it (or watch it) for classes. */
+@source not "../data";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 

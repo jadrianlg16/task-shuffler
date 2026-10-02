@@ -39,6 +39,9 @@ export default defineConfig({
     port: 3003,
     proxy: apiProxy,
     cors: false, // same-origin app: no page elsewhere may read these responses
+    // json-server rewrites the data file on every save; it is not source, and
+    // watching it would reload the page mid-save.
+    watch: { ignored: ["**/data/**"] },
   },
   preview: {
     proxy: apiProxy,
