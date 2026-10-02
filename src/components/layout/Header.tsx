@@ -32,7 +32,7 @@ export function Header({
 }: {
   onOpenSettings: () => void;
 }) {
-  const { theme, cycleTheme } = useTheme();
+  const { theme, isDark, cycleTheme } = useTheme();
   const currentView = useUIStore((s) => s.currentView);
   const setCurrentView = useUIStore((s) => s.setCurrentView);
   const activities = useActivityStore((s) => s.activities);
@@ -45,8 +45,6 @@ export function Header({
   ).length;
   const todayTotal = activeCount + doneToday;
   const progressPercent = todayTotal > 0 ? (doneToday / todayTotal) * 100 : 0;
-
-  const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   return (
     <header className="app-header">

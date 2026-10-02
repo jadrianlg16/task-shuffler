@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
-import { useTheme } from "@/hooks/useTheme";
+import { useApplyTheme } from "@/hooks/useTheme";
 import { useShortcuts } from "@/hooks/useShortcuts";
 import { useUIStore } from "@/store/uiStore";
 import { loadAll, useLoadStatus } from "@/store/loadAll";
@@ -22,7 +22,7 @@ import { MotionConfig } from "framer-motion";
 import type { Activity } from "@/types";
 
 export default function App() {
-  useTheme();
+  useApplyTheme();
   useShortcuts();
   const currentView = useUIStore((s) => s.currentView);
   const { ready, error } = useLoadStatus();
