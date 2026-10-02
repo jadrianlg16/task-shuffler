@@ -34,6 +34,11 @@ export default defineConfig([
     languageOptions: { globals: globals.node },
   },
   {
+    files: ["scripts/**/*.cjs"],
+    extends: [js.configs.recommended],
+    languageOptions: { sourceType: "commonjs", globals: globals.node },
+  },
+  {
     files: ["public/sw.js"],
     extends: [js.configs.recommended],
     languageOptions: { globals: globals.serviceworker },

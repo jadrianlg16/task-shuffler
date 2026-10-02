@@ -10,3 +10,4 @@
 !public/
 !src/
 !scripts/docker-start.sh
+!scripts/api-guard.cjs

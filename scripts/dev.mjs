@@ -7,6 +7,8 @@
 //
 // Ports: PORT (UI, default 3003) and API_PORT (json-server, default 3001).
 // The browser only talks to the UI port; Vite proxies /api to json-server.
+// json-server runs without CORS and behind scripts/api-guard.cjs, so pages
+// from other origins can neither read nor write the tasks.
 import { spawn } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -34,7 +36,11 @@ const run = (name, args, env = {}) =>
 
 const apiOnly = process.argv.includes("--api-only"); // `npm run server`
 const children = [
-  run("json-server", ["--watch", dbFile, "--port", apiPort]),
+  run("json-server", [
+    "--watch", dbFile, "--port", apiPort,
+    // --noCors: json-server 0.17 ignores its own documented --no-cors spelling.
+    "--noCors", "--middlewares", "scripts/api-guard.cjs", // path relative to cwd (root)
+  ]),
   ...(apiOnly
     ? []
     : [
