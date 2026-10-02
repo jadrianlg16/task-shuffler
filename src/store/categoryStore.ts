@@ -25,6 +25,9 @@ interface CategoryState {
 export const useCategoryStore = create<CategoryState>()((set, get) => {
   // Saves still in flight per category and field (see pendingWrites.ts).
   const writes = new PendingWrites<Category>();
+  // Deleted, but the delete isn't confirmed yet: kept up to date so a failed
+  // delete puts back what the server holds, not a stale copy.
+  const removedWhileSaving = new Map<string, Category>();
 
   /**
    * Apply field updates now and save them. When a save finishes, the fields it
@@ -45,6 +48,8 @@ export const useCategoryStore = create<CategoryState>()((set, get) => {
     const finish = (token: number, saved: boolean) => {
       const result = writes.settle(token, saved);
       if (!result) return;
+      const removed = removedWhileSaving.get(result.id);
+      if (removed) removedWhileSaving.set(result.id, withValues(removed, result.show));
       set((state) => ({
         categories: state.categories.map((c) =>
           c.id === result.id ? withValues(c, result.show) : c
@@ -101,14 +106,19 @@ export const useCategoryStore = create<CategoryState>()((set, get) => {
       const list = get().categories;
       const index = list.findIndex((c) => c.id === id);
       if (index === -1) return;
-      const removed = list[index];
+      removedWhileSaving.set(id, list[index]);
       set((state) => ({ categories: state.categories.filter((c) => c.id !== id) }));
-      persist(api.deleteCategory(id), () =>
-        set((state) => {
-          const next = [...state.categories];
-          next.splice(Math.min(index, next.length), 0, removed);
-          return { categories: next };
-        })
+      persist(
+        api.deleteCategory(id).then(() => removedWhileSaving.delete(id)),
+        () => {
+          const removed = removedWhileSaving.get(id) ?? list[index];
+          removedWhileSaving.delete(id);
+          set((state) => {
+            const next = [...state.categories];
+            next.splice(Math.min(index, next.length), 0, removed);
+            return { categories: next };
+          });
+        }
       );
     },
 

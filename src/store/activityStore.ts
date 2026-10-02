@@ -34,6 +34,9 @@ interface ActivityState {
 export const useActivityStore = create<ActivityState>()((set, get) => {
   // Saves still in flight per activity and field (see pendingWrites.ts).
   const writes = new PendingWrites<Activity>();
+  // Deleted, but the delete isn't confirmed yet: kept up to date so a failed
+  // delete puts back what the server holds, not a stale copy.
+  const removedWhileSaving = new Map<string, Activity>();
 
   /**
    * Apply field updates now and save them. When a save finishes, the fields it
@@ -54,6 +57,8 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
     const finish = (token: number, saved: boolean) => {
       const result = writes.settle(token, saved);
       if (!result) return;
+      const removed = removedWhileSaving.get(result.id);
+      if (removed) removedWhileSaving.set(result.id, withValues(removed, result.show));
       set((state) => ({
         activities: state.activities.map((a) =>
           a.id === result.id ? withValues(a, result.show) : a
@@ -125,14 +130,19 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
       const list = get().activities;
       const index = list.findIndex((a) => a.id === id);
       if (index === -1) return;
-      const removed = list[index];
+      removedWhileSaving.set(id, list[index]);
       set((state) => ({ activities: state.activities.filter((a) => a.id !== id) }));
-      persist(api.deleteActivity(id), () =>
-        set((state) => {
-          const next = [...state.activities];
-          next.splice(Math.min(index, next.length), 0, removed);
-          return { activities: next };
-        })
+      persist(
+        api.deleteActivity(id).then(() => removedWhileSaving.delete(id)),
+        () => {
+          const removed = removedWhileSaving.get(id) ?? list[index];
+          removedWhileSaving.delete(id);
+          set((state) => {
+            const next = [...state.activities];
+            next.splice(Math.min(index, next.length), 0, removed);
+            return { activities: next };
+          });
+        }
       );
     },
 

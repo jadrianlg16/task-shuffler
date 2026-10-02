@@ -52,8 +52,14 @@ async function call<T>(method: Method, run: () => T): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       backend.held.push({
         method,
-        finish: (ok) =>
-          ok ? resolve(structuredClone(run())) : reject(new Error(`${method} failed: 500`)),
+        finish: (ok) => {
+          if (!ok) return reject(new Error(`${method} failed: 500`));
+          try {
+            resolve(structuredClone(run()));
+          } catch (err) {
+            reject(err instanceof Error ? err : new Error(String(err))); // e.g. a 404
+          }
+        },
       });
     });
   }

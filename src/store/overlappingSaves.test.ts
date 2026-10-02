@@ -126,6 +126,18 @@ describe("overlapping task saves", { timeout: 30_000 }, () => {
       store().updateActivity("a", { status: "active", completedAt: null, startedAt });
     }));
 
+  it("complete, then delete", () =>
+    run(() => {
+      store().completeActivity("a");
+      store().deleteActivity("a");
+    }));
+
+  it("rename, then delete", () =>
+    run(() => {
+      store().updateActivity("a", { name: "X" });
+      store().deleteActivity("a");
+    }));
+
   it("rename, then change the length", () =>
     run(() => {
       store().updateActivity("a", { name: "Renamed" });
@@ -164,6 +176,19 @@ describe("overlapping category saves", { timeout: 30_000 }, () => {
     run(() => {
       store().updateCategory("hobby", { name: "Hobbies" });
       store().toggleHidden("hobby");
+    }));
+
+  it("rename, then delete", () =>
+    run(() => {
+      store().updateCategory("hobby", { name: "X" });
+      store().deleteCategory("hobby");
+    }));
+
+  it("rename, hide, then delete", () =>
+    run(() => {
+      store().updateCategory("hobby", { name: "X" });
+      store().toggleHidden("hobby");
+      store().deleteCategory("hobby");
     }));
 
   it("move a category down, then back up", () =>
