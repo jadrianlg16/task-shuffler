@@ -9,8 +9,10 @@ data_dir="$(dirname "$DB_FILE")"
 if [ "$(id -u)" = "0" ]; then
   # Earlier images ran as root, so an existing volume can hold root-owned
   # files. Hand anything not owned by "node" over to it, then drop privileges.
+  # Symlinks are skipped (and -h never follows one): a link planted in the
+  # volume must not get its target chowned.
   mkdir -p "$data_dir"
-  find "$data_dir" ! -user node -exec chown node:node {} +
+  find "$data_dir" ! -type l ! -user node -exec chown -h node:node {} +
   exec su-exec node sh "$0" "$@"
 fi
 
