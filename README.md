@@ -113,7 +113,7 @@ npm ci
 npm run dev
 ```
 
-This opens the UI at http://localhost:3003 and runs json-server on port 3001 behind `/api`. On first run, `scripts/dev.mjs` copies `db.json` to the git-ignored `data/dev-db.json` and serves that copy, so the tracked seed never changes. Delete `data/` to start over. `npm run server` starts json-server on its own.
+This serves the UI at http://localhost:3003 and runs json-server on port 3001 behind `/api`. On first run, `scripts/dev.mjs` copies `db.json` to the git-ignored `data/dev-db.json` and serves that copy, so the tracked seed never changes. Delete `data/` to start over. `npm run server` starts json-server on its own.
 
 ### Browser-only build (no server)
 
