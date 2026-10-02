@@ -1,14 +1,17 @@
 // `npm run dev`: json-server + Vite together, on a private copy of the seed.
 // `npm run server`: json-server only (same data file).
 //
-// json-server --watch rewrites the file it serves, so pointing it at the
+// json-server rewrites the file it serves, so pointing it at the
 // tracked db.json dirtied the repo on every change. This seeds a git-ignored
 // data/dev-db.json from db.json once and serves that instead.
 //
 // Ports: PORT (UI, default 3003) and API_PORT (json-server, default 3001).
 // The browser only talks to the UI port; Vite proxies /api to json-server.
 // json-server runs without CORS and behind scripts/api-guard.cjs, so pages
-// from other origins can neither read nor write the tasks.
+// from other origins can neither read nor write the tasks. It runs without
+// --watch: that option compares the file with memory after each write, and
+// during a burst of writes (an import) it reads a stale file and restarts
+// the server mid-request. Restart json-server after editing the file by hand.
 import { spawn } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -37,7 +40,7 @@ const run = (name, args, env = {}) =>
 const apiOnly = process.argv.includes("--api-only"); // `npm run server`
 const children = [
   run("json-server", [
-    "--watch", dbFile, "--port", apiPort,
+    dbFile, "--port", apiPort,
     // --noCors: json-server 0.17 ignores its own documented --no-cors spelling.
     "--noCors", "--middlewares", "scripts/api-guard.cjs", // path relative to cwd (root)
   ]),

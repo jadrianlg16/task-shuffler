@@ -22,8 +22,8 @@ fi
 
 # 0.0.0.0 inside the container so the published port works. No CORS (spelled
 # --noCors: json-server 0.17 ignores --no-cors), and scripts/api-guard.cjs
-# refuses requests from other origins.
-node_modules/.bin/json-server --watch "$DB_FILE" --host 0.0.0.0 --port 3001 \
+# refuses requests from other origins. No --watch: see scripts/dev.mjs.
+node_modules/.bin/json-server "$DB_FILE" --host 0.0.0.0 --port 3001 \
   --noCors --middlewares scripts/api-guard.cjs &
 # exec: Vite becomes PID 1, so `docker stop` reaches it and it shuts down cleanly.
 exec node_modules/.bin/vite --host 0.0.0.0 --port 3003
