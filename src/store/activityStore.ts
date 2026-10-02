@@ -2,7 +2,8 @@ import { create } from "zustand";
 import type { Activity } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
-import { applyUpdates, describeError, persist } from "./persist";
+import { describeError, persist } from "./persist";
+import { PendingWrites, withValues } from "./pendingWrites";
 import { isExampleTask, makeExampleTasks } from "@/data/exampleTasks";
 
 interface ActivityState {
@@ -31,25 +32,38 @@ interface ActivityState {
 }
 
 export const useActivityStore = create<ActivityState>()((set, get) => {
-  /** Apply field updates to some tasks now; undo each one whose save fails. */
+  // Saves still in flight per activity and field (see pendingWrites.ts).
+  const writes = new PendingWrites<Activity>();
+
+  /**
+   * Apply field updates now and save them. When a save finishes, the fields it
+   * touched show what the server holds, or the newest save still in flight.
+   */
   const patch = (changes: { id: string; updates: Partial<Activity> }[]) => {
-    const undos = new Map<string, (current: Activity) => Activity>();
+    const current = get().activities;
+    const started = changes.flatMap(({ id, updates }) => {
+      const item = current.find((x) => x.id === id);
+      return item ? [{ id, updates, token: writes.begin(item, updates) }] : []; // gone: nothing to save
+    });
     set((state) => ({
       activities: state.activities.map((a) => {
-        const change = changes.find((c) => c.id === a.id);
-        if (!change) return a;
-        const { next, undo } = applyUpdates(a, change.updates);
-        undos.set(a.id, undo);
-        return next;
+        const change = started.find((s) => s.id === a.id);
+        return change ? { ...a, ...change.updates } : a;
       }),
     }));
-    for (const { id, updates } of changes) {
-      const undo = undos.get(id);
-      if (!undo) continue; // not in the list (already gone): nothing to save
-      persist(api.updateActivity(id, updates), () =>
-        set((state) => ({
-          activities: state.activities.map((a) => (a.id === id ? undo(a) : a)),
-        }))
+    const finish = (token: number, saved: boolean) => {
+      const result = writes.settle(token, saved);
+      if (!result) return;
+      set((state) => ({
+        activities: state.activities.map((a) =>
+          a.id === result.id ? withValues(a, result.show) : a
+        ),
+      }));
+    };
+    for (const { id, updates, token } of started) {
+      persist(
+        api.updateActivity(id, updates).then(() => finish(token, true)),
+        () => finish(token, false)
       );
     }
   };

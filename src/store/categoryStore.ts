@@ -3,7 +3,8 @@ import type { Category } from "@/types";
 import { DEFAULT_CATEGORIES } from "@/data/defaultCategories";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
-import { applyUpdates, describeError, persist } from "./persist";
+import { describeError, persist } from "./persist";
+import { PendingWrites, withValues } from "./pendingWrites";
 
 interface CategoryState {
   categories: Category[];
@@ -22,25 +23,38 @@ interface CategoryState {
 }
 
 export const useCategoryStore = create<CategoryState>()((set, get) => {
-  /** Apply field updates now; undo each one whose save fails. */
+  // Saves still in flight per category and field (see pendingWrites.ts).
+  const writes = new PendingWrites<Category>();
+
+  /**
+   * Apply field updates now and save them. When a save finishes, the fields it
+   * touched show what the server holds, or the newest save still in flight.
+   */
   const patch = (changes: { id: string; updates: Partial<Category> }[]) => {
-    const undos = new Map<string, (current: Category) => Category>();
+    const current = get().categories;
+    const started = changes.flatMap(({ id, updates }) => {
+      const item = current.find((x) => x.id === id);
+      return item ? [{ id, updates, token: writes.begin(item, updates) }] : []; // gone: nothing to save
+    });
     set((state) => ({
       categories: state.categories.map((c) => {
-        const change = changes.find((ch) => ch.id === c.id);
-        if (!change) return c;
-        const { next, undo } = applyUpdates(c, change.updates);
-        undos.set(c.id, undo);
-        return next;
+        const change = started.find((s) => s.id === c.id);
+        return change ? { ...c, ...change.updates } : c;
       }),
     }));
-    for (const { id, updates } of changes) {
-      const undo = undos.get(id);
-      if (!undo) continue; // not in the list (already gone): nothing to save
-      persist(api.updateCategory(id, updates), () =>
-        set((state) => ({
-          categories: state.categories.map((c) => (c.id === id ? undo(c) : c)),
-        }))
+    const finish = (token: number, saved: boolean) => {
+      const result = writes.settle(token, saved);
+      if (!result) return;
+      set((state) => ({
+        categories: state.categories.map((c) =>
+          c.id === result.id ? withValues(c, result.show) : c
+        ),
+      }));
+    };
+    for (const { id, updates, token } of started) {
+      persist(
+        api.updateCategory(id, updates).then(() => finish(token, true)),
+        () => finish(token, false)
       );
     }
   };
