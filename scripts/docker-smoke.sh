@@ -32,6 +32,14 @@ until curl -fsS "$base/api/activities" >/dev/null 2>&1; do
   sleep 1
 done
 
+# The /api proxy must keep connections open: closing each one makes every
+# call a new TCP connection, which large imports can exhaust.
+connection="$(curl -fsSI "$base/api/activities" | tr -d '\r' | awk -F': ' 'tolower($1) == "connection" { print tolower($2) }')"
+if [ "$connection" = "close" ]; then
+  echo "FAIL: the /api proxy answers with Connection: close"
+  exit 1
+fi
+
 # What a browser loads first; this puts the stylesheet (and the files
 # Tailwind scans for it) into the dev server's module graph.
 for path in / /src/main.tsx /src/App.tsx /src/index.css; do
