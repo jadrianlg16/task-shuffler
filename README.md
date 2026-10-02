@@ -4,7 +4,7 @@ A task manager built on one idea: the hard part isn't tracking tasks, it's picki
 
 Task Shuffler is the name of the repo and the portfolio project; inside the app, it calls itself **done.**
 
-You keep a list of tasks, each with a rough length and a category. When a free half hour turns up, you say how long you have and which areas to draw from, and it chooses one for you, so the time goes to doing the task instead of deciding. It is a single-user tool. It runs entirely in the browser (localStorage), or against a small JSON REST backend if you want one list shared between devices.
+You keep a list of tasks, each with a rough length and a category. When a free half hour turns up, you say how long you have and which areas to draw from, and it chooses one for you, so the time goes to doing the task instead of deciding. It is a single-user tool that runs entirely in the browser (localStorage), or against a small JSON REST backend if you want one list shared between devices.
 
 **Live demo:** [www.adriangaona.dev/demos/tasklists](https://www.adriangaona.dev/demos/tasklists/) (the browser-only build, preloaded with example tasks) · [Project page](https://www.adriangaona.dev/work/task-shuffler)
 
