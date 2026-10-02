@@ -54,7 +54,7 @@ The components read from Zustand stores (tasks, categories, UI preferences and t
 
 | Build | Storage | Good for |
 | --- | --- | --- |
-| default | [json-server](https://github.com/typicode/json-server) over HTTP. The browser calls `/api` on the UI's own origin, and Vite proxies it to json-server. | One list shared by every device that can reach the UI (dev server or Docker). |
+| default | [json-server](https://github.com/typicode/json-server) over HTTP. The browser calls `/api` on the UI's own origin, and Vite proxies it to json-server, which runs with CORS off behind a same-origin guard. | One list shared by every device that can reach the UI (dev server or Docker). |
 | `VITE_STORAGE=local` | The browser's localStorage, seeded with the six default categories (plus the example tasks on `?demo` or in an iframe). | A static build with no server. This is the build the portfolio embeds. |
 
 The rules that matter (shuffle weighting, time filters, the quick-add parser, backup validation and reminder timing) are pure functions in `src/utils/` and `src/lib/safety.ts`, so they are tested without a browser. The stores are tested against an in-memory fake of the façade whose calls can be made to fail ([`src/test/fakeApi.ts`](src/test/fakeApi.ts)).
@@ -76,6 +76,7 @@ The rules that matter (shuffle weighting, time filters, the quick-add parser, ba
 ├── public/                    # web manifest, service worker (sw.js), icons
 ├── scripts/
 │   ├── dev.mjs                # npm run dev / npm run server: json-server (+ Vite) on a private data copy
+│   ├── api-guard.cjs          # same-origin guard for json-server and the /api proxy (+ tests)
 │   └── docker-start.sh        # container start: adopt the data volume, seed it, run as the node user
 ├── src/
 │   ├── api/                   # db.ts façade, httpDb.ts (json-server), localDb.ts (localStorage)
@@ -130,10 +131,10 @@ Open http://localhost:4173. It starts empty; add `?demo` to the URL on a first v
 
 ```bash
 docker build -t task-shuffler .
-docker run --rm -p 3003:3003 -v task-shuffler-data:/app/data task-shuffler
+docker run --rm -p 127.0.0.1:3003:3003 -v task-shuffler-data:/app/data task-shuffler
 ```
 
-The image is a development container, not a production build. It installs with `npm ci`, and [`scripts/docker-start.sh`](scripts/docker-start.sh) starts json-server and the Vite dev server as the unprivileged `node` user; only port 3003 needs publishing. Tasks live in `/app/data/db.json`, which is seeded from `db.json` on first start, so the named volume keeps them when the container is re-created. The script starts as root only to hand the volume to `node`, so a volume written by an earlier image (which ran as root) keeps working. For hot reload against your working copy, run `docker compose up`; it bind-mounts the source and keeps the data in a named volume.
+The image is a development container, not a production build. It installs with `npm ci`, and [`scripts/docker-start.sh`](scripts/docker-start.sh) starts json-server and the Vite dev server as the unprivileged `node` user; only port 3003 needs publishing. Tasks live in `/app/data/db.json`, which is seeded from `db.json` on first start, so the named volume keeps them when the container is re-created. The script starts as root only to hand the volume to `node`, so a volume written by an earlier image (which ran as root) keeps working. The command above and `docker-compose.yml` publish the port on 127.0.0.1 only, because the API has no authentication; publish it on a LAN address only on a network you trust. For hot reload against your working copy, run `docker compose up`; it bind-mounts the source and keeps the data in a named volume.
 
 ## Configuration
 
@@ -146,7 +147,7 @@ All variables are optional.
 | `API_PROXY_TARGET` | `http://localhost:3001` | Where the Vite dev and preview servers forward `/api`. `npm run dev` derives it from `API_PORT`, and the Docker image sets `http://127.0.0.1:3001`. |
 | `PORT` | `3003` | UI port for `npm run dev`. |
 | `API_PORT` | `3001` | json-server port for `npm run dev` and `npm run server`. |
-| `DB_FILE` | `data/dev-db.json` (Docker: `/app/data/db.json`) | json-server's live data file. It is seeded from `db.json` if missing. |
+| `DB_FILE` | `data/dev-db.json` (Docker: `/app/data/db.json`) | json-server's live data file. It is seeded from `db.json` if missing. json-server doesn't watch it, so restart it after editing the file by hand. |
 
 ## Tests
 
@@ -156,13 +157,13 @@ npm run lint      # ESLint; warnings fail it too
 npx tsc -b        # type-check (npm run build runs this first as well)
 ```
 
-The unit tests cover the pure logic: shuffle weighting, candidate filtering and the "nothing fits" suggestion; the quick-add parser; backup validation; the install and backup reminder rules; the example tasks; and archive grouping. The store tests run against [`src/test/fakeApi.ts`](src/test/fakeApi.ts): loading (and failing to load), optimistic add, update and delete with their rollbacks, start and drop, category changes, and backup import. [`src/App.test.tsx`](src/App.test.tsx) renders the whole app in jsdom to shuffle, skip a pick, start a task, and recover from a failed startup load. The two storage backends themselves (`httpDb.ts`, `localDb.ts`) have no unit tests.
+The unit tests cover the pure logic: shuffle weighting, candidate filtering and the "nothing fits" suggestion; the quick-add parser; backup validation; the install and backup reminder rules; the example tasks; and archive grouping. The store tests run against [`src/test/fakeApi.ts`](src/test/fakeApi.ts): loading (and failing to load), optimistic add, update and delete with their rollbacks, start and drop, category changes, and backup import. [`src/App.test.tsx`](src/App.test.tsx) renders the whole app in jsdom to shuffle, skip a pick, start a task, and recover from a failed startup load. [`scripts/api-guard.test.mjs`](scripts/api-guard.test.mjs) covers the same-origin guard. The two storage backends themselves (`httpDb.ts`, `localDb.ts`) have no unit tests.
 
 The [CI workflow](.github/workflows/ci.yml) runs `npm ci`, the three commands above and both builds (`npm run build`, and again with `VITE_STORAGE=local`) on Node 20 and 22, for pushes to `main` and for pull requests.
 
 ## Limitations
 
-- **No accounts and no authentication.** Anyone who can reach the UI port can read and change the list, so run server mode on your own machine or a trusted network. json-server is a development tool, not a hardened backend.
+- **No accounts and no authentication.** Web pages from other origins can't use the API: json-server runs with CORS off, and [`scripts/api-guard.cjs`](scripts/api-guard.cjs) refuses foreign `Origin` headers, cross-site fetches and JSONP, in front of both json-server and the `/api` proxy. Anything that can reach the UI port directly (curl, a script) can still read and change the list, so run server mode on your own machine or a trusted network. json-server is a development tool, not a hardened backend.
 - **No production server image.** The Dockerfile runs the Vite dev server. For hosting, use the browser-only build (static files).
 - **Browser-only data lives in one browser on one device.** It does not sync, and browsers can evict site data. The app requests persistent storage and nudges you to install and back up, but it cannot guarantee the data survives.
 - **Server mode doesn't sync live.** The lists load once, at startup (with an error and a retry if json-server can't be reached), and changes made while it is down are rolled back with a toast. The app doesn't poll, so edits from another device appear only after a reload.
