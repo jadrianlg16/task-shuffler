@@ -1,0 +1,6 @@
+# Generated or not ours to format.
+package-lock.json
+dist
+data
+# Prose and tables in Markdown are wrapped by hand.
+*.md
