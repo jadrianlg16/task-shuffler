@@ -57,7 +57,7 @@ The components read from Zustand stores (tasks, categories, UI preferences and t
 | default | [json-server](https://github.com/typicode/json-server) over HTTP. The browser calls `/api` on the UI's own origin, and Vite proxies it to json-server. | One list shared by every device that can reach the UI (dev server or Docker). |
 | `VITE_STORAGE=local` | The browser's localStorage, seeded with the six default categories (plus the example tasks on `?demo` or in an iframe). | A static build with no server. This is the build the portfolio embeds. |
 
-The rules that matter (shuffle weighting, time filters, the quick-add parser, backup validation and reminder timing) are pure functions in `src/utils/` and `src/lib/safety.ts`, so they are tested without a browser.
+The rules that matter (shuffle weighting, time filters, the quick-add parser, backup validation and reminder timing) are pure functions in `src/utils/` and `src/lib/safety.ts`, so they are tested without a browser. The stores are tested against an in-memory fake of the façade whose calls can be made to fail ([`src/test/fakeApi.ts`](src/test/fakeApi.ts)).
 
 ### Tech stack and why
 
@@ -65,42 +65,47 @@ The rules that matter (shuffle weighting, time filters, the quick-add parser, ba
 - **Zustand 5.** Small stores without providers. Only UI preferences (theme, sort, view, last picker choice) are kept with its `persist` middleware; task data always goes through the façade.
 - **json-server 0.17** as the default backend. It gives a REST API over a JSON file with no backend code, which is enough for a single-user tool on your own machine or network.
 - **Tailwind CSS 4 and shadcn/ui (Radix)** for the dialog, buttons and toasts (sonner). The visual system lives in CSS variables in `src/index.css`.
-- **framer-motion** for the shuffle reel and the shared-layout transition that grows the winning name into the result card. Also used: date-fns, uuid and lucide-react.
+- **framer-motion** for the shuffle reel and the shared-layout transition that grows the winning name into the result card. It ships in a lazy chunk with the dialogs ([`src/components/lazyViews.tsx`](src/components/lazyViews.tsx)), which takes about a third off the main JavaScript chunk. The chunks are preloaded right after startup, so dialogs still open instantly and the service worker can cache them. Also used: date-fns, uuid and lucide-react.
+- **Vitest, Testing Library and ESLint** (typescript-eslint with type-aware rules, plus the React hooks rules). Tests run in Node; the component test uses jsdom.
 
 ### Project structure
 
 ```text
 .
-├── public/                 # web manifest, service worker (sw.js), icons
-├── scripts/dev.mjs         # npm run dev / npm run server: json-server (+ Vite) on a private data copy
+├── .github/workflows/ci.yml   # lint, type-check, test and both builds, on Node 20 and 22
+├── public/                    # web manifest, service worker (sw.js), icons
+├── scripts/
+│   ├── dev.mjs                # npm run dev / npm run server: json-server (+ Vite) on a private data copy
+│   └── docker-start.sh        # container start: adopt the data volume, seed it, run as the node user
 ├── src/
-│   ├── api/                # db.ts façade, httpDb.ts (json-server), localDb.ts (localStorage)
-│   ├── adapters/           # localStorage read/write used by localDb.ts
-│   ├── store/              # Zustand stores, persist.ts (save + rollback), replaceAllData.ts (import)
-│   ├── utils/              # shuffle, filters, quickAdd, exportImport, archive (+ tests)
-│   ├── lib/                # safety.ts (backup / install rules, + tests), platform.ts, utils.ts
-│   ├── data/               # default categories, example tasks (+ tests)
-│   ├── hooks/              # useShortcuts.ts, useTheme.ts
-│   ├── components/         # activities, categories, shuffle, onboarding, layout, ui (shadcn/ui)
+│   ├── api/                   # db.ts façade, httpDb.ts (json-server), localDb.ts (localStorage)
+│   ├── adapters/              # localStorage read/write used by localDb.ts
+│   ├── store/                 # Zustand stores, persist.ts (save + rollback), loadAll.ts, replaceAllData.ts (+ tests)
+│   ├── utils/                 # shuffle, filters, quickAdd, exportImport, archive (+ tests)
+│   ├── lib/                   # safety.ts (backup / install rules, + tests), platform.ts, utils.ts
+│   ├── data/                  # default categories, example tasks (+ tests)
+│   ├── hooks/                 # useShortcuts.ts, useTheme.ts
+│   ├── components/            # activities, categories, shuffle, onboarding, layout, ui (shadcn/ui), lazyViews.tsx
+│   ├── test/fakeApi.ts        # in-memory backend for the store and component tests
 │   ├── types/index.ts
-│   ├── App.tsx · main.tsx · index.css
-├── db.json                 # seed data for server mode (generic sample tasks)
+│   └── App.tsx (+ App.test.tsx) · main.tsx · index.css
+├── db.json                    # seed data for server mode (generic sample tasks)
 ├── index.html
 ├── Dockerfile · docker-compose.yml
-└── vite.config.ts · tsconfig.json
+└── vite.config.ts · tsconfig.json · eslint.config.js
 ```
 
 ## Engineering highlights
 
 - **The backend is chosen at build time.** [`src/api/db.ts`](src/api/db.ts) puts two implementations behind one async API and picks one from `import.meta.env.VITE_STORAGE`. Vite inlines the flag, so the static build ships without the HTTP client.
-- **Optimistic updates with a targeted rollback.** The stores snapshot only the items a change touches, update the screen, then save. [`src/store/persist.ts`](src/store/persist.ts) restores just the change that failed and shows a single "Couldn't save that change" toast, so a failed save never leaves unsaved data on screen.
-- **HTTP errors are errors.** `fetch` only rejects on network failure, so [`src/api/httpDb.ts`](src/api/httpDb.ts) throws on any non-2xx response, and a 404 or 500 triggers the same rollback. Importing a backup writes every incoming item before deleting leftovers, so a failure part-way can leave extra old items behind but never deletes anything before the new data is written.
+- **Optimistic updates with a targeted rollback.** The stores snapshot only the items a change touches, update the screen, then save. [`src/store/persist.ts`](src/store/persist.ts) restores just the change that failed and shows a single "Couldn't save that change" toast, so a failed save never leaves unsaved data on screen. The store tests run each kind of change against a fake backend that fails on demand.
+- **Failures are visible.** `fetch` only rejects on network failure, so [`src/api/httpDb.ts`](src/api/httpDb.ts) throws on any non-2xx response, and a 404 or 500 triggers the same rollback. If the lists can't be loaded at startup, [`src/store/loadAll.ts`](src/store/loadAll.ts) records why, and the app shows an error with a retry instead of an empty list. Importing a backup writes every incoming item before deleting leftovers, so a failure part-way can leave extra old items behind but never deletes anything before the new data is written.
 - **Shuffle logic that can be tested.** [`src/utils/shuffle.ts`](src/utils/shuffle.ts) weights each task linearly from 1 to 3 over 30 days. When nothing fits, it searches the time presets for the smallest change that would. Tests inject `random` and `now`, so the 3× claim is checked, not assumed.
-- **Accessibility and strictness.** The pick card is a Radix dialog ([`PickDialog.tsx`](src/components/shuffle/PickDialog.tsx)) with a focus trap and Escape to close. Chips use `aria-pressed`, the progress bars have `progressbar` roles, and focus rings use `:focus-visible`. The framer-motion animations follow the OS reduced-motion setting, so reduced-motion users skip the reel. TypeScript runs in strict mode with `noUnusedLocals` and `noUnusedParameters`.
+- **Accessibility and strictness.** The pick card is a Radix dialog ([`PickDialog.tsx`](src/components/shuffle/PickDialog.tsx)) with a focus trap and Escape to close. Chips use `aria-pressed`, the progress bars have `progressbar` roles, and focus rings use `:focus-visible`. With the OS reduced-motion setting on, the shuffle skips the reel, CSS animations and transitions drop to near zero, and scrolling jumps instead of gliding. TypeScript runs in strict mode with `noUnusedLocals` and `noUnusedParameters`, and ESLint's type-aware rules reject unhandled promises.
 
 ## Getting started
 
-**Prerequisites:** Node.js 20.17+ or 22.9+, with npm. Older Node 20 releases work but print an engine warning. Docker is optional.
+**Prerequisites:** Node.js 20.19+ or 22.13+ (the minimum for ESLint 10), with npm. Docker is optional.
 
 ### Quick start (server mode)
 
@@ -128,7 +133,7 @@ docker build -t task-shuffler .
 docker run --rm -p 3003:3003 -v task-shuffler-data:/app/data task-shuffler
 ```
 
-The image is a development container, not a production build. It runs `npm install`, then starts json-server and the Vite dev server inside the container, and only port 3003 needs publishing. Tasks live in `/app/data/db.json`, which is seeded from `db.json` on first start, so the named volume keeps them when the container is re-created. For hot reload against your working copy, run `docker compose up`; it bind-mounts the source and keeps the data in a named volume.
+The image is a development container, not a production build. It installs with `npm ci`, and [`scripts/docker-start.sh`](scripts/docker-start.sh) starts json-server and the Vite dev server as the unprivileged `node` user; only port 3003 needs publishing. Tasks live in `/app/data/db.json`, which is seeded from `db.json` on first start, so the named volume keeps them when the container is re-created. The script starts as root only to hand the volume to `node`, so a volume written by an earlier image (which ran as root) keeps working. For hot reload against your working copy, run `docker compose up`; it bind-mounts the source and keeps the data in a named volume.
 
 ## Configuration
 
@@ -146,17 +151,21 @@ All variables are optional.
 ## Tests
 
 ```bash
-npm test
+npm test          # Vitest, single run
+npm run lint      # ESLint; warnings fail it too
+npx tsc -b        # type-check (npm run build runs this first as well)
 ```
 
-Vitest runs once over the pure logic: shuffle weighting, candidate filtering and the "nothing fits" suggestion; the quick-add parser; backup validation; the install and backup reminder rules; the example tasks; and archive grouping. The stores, the storage backends and the React components have no automated tests. `npm run build` type-checks the whole project with `tsc -b` before bundling.
+The unit tests cover the pure logic: shuffle weighting, candidate filtering and the "nothing fits" suggestion; the quick-add parser; backup validation; the install and backup reminder rules; the example tasks; and archive grouping. The store tests run against [`src/test/fakeApi.ts`](src/test/fakeApi.ts): loading (and failing to load), optimistic add, update and delete with their rollbacks, start and drop, category changes, and backup import. [`src/App.test.tsx`](src/App.test.tsx) renders the whole app in jsdom to shuffle, skip a pick, start a task, and recover from a failed startup load. The two storage backends themselves (`httpDb.ts`, `localDb.ts`) have no unit tests.
+
+The [CI workflow](.github/workflows/ci.yml) runs `npm ci`, the three commands above and both builds (`npm run build`, and again with `VITE_STORAGE=local`) on Node 20 and 22, for pushes to `main` and for pull requests.
 
 ## Limitations
 
 - **No accounts and no authentication.** Anyone who can reach the UI port can read and change the list, so run server mode on your own machine or a trusted network. json-server is a development tool, not a hardened backend.
 - **No production server image.** The Dockerfile runs the Vite dev server. For hosting, use the browser-only build (static files).
 - **Browser-only data lives in one browser on one device.** It does not sync, and browsers can evict site data. The app requests persistent storage and nudges you to install and back up, but it cannot guarantee the data survives.
-- **Server mode loads the list once.** If json-server isn't reachable when the page opens, the list looks empty, with no error message, until you reload. Changes made while it is down are rolled back with a toast. The app doesn't poll, so edits from another device appear only after a reload.
+- **Server mode doesn't sync live.** The lists load once, at startup (with an error and a retry if json-server can't be reached), and changes made while it is down are rolled back with a toast. The app doesn't poll, so edits from another device appear only after a reload.
 - **Imports in server mode are not atomic,** because json-server has no transactions. If an import fails part-way, the app reloads what the server holds and says so, and some old items may remain.
 - **The app itself has no analytics and sets no cookies.** Its only third-party requests are for Google Fonts.
 - **The hosted demo is rebuilt separately from this repo** and currently shows an older UI than the screenshots.
