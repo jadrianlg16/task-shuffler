@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
+import { MotionConfig } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 /**
  * The card the reel and the result live in. Built on the Radix dialog so
  * Escape, clicking outside, and focus trapping work like every other modal.
+ * Everything animated with framer-motion renders in here, so this is where
+ * its animations are told to follow the OS "reduce motion" setting.
  */
 export function PickDialog({
   title,
@@ -39,7 +42,7 @@ export function PickDialog({
           className="sm:hidden mx-auto rounded-full"
           style={{ width: 36, height: 4, background: "var(--ink-faint)", marginBottom: 12 }}
         />
-        {children}
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
       </DialogContent>
     </Dialog>
   );

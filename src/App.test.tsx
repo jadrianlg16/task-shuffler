@@ -44,7 +44,8 @@ afterEach(cleanup);
 
 /** The picked task's name, from the dialog title ("Your next task: …"). */
 async function pickedName(): Promise<string> {
-  const dialog = await screen.findByRole("dialog", { name: /^Your next task: / });
+  // The dialog code is lazy-loaded, so the first one can take a moment.
+  const dialog = await screen.findByRole("dialog", { name: /^Your next task: / }, { timeout: 5000 });
   const title = within(dialog)
     .getAllByRole("heading")
     .map((h) => h.textContent ?? "")
