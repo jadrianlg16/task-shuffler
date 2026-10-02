@@ -77,7 +77,8 @@ The rules that matter (shuffle weighting, time filters, the quick-add parser, ba
 ├── scripts/
 │   ├── dev.mjs                # npm run dev / npm run server: json-server (+ Vite) on a private data copy
 │   ├── api-guard.cjs          # same-origin guard for json-server and the /api proxy (+ tests)
-│   └── docker-start.sh        # container start: adopt the data volume, seed it, run as the node user
+│   ├── docker-start.sh        # container start: adopt the data volume, seed it, run as the node user
+│   └── docker-smoke.sh        # CI: build the image, save through it, fail if a save reloads the page
 ├── src/
 │   ├── api/                   # db.ts façade, httpDb.ts (json-server), localDb.ts (localStorage)
 │   ├── adapters/              # localStorage read/write used by localDb.ts
@@ -160,7 +161,7 @@ npx tsc -b            # type-check (npm run build runs this first as well)
 
 The unit tests cover the pure logic: shuffle weighting, candidate filtering and the "nothing fits" suggestion; the quick-add parser; backup validation; the install and backup reminder rules; the example tasks; and archive grouping. The store tests run against [`src/test/fakeApi.ts`](src/test/fakeApi.ts): loading (and failing to load), optimistic add, update and delete with their rollbacks, start and drop, category changes, and backup import. [`src/App.test.tsx`](src/App.test.tsx) renders the whole app in jsdom to shuffle, skip a pick, start a task, and recover from a failed startup load. [`scripts/api-guard.test.mjs`](scripts/api-guard.test.mjs) covers the same-origin guard. The two storage backends themselves (`httpDb.ts`, `localDb.ts`) have no unit tests.
 
-The [CI workflow](.github/workflows/ci.yml) runs `npm ci`, the four commands above and both builds (`npm run build`, and again with `VITE_STORAGE=local`) on Node 20 and 22, for pushes to `main` and for pull requests. It has not run on GitHub yet; every step has been run locally, on Windows and in Linux containers. The one formatting-only commit is listed in `.git-blame-ignore-revs`.
+The [CI workflow](.github/workflows/ci.yml) runs `npm ci`, the four commands above and both builds (`npm run build`, and again with `VITE_STORAGE=local`) on Node 20 and 22, for pushes to `main` and for pull requests. A second job runs [`scripts/docker-smoke.sh`](scripts/docker-smoke.sh), which builds the image, saves through it and fails if a save makes the dev server reload the page. It has not run on GitHub yet; every step has been run locally, on Windows and in Linux containers. The one formatting-only commit is listed in `.git-blame-ignore-revs`.
 
 ## Limitations
 
