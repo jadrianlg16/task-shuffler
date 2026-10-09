@@ -25,6 +25,11 @@ export function isStandalone(): boolean {
   );
 }
 
+/** Smooth scrolling, unless the OS asks for reduced motion (CSS can't reach JS scrolls). */
+export function scrollBehavior(): ScrollBehavior {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+}
+
 /** iPhone or iPad (iPadOS reports itself as a Mac, but with touch). */
 export function isIOS(): boolean {
   const ua = navigator.userAgent;

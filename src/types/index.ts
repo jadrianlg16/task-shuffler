@@ -14,7 +14,6 @@ export type Category = {
   id: string;
   name: string;
   color: string;
-  icon: string;
   isDefault: boolean;
   isHidden: boolean;
   sortOrder: number;
@@ -29,4 +28,3 @@ export type TimeFilter = {
   max?: number;
   includeNoDuration: boolean;
 };
-

@@ -1,3 +1,15 @@
-node_modules
-dist
-.git
+# Allowlist: send only what the image needs, so local data (data/), build
+# output, editor folders and secrets never reach the build context.
+*
+!package.json
+# Tools in the image (Tailwind's class scanner, for one) honour .gitignore.
+!.gitignore
+!package-lock.json
+!index.html
+!vite.config.ts
+!tsconfig.json
+!db.json
+!public/
+!src/
+!scripts/docker-start.sh
+!scripts/api-guard.cjs

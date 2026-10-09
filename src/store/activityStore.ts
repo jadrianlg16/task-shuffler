@@ -2,18 +2,18 @@ import { create } from "zustand";
 import type { Activity } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import * as api from "@/api/db";
-import { persist } from "./persist";
+import { describeError, persist } from "./persist";
+import { PendingWrites, withValues } from "./pendingWrites";
 import { isExampleTask, makeExampleTasks } from "@/data/exampleTasks";
 
 interface ActivityState {
   activities: Activity[];
   isLoaded: boolean;
+  /** Why the last load failed, or null. While set, `activities` can't be trusted. */
+  loadError: string | null;
+  /** Fetch every task. Never rejects: a failure is recorded in `loadError`. */
   loadActivities: () => Promise<void>;
-  addActivity: (
-    name: string,
-    durationMinutes: number | null,
-    categoryId: string
-  ) => void;
+  addActivity: (name: string, durationMinutes: number | null, categoryId: string) => void;
   updateActivity: (id: string, updates: Partial<Omit<Activity, "id">>) => void;
   completeActivity: (id: string) => void;
   restoreActivity: (id: string) => void;
@@ -32,26 +32,43 @@ interface ActivityState {
 }
 
 export const useActivityStore = create<ActivityState>()((set, get) => {
-  /** Apply field updates to some tasks now; put the old values back if saving fails. */
+  // Saves still in flight per activity and field (see pendingWrites.ts).
+  const writes = new PendingWrites<Activity>();
+  // Deleted, but the delete isn't confirmed yet: kept up to date so a failed
+  // delete puts back what the server holds, not a stale copy.
+  const removedWhileSaving = new Map<string, Activity>();
+
+  /**
+   * Apply field updates now and save them. When a save finishes, the fields it
+   * touched show what the server holds, or the newest save still in flight.
+   */
   const patch = (changes: { id: string; updates: Partial<Activity> }[]) => {
-    const before = new Map(
-      get()
-        .activities.filter((a) => changes.some((c) => c.id === a.id))
-        .map((a) => [a.id, a])
-    );
+    const current = get().activities;
+    const started = changes.flatMap(({ id, updates }) => {
+      const item = current.find((x) => x.id === id);
+      return item ? [{ id, updates, token: writes.begin(item, updates) }] : []; // gone: nothing to save
+    });
     set((state) => ({
       activities: state.activities.map((a) => {
-        const change = changes.find((c) => c.id === a.id);
+        const change = started.find((s) => s.id === a.id);
         return change ? { ...a, ...change.updates } : a;
       }),
     }));
-    for (const { id, updates } of changes) {
-      persist(api.updateActivity(id, updates), () =>
-        set((state) => ({
-          activities: state.activities.map((a) =>
-            a.id === id && before.has(id) ? before.get(id)! : a
-          ),
-        }))
+    const finish = (token: number, saved: boolean) => {
+      const result = writes.settle(token, saved);
+      if (!result) return;
+      const removed = removedWhileSaving.get(result.id);
+      if (removed) removedWhileSaving.set(result.id, withValues(removed, result.show));
+      set((state) => ({
+        activities: state.activities.map((a) =>
+          a.id === result.id ? withValues(a, result.show) : a
+        ),
+      }));
+    };
+    for (const { id, updates, token } of started) {
+      persist(
+        api.updateActivity(id, updates).then(() => finish(token, true)),
+        () => finish(token, false)
       );
     }
   };
@@ -59,10 +76,16 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
   return {
     activities: [],
     isLoaded: false,
+    loadError: null,
 
     loadActivities: async () => {
-      const activities = await api.fetchActivities();
-      set({ activities, isLoaded: true });
+      try {
+        const activities = await api.fetchActivities();
+        set({ activities, isLoaded: true, loadError: null });
+      } catch (err) {
+        console.warn("[done.] loading tasks failed:", err);
+        set({ loadError: describeError(err) });
+      }
     },
 
     addActivity: (name, durationMinutes, categoryId) => {
@@ -86,9 +109,7 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
     updateActivity: (id, updates) => patch([{ id, updates }]),
 
     completeActivity: (id) =>
-      patch([
-        { id, updates: { status: "archived", completedAt: new Date().toISOString() } },
-      ]),
+      patch([{ id, updates: { status: "archived", completedAt: new Date().toISOString() } }]),
 
     restoreActivity: (id) =>
       patch([{ id, updates: { status: "active", completedAt: null, startedAt: null } }]),
@@ -109,14 +130,19 @@ export const useActivityStore = create<ActivityState>()((set, get) => {
       const list = get().activities;
       const index = list.findIndex((a) => a.id === id);
       if (index === -1) return;
-      const removed = list[index];
+      removedWhileSaving.set(id, list[index]);
       set((state) => ({ activities: state.activities.filter((a) => a.id !== id) }));
-      persist(api.deleteActivity(id), () =>
-        set((state) => {
-          const next = [...state.activities];
-          next.splice(Math.min(index, next.length), 0, removed);
-          return { activities: next };
-        })
+      persist(
+        api.deleteActivity(id).then(() => removedWhileSaving.delete(id)),
+        () => {
+          const removed = removedWhileSaving.get(id) ?? list[index];
+          removedWhileSaving.delete(id);
+          set((state) => {
+            const next = [...state.activities];
+            next.splice(Math.min(index, next.length), 0, removed);
+            return { activities: next };
+          });
+        }
       );
     },
 

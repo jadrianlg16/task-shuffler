@@ -5,13 +5,24 @@ import { matchCategory, parseQuickAdd } from "./quickAdd";
 
 const cats: Category[] = [
   ...DEFAULT_CATEGORIES,
-  { id: "x1", name: "Side Hustle", color: "#000000", icon: "", isDefault: false, isHidden: false, sortOrder: 6 },
+  {
+    id: "x1",
+    name: "Side Hustle",
+    color: "#000000",
+    isDefault: false,
+    isHidden: false,
+    sortOrder: 6,
+  },
 ];
 const p = (s: string) => parseQuickAdd(s, cats);
 
 describe("parseQuickAdd", () => {
   it("leaves plain names alone", () => {
-    expect(p("Water the plants")).toEqual({ name: "Water the plants", durationMinutes: null, categoryId: null });
+    expect(p("Water the plants")).toEqual({
+      name: "Water the plants",
+      durationMinutes: null,
+      categoryId: null,
+    });
   });
 
   it("reads minutes and hours in common forms", () => {
@@ -30,7 +41,11 @@ describe("parseQuickAdd", () => {
   });
 
   it("combines both anywhere in the line", () => {
-    expect(p("15m Call mom #personal")).toEqual({ name: "Call mom", durationMinutes: 15, categoryId: "personal" });
+    expect(p("15m Call mom #personal")).toEqual({
+      name: "Call mom",
+      durationMinutes: 15,
+      categoryId: "personal",
+    });
   });
 
   it("keeps numbers that aren't durations", () => {

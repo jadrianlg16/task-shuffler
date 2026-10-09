@@ -29,12 +29,17 @@ describe("parseImportData", () => {
   });
 
   it("rejects malformed tasks instead of importing half a file", () => {
-    const json = exportData([task(), task({ id: "t2", status: "done" as never })], DEFAULT_CATEGORIES);
+    const json = exportData(
+      [task(), task({ id: "t2", status: "done" as never })],
+      DEFAULT_CATEGORIES
+    );
     expect(() => parseImportData(json)).toThrow(/Task #2/);
   });
 
   it("rejects duplicate ids and a missing Unassigned category", () => {
-    expect(() => parseImportData(exportData([task(), task()], DEFAULT_CATEGORIES))).toThrow(/duplicate/);
+    expect(() => parseImportData(exportData([task(), task()], DEFAULT_CATEGORIES))).toThrow(
+      /duplicate/
+    );
     const noUnassigned = DEFAULT_CATEGORIES.filter((c) => c.id !== "unassigned");
     expect(() => parseImportData(exportData([], noUnassigned))).toThrow(/Unassigned/);
   });
@@ -45,8 +50,21 @@ describe("parseImportData", () => {
   });
 
   it("accepts old backups without startedAt", () => {
-    const old = JSON.parse(exportData([task()], DEFAULT_CATEGORIES));
+    const old = JSON.parse(exportData([task()], DEFAULT_CATEGORIES)) as {
+      activities: Partial<Activity>[];
+    };
     delete old.activities[0].startedAt;
     expect(parseImportData(JSON.stringify(old)).activities).toHaveLength(1);
+  });
+
+  it("accepts old backups whose categories still carry the retired icon field", () => {
+    const old = JSON.parse(exportData([task()], DEFAULT_CATEGORIES)) as {
+      categories: Record<string, unknown>[];
+    };
+    old.categories = old.categories.map((c) => ({ ...c, icon: "S" }));
+    const { categories } = parseImportData(JSON.stringify(old));
+    expect(categories).toHaveLength(DEFAULT_CATEGORIES.length);
+    expect(categories.every((c) => !("icon" in c))).toBe(true);
+    expect(categories).toEqual(DEFAULT_CATEGORIES);
   });
 });

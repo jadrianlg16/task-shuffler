@@ -23,9 +23,7 @@ function getCategoryPool(
   categoryIds: string[],
   categories: Category[]
 ): Activity[] {
-  const hiddenCatIds = new Set(
-    categories.filter((c) => c.isHidden).map((c) => c.id)
-  );
+  const hiddenCatIds = new Set(categories.filter((c) => c.isHidden).map((c) => c.id));
   const pool = activities.filter(
     (a) => a.status === "active" && !a.startedAt && !hiddenCatIds.has(a.categoryId)
   );

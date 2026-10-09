@@ -52,7 +52,15 @@ const ids = (xs: Activity[]) => xs.map((a) => a.id);
 
 const categories: Category[] = [
   ...DEFAULT_CATEGORIES.map((c) => (c.id === "hobby" ? { ...c, isHidden: true } : c)),
-  { id: "x1", name: "Side Hustle", color: "#0EA5E9", icon: "", isDefault: false, isHidden: false, sortOrder: 6 },
+  {
+    id: "x1",
+    name: "Side Hustle",
+    color: "#0EA5E9",
+    icon: "",
+    isDefault: false,
+    isHidden: false,
+    sortOrder: 6,
+  },
 ];
 
 const act = (
@@ -141,7 +149,11 @@ const filterCases = {
     // A category listed twice: the later entry's order wins.
     (() => {
       const repeated = [...categories, { ...categories[0], sortOrder: 9 }];
-      return { sortBy: "category", categories: repeated, expected: ids(sortActivities(activities, "category", repeated)) };
+      return {
+        sortBy: "category",
+        categories: repeated,
+        expected: ids(sortActivities(activities, "category", repeated)),
+      };
     })(),
   ],
 };
@@ -262,9 +274,24 @@ const quickAddCases = quickAddInputs.map((input) => ({
   expected: parseQuickAdd(input, categories),
 }));
 
-const matchCases = ["sch", "s", "PERSONAL", "side_hustle", "unassigned", "x1", "X1", "", "!!!", "bus", "b", "h", "f", "u", "per-son-al", "sidehustler"].map(
-  (tag) => ({ tag, expected: matchCategory(tag, categories)?.id ?? null })
-);
+const matchCases = [
+  "sch",
+  "s",
+  "PERSONAL",
+  "side_hustle",
+  "unassigned",
+  "x1",
+  "X1",
+  "",
+  "!!!",
+  "bus",
+  "b",
+  "h",
+  "f",
+  "u",
+  "per-son-al",
+  "sidehustler",
+].map((tag) => ({ tag, expected: matchCategory(tag, categories)?.id ?? null }));
 
 // ---- Import ----------------------------------------------------------------
 
@@ -291,7 +318,20 @@ const catWith = (o: Record<string, unknown>) =>
   DEFAULT_CATEGORIES.map((c) => (c.id === "school" ? { ...c, ...o } : c));
 
 const importInputs: [string, string][] = [
-  ["round trip", exportData([task() as Activity, task({ id: "t2", durationMinutes: null, startedAt: "2026-09-02T10:00:00.000Z" }) as Activity], DEFAULT_CATEGORIES)],
+  [
+    "round trip",
+    exportData(
+      [
+        task() as Activity,
+        task({
+          id: "t2",
+          durationMinutes: null,
+          startedAt: "2026-09-02T10:00:00.000Z",
+        }) as Activity,
+      ],
+      DEFAULT_CATEGORIES
+    ),
+  ],
   ["examples", exportData(makeExampleTasks(NOW), DEFAULT_CATEGORIES)],
   ["not json", "not json"],
   ["empty string", ""],
@@ -319,7 +359,10 @@ const importInputs: [string, string][] = [
   ["startedAt number", backup([task({ startedAt: 1 })])],
   ["task is null", backup([null])],
   ["task is a string", backup(["t1"])],
-  ["archived task", backup([task({ status: "archived", completedAt: "2026-09-03T08:00:00.000Z" })])],
+  [
+    "archived task",
+    backup([task({ status: "archived", completedAt: "2026-09-03T08:00:00.000Z" })]),
+  ],
   ["unknown category", backup([task({ categoryId: "gone" })])],
   ["extra fields", backup([task({ colour: "red" })], catWith({ emoji: "📚" }))],
   ["category without icon", backup([task()], catWithout("icon"))],
@@ -333,7 +376,13 @@ const importInputs: [string, string][] = [
   ["category sortOrder text", backup([task()], catWith({ sortOrder: "1" }))],
   ["category is null", backup([task()], [...DEFAULT_CATEGORIES, null])],
   ["bad task and bad category", backup([task({ status: "done" })], catWith({ color: "blue" }))],
-  ["no unassigned", backup([task()], DEFAULT_CATEGORIES.filter((c) => c.id !== "unassigned"))],
+  [
+    "no unassigned",
+    backup(
+      [task()],
+      DEFAULT_CATEGORIES.filter((c) => c.id !== "unassigned")
+    ),
+  ],
   ["duplicate task ids", backup([task(), task()])],
   ["duplicate category ids", backup([task()], [...DEFAULT_CATEGORIES, DEFAULT_CATEGORIES[0]])],
   ["empty activities", backup([])],
@@ -407,7 +456,13 @@ const archiveCases = [
 
 // ---- Backup reminder ---------------------------------------------------------
 
-const reminderInputs: [label: string, ownTaskCount: number, firstUseAgo: number, lastBackupAgo: number | null, snoozedUntilFromNow: number | null][] = [
+const reminderInputs: [
+  label: string,
+  ownTaskCount: number,
+  firstUseAgo: number,
+  lastBackupAgo: number | null,
+  snoozedUntilFromNow: number | null,
+][] = [
   ["a week of use, no backup", 5, 7 * DAY, null, null],
   ["just under a week", 5, 7 * DAY - 1, null, null],
   ["ten days, no backup", 5, 10 * DAY, null, null],
@@ -420,23 +475,25 @@ const reminderInputs: [label: string, ownTaskCount: number, firstUseAgo: number,
   ["snooze ends now", 5, 10 * DAY, null, 0],
   ["snooze ended yesterday", 5, 10 * DAY, 40 * DAY, -DAY],
 ];
-const reminderCases = reminderInputs.map(([label, ownTaskCount, firstUseAgo, lastBackupAgo, snoozed]) => {
-  const meta: SafetyMeta = {
-    firstUseAt: NOW - firstUseAgo,
-    lastBackupAt: lastBackupAgo === null ? null : NOW - lastBackupAgo,
-    backupSnoozedUntil: snoozed === null ? 0 : NOW + snoozed,
-    installHintDismissed: false,
-    persist: "unknown",
-  };
-  return {
-    label,
-    ownTaskCount,
-    firstUseAt: new Date(meta.firstUseAt).toISOString(),
-    lastBackupAt: meta.lastBackupAt === null ? null : new Date(meta.lastBackupAt).toISOString(),
-    snoozedUntil: snoozed === null ? null : new Date(meta.backupSnoozedUntil).toISOString(),
-    expected: shouldRemindBackup({ ownTaskCount, meta, embedded: false, now: NOW }),
-  };
-});
+const reminderCases = reminderInputs.map(
+  ([label, ownTaskCount, firstUseAgo, lastBackupAgo, snoozed]) => {
+    const meta: SafetyMeta = {
+      firstUseAt: NOW - firstUseAgo,
+      lastBackupAt: lastBackupAgo === null ? null : NOW - lastBackupAgo,
+      backupSnoozedUntil: snoozed === null ? 0 : NOW + snoozed,
+      installHintDismissed: false,
+      persist: "unknown",
+    };
+    return {
+      label,
+      ownTaskCount,
+      firstUseAt: new Date(meta.firstUseAt).toISOString(),
+      lastBackupAt: meta.lastBackupAt === null ? null : new Date(meta.lastBackupAt).toISOString(),
+      snoozedUntil: snoozed === null ? null : new Date(meta.backupSnoozedUntil).toISOString(),
+      expected: shouldRemindBackup({ ownTaskCount, meta, embedded: false, now: NOW }),
+    };
+  }
+);
 
 // ---- Dates -----------------------------------------------------------------
 
@@ -462,9 +519,15 @@ const dateParseCases = [
   const ms = Date.parse(input);
   return { input, ms: Number.isNaN(ms) ? null : ms };
 });
-const dateFormatCases = [0, -1, NOW, NOW + 7, Date.UTC(2028, 1, 29, 23, 59, 59, 999), Date.UTC(1999, 11, 31, 23, 59, 59, 1), Date.UTC(2100, 0, 1)].map(
-  (ms) => ({ ms, expected: new Date(ms).toISOString() })
-);
+const dateFormatCases = [
+  0,
+  -1,
+  NOW,
+  NOW + 7,
+  Date.UTC(2028, 1, 29, 23, 59, 59, 999),
+  Date.UTC(1999, 11, 31, 23, 59, 59, 1),
+  Date.UTC(2100, 0, 1),
+].map((ms) => ({ ms, expected: new Date(ms).toISOString() }));
 
 // ---- Write -----------------------------------------------------------------
 

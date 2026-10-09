@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { Activity } from "@/types";
 
@@ -48,27 +48,30 @@ export function RouletteWheel({
   const [landed, setLanded] = useState(false);
   const landedRef = useRef(false);
   const timers = useRef<number[]>([]);
+  // The hold timer outlives the render that set it; always call the latest callback.
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   const winnerIndex = strip.length - 1 - CENTER;
   const targetY = -(winnerIndex - CENTER) * ITEM_HEIGHT;
 
-  const land = () => {
+  // Stable (refs and a state setter only), so the fallback below runs once.
+  const land = useCallback(() => {
     if (landedRef.current) return;
     landedRef.current = true;
     setLanded(true);
     navigator.vibrate?.(12);
     timers.current.push(window.setTimeout(() => onCompleteRef.current(), HOLD_MS));
-  };
+  }, []);
 
   useEffect(() => {
     // Fallback in case the animation callback never fires (e.g. a hidden tab).
     const list = timers.current;
     list.push(window.setTimeout(land, SPIN_SECONDS * 1000 + 400));
     return () => list.forEach(clearTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [land]);
 
   return (
     <div className="flex flex-col items-center">
@@ -101,11 +104,17 @@ export function RouletteWheel({
         {/* Fade the rows out toward the top and bottom edges */}
         <div
           className="absolute inset-x-0 top-0 z-10 pointer-events-none"
-          style={{ height: ITEM_HEIGHT * 1.5, background: "linear-gradient(to bottom, var(--surface), transparent)" }}
+          style={{
+            height: ITEM_HEIGHT * 1.5,
+            background: "linear-gradient(to bottom, var(--surface), transparent)",
+          }}
         />
         <div
           className="absolute inset-x-0 bottom-0 z-10 pointer-events-none"
-          style={{ height: ITEM_HEIGHT * 1.5, background: "linear-gradient(to top, var(--surface), transparent)" }}
+          style={{
+            height: ITEM_HEIGHT * 1.5,
+            background: "linear-gradient(to top, var(--surface), transparent)",
+          }}
         />
 
         <motion.div

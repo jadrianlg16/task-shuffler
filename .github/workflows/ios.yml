@@ -4,9 +4,25 @@ name: iOS
 
 on:
   push:
-    paths: ["ios/**", "src/**", "scripts/parity-fixtures.ts", "package.json", "package-lock.json", ".github/workflows/ios.yml"]
+    paths:
+      [
+        "ios/**",
+        "src/**",
+        "scripts/parity-fixtures.ts",
+        "package.json",
+        "package-lock.json",
+        ".github/workflows/ios.yml",
+      ]
   pull_request:
-    paths: ["ios/**", "src/**", "scripts/parity-fixtures.ts", "package.json", "package-lock.json", ".github/workflows/ios.yml"]
+    paths:
+      [
+        "ios/**",
+        "src/**",
+        "scripts/parity-fixtures.ts",
+        "package.json",
+        "package-lock.json",
+        ".github/workflows/ios.yml",
+      ]
 
 jobs:
   # The web tests pass and the recorded answers match the web code as it is now.
@@ -28,8 +44,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Newest Xcode 16.x on the runner (the widget bundle needs 16.1 or later).
+      # Only numbered installs: a plain lexical sort put the Xcode_16.app alias
+      # (16.0, no simulator runtime) last.
       - name: Choose Xcode
-        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app | tail -1)"
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16.[0-9]*.app | grep -iv beta | sort -V | tail -1)"
       - name: DoneCore tests
         working-directory: ios/DoneCore
         run: swift test

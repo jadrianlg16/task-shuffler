@@ -1,33 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useUIStore } from "@/store/uiStore";
 
+const DARK_QUERY = "(prefers-color-scheme: dark)";
+
+function subscribeToSystemTheme(onChange: () => void) {
+  const mq = window.matchMedia(DARK_QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+/** The OS dark-mode setting, re-rendering when it changes. */
+function useSystemPrefersDark(): boolean {
+  return useSyncExternalStore(
+    subscribeToSystemTheme,
+    () => window.matchMedia(DARK_QUERY).matches,
+    () => false
+  );
+}
+
+/**
+ * The chosen theme ("light", "dark" or "system") and what it resolves to now.
+ * Components that draw something theme-specific should use `isDark`, which
+ * follows OS changes while the theme is "system".
+ */
 export function useTheme() {
   const theme = useUIStore((s) => s.theme);
   const setTheme = useUIStore((s) => s.setTheme);
-
-  useEffect(() => {
-    const root = document.documentElement;
-
-    function applyTheme(dark: boolean) {
-      root.classList.toggle("dark", dark);
-    }
-
-    if (theme === "system") {
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      applyTheme(mq.matches);
-      const handler = (e: MediaQueryListEvent) => applyTheme(e.matches);
-      mq.addEventListener("change", handler);
-      return () => mq.removeEventListener("change", handler);
-    } else {
-      applyTheme(theme === "dark");
-    }
-  }, [theme]);
+  const systemDark = useSystemPrefersDark();
+  const isDark = theme === "dark" || (theme === "system" && systemDark);
 
   const cycleTheme = () => {
-    const next =
-      theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
+    const next = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
     setTheme(next);
   };
 
-  return { theme, setTheme, cycleTheme };
+  return { theme, isDark, setTheme, cycleTheme };
+}
+
+/** Keeps the `dark` class on <html> in step with the theme. Call once, at the root. */
+export function useApplyTheme() {
+  const { isDark } = useTheme();
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+  }, [isDark]);
 }

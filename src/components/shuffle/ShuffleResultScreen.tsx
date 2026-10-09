@@ -4,6 +4,7 @@ import { useActivityStore } from "@/store/activityStore";
 import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/categories/CategoryBadge";
 import { Button } from "@/components/ui/button";
+import { scrollBehavior } from "@/lib/platform";
 import type { Activity } from "@/types";
 
 export function ShuffleResultScreen({
@@ -30,7 +31,7 @@ export function ShuffleResultScreen({
   const handleStart = () => {
     startActivity(winner.id);
     onClose();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: scrollBehavior() });
   };
 
   return (
@@ -68,12 +69,20 @@ export function ShuffleResultScreen({
           {(onShuffleAgain || onNotFeelingIt) && (
             <div className="flex gap-2">
               {onShuffleAgain && (
-                <Button variant="outline" onClick={onShuffleAgain} className="flex-1 h-10 rounded-xl">
+                <Button
+                  variant="outline"
+                  onClick={onShuffleAgain}
+                  className="flex-1 h-10 rounded-xl"
+                >
                   Shuffle again
                 </Button>
               )}
               {onNotFeelingIt && (
-                <Button variant="outline" onClick={onNotFeelingIt} className="flex-1 h-10 rounded-xl">
+                <Button
+                  variant="outline"
+                  onClick={onNotFeelingIt}
+                  className="flex-1 h-10 rounded-xl"
+                >
                   Not feeling it
                 </Button>
               )}

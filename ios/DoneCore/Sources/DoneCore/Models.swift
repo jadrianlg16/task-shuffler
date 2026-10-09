@@ -74,8 +74,6 @@ public struct TaskCategory: Codable, Equatable, Hashable, Identifiable, Sendable
     public var name: String
     /// "#RRGGBB" (imports accept 3 to 8 hex digits).
     public var color: String
-    /// Legacy one-letter icon. Categories are shown by colour now; kept for backups.
-    public var icon: String
     public var isDefault: Bool
     public var isHidden: Bool
     public var sortOrder: Int
@@ -84,7 +82,6 @@ public struct TaskCategory: Codable, Equatable, Hashable, Identifiable, Sendable
         id: String,
         name: String,
         color: String,
-        icon: String = "",
         isDefault: Bool = false,
         isHidden: Bool = false,
         sortOrder: Int
@@ -92,7 +89,6 @@ public struct TaskCategory: Codable, Equatable, Hashable, Identifiable, Sendable
         self.id = id
         self.name = name
         self.color = color
-        self.icon = icon
         self.isDefault = isDefault
         self.isHidden = isHidden
         self.sortOrder = sortOrder

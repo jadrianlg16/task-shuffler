@@ -6,12 +6,12 @@ extension TaskCategory {
 
     /// The categories a new install starts with (src/data/defaultCategories.ts).
     public static let defaults: [TaskCategory] = [
-        TaskCategory(id: "school", name: "School", color: "#3B82F6", icon: "S", isDefault: true, sortOrder: 0),
-        TaskCategory(id: "personal", name: "Personal", color: "#8B5CF6", icon: "P", isDefault: true, sortOrder: 1),
-        TaskCategory(id: "business", name: "Business", color: "#F59E0B", icon: "B", isDefault: true, sortOrder: 2),
-        TaskCategory(id: "hobby", name: "Hobby", color: "#10B981", icon: "H", isDefault: true, sortOrder: 3),
-        TaskCategory(id: "field", name: "Field", color: "#EF4444", icon: "F", isDefault: true, sortOrder: 4),
-        TaskCategory(id: unassignedId, name: "Unassigned", color: "#6B7280", icon: "U", isDefault: true, sortOrder: 5),
+        TaskCategory(id: "school", name: "School", color: "#3B82F6", isDefault: true, sortOrder: 0),
+        TaskCategory(id: "personal", name: "Personal", color: "#8B5CF6", isDefault: true, sortOrder: 1),
+        TaskCategory(id: "business", name: "Business", color: "#F59E0B", isDefault: true, sortOrder: 2),
+        TaskCategory(id: "hobby", name: "Hobby", color: "#10B981", isDefault: true, sortOrder: 3),
+        TaskCategory(id: "field", name: "Field", color: "#EF4444", isDefault: true, sortOrder: 4),
+        TaskCategory(id: unassignedId, name: "Unassigned", color: "#6B7280", isDefault: true, sortOrder: 5),
     ]
 }
 

@@ -5,6 +5,7 @@ import { useActivityStore } from "@/store/activityStore";
 import { useCategoryStore } from "@/store/categoryStore";
 import { CategoryBadge } from "@/components/categories/CategoryBadge";
 import { Button } from "@/components/ui/button";
+import type { Activity } from "@/types";
 
 const minutesSince = (iso: string, now: number) =>
   Math.max(0, Math.floor((now - new Date(iso).getTime()) / 60_000));
@@ -14,24 +15,30 @@ export function NowCard() {
   const current = useActivityStore((s) =>
     s.activities.find((a) => a.status === "active" && a.startedAt)
   );
+  if (!current?.startedAt) return null;
+  // Keyed so the clock starts fresh for every start.
+  return (
+    <StartedTask
+      key={`${current.id}:${current.startedAt}`}
+      current={current}
+      startedAt={current.startedAt}
+    />
+  );
+}
+
+function StartedTask({ current, startedAt }: { current: Activity; startedAt: string }) {
   const completeActivity = useActivityStore((s) => s.completeActivity);
   const updateActivity = useActivityStore((s) => s.updateActivity);
   const dropActivity = useActivityStore((s) => s.dropActivity);
-  const category = useCategoryStore((s) =>
-    s.categories.find((c) => c.id === current?.categoryId)
-  );
+  const category = useCategoryStore((s) => s.categories.find((c) => c.id === current.categoryId));
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    if (!current) return;
-    setNow(Date.now());
     const id = window.setInterval(() => setNow(Date.now()), 30_000);
     return () => window.clearInterval(id);
-  }, [current]);
+  }, []);
 
-  if (!current?.startedAt) return null;
-
-  const elapsed = minutesSince(current.startedAt, now);
+  const elapsed = minutesSince(startedAt, now);
   const planned = current.durationMinutes;
   const over = planned ? elapsed - planned : 0;
   const elapsedText =
@@ -44,13 +51,12 @@ export function NowCard() {
         : `${elapsed} min in`;
 
   const handleDone = () => {
-    const { id, startedAt } = current;
+    const { id } = current;
     completeActivity(id);
     toast("Task done.", {
       action: {
         label: "Undo",
-        onClick: () =>
-          updateActivity(id, { status: "active", completedAt: null, startedAt }),
+        onClick: () => updateActivity(id, { status: "active", completedAt: null, startedAt }),
       },
       duration: 4000,
     });

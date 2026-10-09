@@ -2,14 +2,10 @@ import { useState } from "react";
 import { useCategoryStore } from "@/store/categoryStore";
 import { useActivityStore } from "@/store/activityStore";
 import { replaceAllData } from "@/store/replaceAllData";
+import { useLoadStatus } from "@/store/loadAll";
 import { ColorPicker } from "./ColorPicker";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { downloadBackup, parseImportData } from "@/utils/exportImport";
 import { StorageNote } from "@/components/onboarding/StorageNote";
 import { toast } from "sonner";
@@ -64,7 +60,12 @@ function CategoryRow({
     return (
       <div
         className="space-y-3"
-        style={{ padding: 12, margin: "4px 0", borderRadius: 12, border: "1px solid var(--ink-faint)" }}
+        style={{
+          padding: 12,
+          margin: "4px 0",
+          borderRadius: 12,
+          border: "1px solid var(--ink-faint)",
+        }}
       >
         <input
           value={name}
@@ -120,9 +121,7 @@ function CategoryRow({
       <span className="flex-1 min-w-0 truncate" style={{ fontSize: 14 }}>
         {cat.name}
         {cat.isHidden && (
-          <span style={{ fontSize: 11, color: "var(--ink-muted)", marginLeft: 8 }}>
-            hidden
-          </span>
+          <span style={{ fontSize: 11, color: "var(--ink-muted)", marginLeft: 8 }}>hidden</span>
         )}
       </span>
       <button
@@ -170,6 +169,8 @@ export function CategoryManager({
 
   const activities = useActivityStore((s) => s.activities);
   const bulkReassignCategory = useActivityStore((s) => s.bulkReassignCategory);
+  // Lists that never loaded would export as an empty backup.
+  const { ready } = useLoadStatus();
 
   const [newName, setNewName] = useState("");
   const [newColor, setNewColor] = useState("#3B82F6");
@@ -180,8 +181,7 @@ export function CategoryManager({
   const handleAddCategory = () => {
     const trimmed = newName.trim();
     if (!trimmed) return;
-    // Categories are identified by colour; the legacy icon field stays empty.
-    addCategory(trimmed, newColor, "");
+    addCategory(trimmed, newColor);
     setNewName("");
     setNewColor("#3B82F6");
     setShowAddForm(false);
@@ -203,16 +203,16 @@ export function CategoryManager({
     const input = document.createElement("input");
     input.type = "file";
     input.accept = ".json,application/json";
-    input.onchange = (e) => {
+    input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
-      file.text().then((json) => {
-        try {
-          setPendingImport({ fileName: file.name, ...parseImportData(json) });
-        } catch (err) {
-          toast.error((err as Error).message);
-        }
-      });
+      try {
+        const json = await file.text();
+        setPendingImport({ fileName: file.name, ...parseImportData(json) });
+      } catch (err) {
+        // parseImportData explains what's wrong; a failed read also lands here.
+        toast.error(err instanceof Error ? err.message : "Couldn't read that file.");
+      }
     };
     input.click();
   };
@@ -335,17 +335,27 @@ export function CategoryManager({
                   <Button variant="outline" size="sm" onClick={handleExport} disabled={importing}>
                     Download current first
                   </Button>
-                  <Button variant="destructive" size="sm" onClick={handleConfirmImport} disabled={importing}>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => void handleConfirmImport()}
+                    disabled={importing}
+                  >
                     {importing ? "Importing…" : "Replace"}
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => setPendingImport(null)} disabled={importing}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setPendingImport(null)}
+                    disabled={importing}
+                  >
                     Cancel
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={handleExport}>
+                <Button variant="outline" size="sm" onClick={handleExport} disabled={!ready}>
                   Export JSON
                 </Button>
                 <Button variant="outline" size="sm" onClick={handleChooseFile}>
@@ -359,7 +369,10 @@ export function CategoryManager({
             <div className="section-label" style={{ marginBottom: 8 }}>
               Keyboard
             </div>
-            <dl className="grid gap-y-1.5" style={{ gridTemplateColumns: "auto 1fr", columnGap: 12, fontSize: 13 }}>
+            <dl
+              className="grid gap-y-1.5"
+              style={{ gridTemplateColumns: "auto 1fr", columnGap: 12, fontSize: 13 }}
+            >
               {SHORTCUTS.map(({ keys, label }) => (
                 <div key={label} className="contents">
                   <dt>

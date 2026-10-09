@@ -13,7 +13,6 @@
       "id": "school",
       "name": "School",
       "color": "#3B82F6",
-      "icon": "S",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 0
@@ -22,7 +21,6 @@
       "id": "personal",
       "name": "Personal",
       "color": "#8B5CF6",
-      "icon": "P",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 1
@@ -31,7 +29,6 @@
       "id": "business",
       "name": "Business",
       "color": "#F59E0B",
-      "icon": "B",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 2
@@ -40,7 +37,6 @@
       "id": "hobby",
       "name": "Hobby",
       "color": "#10B981",
-      "icon": "H",
       "isDefault": true,
       "isHidden": true,
       "sortOrder": 3
@@ -49,7 +45,6 @@
       "id": "field",
       "name": "Field",
       "color": "#EF4444",
-      "icon": "F",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 4
@@ -58,7 +53,6 @@
       "id": "unassigned",
       "name": "Unassigned",
       "color": "#6B7280",
-      "icon": "U",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 5
@@ -199,7 +193,6 @@
       "id": "school",
       "name": "School",
       "color": "#3B82F6",
-      "icon": "S",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 0
@@ -208,7 +201,6 @@
       "id": "personal",
       "name": "Personal",
       "color": "#8B5CF6",
-      "icon": "P",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 1
@@ -217,7 +209,6 @@
       "id": "business",
       "name": "Business",
       "color": "#F59E0B",
-      "icon": "B",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 2
@@ -226,7 +217,6 @@
       "id": "hobby",
       "name": "Hobby",
       "color": "#10B981",
-      "icon": "H",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 3
@@ -235,7 +225,6 @@
       "id": "field",
       "name": "Field",
       "color": "#EF4444",
-      "icon": "F",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 4
@@ -244,7 +233,6 @@
       "id": "unassigned",
       "name": "Unassigned",
       "color": "#6B7280",
-      "icon": "U",
       "isDefault": true,
       "isHidden": false,
       "sortOrder": 5
@@ -657,7 +645,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -666,7 +653,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -675,7 +661,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -684,7 +669,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": true,
             "sortOrder": 3
@@ -693,7 +677,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -702,7 +685,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -720,7 +702,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 9
@@ -2561,7 +2542,7 @@
   "import": [
     {
       "label": "round trip",
-      "json": "{\n  \"activities\": [\n    {\n      \"id\": \"t1\",\n      \"name\": \"Read\",\n      \"durationMinutes\": 30,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-01T00:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"t2\",\n      \"name\": \"Read\",\n      \"durationMinutes\": null,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-01T00:00:00.000Z\",\n      \"completedAt\": null,\n      \"startedAt\": \"2026-09-02T10:00:00.000Z\"\n    }\n  ],\n  \"categories\": [\n    {\n      \"id\": \"school\",\n      \"name\": \"School\",\n      \"color\": \"#3B82F6\",\n      \"icon\": \"S\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 0\n    },\n    {\n      \"id\": \"personal\",\n      \"name\": \"Personal\",\n      \"color\": \"#8B5CF6\",\n      \"icon\": \"P\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 1\n    },\n    {\n      \"id\": \"business\",\n      \"name\": \"Business\",\n      \"color\": \"#F59E0B\",\n      \"icon\": \"B\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 2\n    },\n    {\n      \"id\": \"hobby\",\n      \"name\": \"Hobby\",\n      \"color\": \"#10B981\",\n      \"icon\": \"H\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 3\n    },\n    {\n      \"id\": \"field\",\n      \"name\": \"Field\",\n      \"color\": \"#EF4444\",\n      \"icon\": \"F\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 4\n    },\n    {\n      \"id\": \"unassigned\",\n      \"name\": \"Unassigned\",\n      \"color\": \"#6B7280\",\n      \"icon\": \"U\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 5\n    }\n  ]\n}",
+      "json": "{\n  \"activities\": [\n    {\n      \"id\": \"t1\",\n      \"name\": \"Read\",\n      \"durationMinutes\": 30,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-01T00:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"t2\",\n      \"name\": \"Read\",\n      \"durationMinutes\": null,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-01T00:00:00.000Z\",\n      \"completedAt\": null,\n      \"startedAt\": \"2026-09-02T10:00:00.000Z\"\n    }\n  ],\n  \"categories\": [\n    {\n      \"id\": \"school\",\n      \"name\": \"School\",\n      \"color\": \"#3B82F6\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 0\n    },\n    {\n      \"id\": \"personal\",\n      \"name\": \"Personal\",\n      \"color\": \"#8B5CF6\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 1\n    },\n    {\n      \"id\": \"business\",\n      \"name\": \"Business\",\n      \"color\": \"#F59E0B\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 2\n    },\n    {\n      \"id\": \"hobby\",\n      \"name\": \"Hobby\",\n      \"color\": \"#10B981\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 3\n    },\n    {\n      \"id\": \"field\",\n      \"name\": \"Field\",\n      \"color\": \"#EF4444\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 4\n    },\n    {\n      \"id\": \"unassigned\",\n      \"name\": \"Unassigned\",\n      \"color\": \"#6B7280\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 5\n    }\n  ]\n}",
       "error": null,
       "expected": {
         "activities": [
@@ -2591,7 +2572,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -2600,7 +2580,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -2609,7 +2588,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -2618,7 +2596,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -2627,7 +2604,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -2636,7 +2612,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -2646,7 +2621,7 @@
     },
     {
       "label": "examples",
-      "json": "{\n  \"activities\": [\n    {\n      \"id\": \"demo-01\",\n      \"name\": \"Study for calculus exam\",\n      \"durationMinutes\": 90,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T11:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-02\",\n      \"name\": \"Morning run\",\n      \"durationMinutes\": 45,\n      \"categoryId\": \"personal\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T10:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-03\",\n      \"name\": \"Prepare client proposal\",\n      \"durationMinutes\": 40,\n      \"categoryId\": \"business\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T09:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-04\",\n      \"name\": \"Practice guitar\",\n      \"durationMinutes\": 25,\n      \"categoryId\": \"hobby\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T08:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-05\",\n      \"name\": \"Read 20 pages\",\n      \"durationMinutes\": 30,\n      \"categoryId\": \"personal\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T07:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-06\",\n      \"name\": \"Refactor side project\",\n      \"durationMinutes\": 120,\n      \"categoryId\": \"hobby\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T06:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-07\",\n      \"name\": \"Plan next week\",\n      \"durationMinutes\": 30,\n      \"categoryId\": \"business\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T05:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-08\",\n      \"name\": \"Water the plants\",\n      \"durationMinutes\": 10,\n      \"categoryId\": \"personal\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T04:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-09\",\n      \"name\": \"Sketch app wireframes\",\n      \"durationMinutes\": null,\n      \"categoryId\": \"hobby\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T03:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-10\",\n      \"name\": \"Review lecture notes\",\n      \"durationMinutes\": 60,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T02:00:00.000Z\",\n      \"completedAt\": null\n    }\n  ],\n  \"categories\": [\n    {\n      \"id\": \"school\",\n      \"name\": \"School\",\n      \"color\": \"#3B82F6\",\n      \"icon\": \"S\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 0\n    },\n    {\n      \"id\": \"personal\",\n      \"name\": \"Personal\",\n      \"color\": \"#8B5CF6\",\n      \"icon\": \"P\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 1\n    },\n    {\n      \"id\": \"business\",\n      \"name\": \"Business\",\n      \"color\": \"#F59E0B\",\n      \"icon\": \"B\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 2\n    },\n    {\n      \"id\": \"hobby\",\n      \"name\": \"Hobby\",\n      \"color\": \"#10B981\",\n      \"icon\": \"H\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 3\n    },\n    {\n      \"id\": \"field\",\n      \"name\": \"Field\",\n      \"color\": \"#EF4444\",\n      \"icon\": \"F\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 4\n    },\n    {\n      \"id\": \"unassigned\",\n      \"name\": \"Unassigned\",\n      \"color\": \"#6B7280\",\n      \"icon\": \"U\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 5\n    }\n  ]\n}",
+      "json": "{\n  \"activities\": [\n    {\n      \"id\": \"demo-01\",\n      \"name\": \"Study for calculus exam\",\n      \"durationMinutes\": 90,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T11:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-02\",\n      \"name\": \"Morning run\",\n      \"durationMinutes\": 45,\n      \"categoryId\": \"personal\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T10:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-03\",\n      \"name\": \"Prepare client proposal\",\n      \"durationMinutes\": 40,\n      \"categoryId\": \"business\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T09:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-04\",\n      \"name\": \"Practice guitar\",\n      \"durationMinutes\": 25,\n      \"categoryId\": \"hobby\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T08:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-05\",\n      \"name\": \"Read 20 pages\",\n      \"durationMinutes\": 30,\n      \"categoryId\": \"personal\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T07:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-06\",\n      \"name\": \"Refactor side project\",\n      \"durationMinutes\": 120,\n      \"categoryId\": \"hobby\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T06:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-07\",\n      \"name\": \"Plan next week\",\n      \"durationMinutes\": 30,\n      \"categoryId\": \"business\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T05:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-08\",\n      \"name\": \"Water the plants\",\n      \"durationMinutes\": 10,\n      \"categoryId\": \"personal\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T04:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-09\",\n      \"name\": \"Sketch app wireframes\",\n      \"durationMinutes\": null,\n      \"categoryId\": \"hobby\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T03:00:00.000Z\",\n      \"completedAt\": null\n    },\n    {\n      \"id\": \"demo-10\",\n      \"name\": \"Review lecture notes\",\n      \"durationMinutes\": 60,\n      \"categoryId\": \"school\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-09-22T02:00:00.000Z\",\n      \"completedAt\": null\n    }\n  ],\n  \"categories\": [\n    {\n      \"id\": \"school\",\n      \"name\": \"School\",\n      \"color\": \"#3B82F6\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 0\n    },\n    {\n      \"id\": \"personal\",\n      \"name\": \"Personal\",\n      \"color\": \"#8B5CF6\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 1\n    },\n    {\n      \"id\": \"business\",\n      \"name\": \"Business\",\n      \"color\": \"#F59E0B\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 2\n    },\n    {\n      \"id\": \"hobby\",\n      \"name\": \"Hobby\",\n      \"color\": \"#10B981\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 3\n    },\n    {\n      \"id\": \"field\",\n      \"name\": \"Field\",\n      \"color\": \"#EF4444\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 4\n    },\n    {\n      \"id\": \"unassigned\",\n      \"name\": \"Unassigned\",\n      \"color\": \"#6B7280\",\n      \"isDefault\": true,\n      \"isHidden\": false,\n      \"sortOrder\": 5\n    }\n  ]\n}",
       "error": null,
       "expected": {
         "activities": [
@@ -2756,7 +2731,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -2765,7 +2739,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -2774,7 +2747,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -2783,7 +2755,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -2792,7 +2763,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -2801,7 +2771,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -2847,7 +2816,7 @@
     },
     {
       "label": "activities not a list",
-      "json": "{\"activities\":{},\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":{},\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "That doesn't look like a done. backup (no tasks/categories lists).",
       "expected": null
     },
@@ -2859,49 +2828,49 @@
     },
     {
       "label": "bad status",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null},{\"id\":\"t2\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"done\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null},{\"id\":\"t2\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"done\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #2 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "zero minutes",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":0,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":0,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "negative minutes",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":-5,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":-5,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "minutes as text",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":\"30\",\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":\"30\",\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "minutes missing",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "minutes true",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":true,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":true,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "empty id",
-      "json": "{\"activities\":[{\"id\":\"\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "empty name",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -2921,7 +2890,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -2930,7 +2898,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -2939,7 +2906,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -2948,7 +2914,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -2957,7 +2922,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -2966,7 +2930,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -2976,25 +2939,25 @@
     },
     {
       "label": "name missing",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "empty categoryId",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "createdAt missing",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "completedAt missing",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\"}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\"}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3014,7 +2977,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3023,7 +2985,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3032,7 +2993,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3041,7 +3001,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3050,7 +3009,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3059,7 +3017,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3069,13 +3026,13 @@
     },
     {
       "label": "completedAt number",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":5}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":5}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "startedAt missing",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3095,7 +3052,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3104,7 +3060,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3113,7 +3068,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3122,7 +3076,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3131,7 +3084,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3140,7 +3092,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3150,7 +3101,7 @@
     },
     {
       "label": "startedAt null",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null,\"startedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null,\"startedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3170,7 +3121,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3179,7 +3129,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3188,7 +3137,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3197,7 +3145,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3206,7 +3153,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3215,7 +3161,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3225,25 +3170,25 @@
     },
     {
       "label": "startedAt number",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null,\"startedAt\":1}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null,\"startedAt\":1}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "task is null",
-      "json": "{\"activities\":[null],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[null],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "task is a string",
-      "json": "{\"activities\":[\"t1\"],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[\"t1\"],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Task #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "archived task",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"archived\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":\"2026-09-03T08:00:00.000Z\"}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"archived\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":\"2026-09-03T08:00:00.000Z\"}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3263,7 +3208,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3272,7 +3216,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3281,7 +3224,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3290,7 +3232,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3299,7 +3240,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3308,7 +3248,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3318,7 +3257,7 @@
     },
     {
       "label": "unknown category",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"gone\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"gone\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3338,7 +3277,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3347,7 +3285,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3356,7 +3293,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3365,7 +3301,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3374,7 +3309,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3383,7 +3317,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3393,7 +3326,7 @@
     },
     {
       "label": "extra fields",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null,\"colour\":\"red\"}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0,\"emoji\":\"📚\"},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null,\"colour\":\"red\"}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0,\"emoji\":\"📚\"},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3413,7 +3346,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3422,7 +3354,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3431,7 +3362,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3440,7 +3370,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3449,7 +3378,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3458,7 +3386,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3468,7 +3395,7 @@
     },
     {
       "label": "category without icon",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3488,7 +3415,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3497,7 +3423,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3506,7 +3431,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3515,7 +3439,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3524,7 +3447,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3533,7 +3455,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3543,7 +3464,7 @@
     },
     {
       "label": "category without isDefault",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3563,7 +3484,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": false,
             "isHidden": false,
             "sortOrder": 0
@@ -3572,7 +3492,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3581,7 +3500,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3590,7 +3508,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3599,7 +3516,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3608,7 +3524,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3618,7 +3533,7 @@
     },
     {
       "label": "category without isHidden",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3638,7 +3553,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3647,7 +3561,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3656,7 +3569,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3665,7 +3577,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3674,7 +3585,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3683,7 +3593,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3693,7 +3602,7 @@
     },
     {
       "label": "category isHidden as text",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":\"true\",\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":\"true\",\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3713,7 +3622,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3722,7 +3630,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3731,7 +3638,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3740,7 +3646,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3749,7 +3654,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3758,7 +3662,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3768,7 +3671,7 @@
     },
     {
       "label": "category short colour",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#abc\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#abc\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [
@@ -3788,7 +3691,6 @@
             "id": "school",
             "name": "School",
             "color": "#abc",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3797,7 +3699,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3806,7 +3707,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3815,7 +3715,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3824,7 +3723,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3833,7 +3731,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5
@@ -3843,61 +3740,61 @@
     },
     {
       "label": "category bad colour",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#GGG\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#GGG\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Category #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "category colour name",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"blue\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"blue\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Category #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "category empty name",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Category #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "category sortOrder text",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":\"1\"},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":\"1\"},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Category #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "category is null",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5},null]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5},null]}",
       "error": "Category #7 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "bad task and bad category",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"done\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"blue\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"done\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"blue\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "Category #1 is missing fields or has the wrong types.",
       "expected": null
     },
     {
       "label": "no unassigned",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4}]}",
       "error": "The backup is missing the Unassigned category.",
       "expected": null
     },
     {
       "label": "duplicate task ids",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null},{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null},{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": "The backup contains duplicate ids.",
       "expected": null
     },
     {
       "label": "duplicate category ids",
-      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5},{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0}]}",
+      "json": "{\"activities\":[{\"id\":\"t1\",\"name\":\"Read\",\"durationMinutes\":30,\"categoryId\":\"school\",\"status\":\"active\",\"createdAt\":\"2026-09-01T00:00:00.000Z\",\"completedAt\":null}],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5},{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0}]}",
       "error": "The backup contains duplicate ids.",
       "expected": null
     },
     {
       "label": "empty activities",
-      "json": "{\"activities\":[],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"icon\":\"S\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"icon\":\"P\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"icon\":\"B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"icon\":\"H\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"icon\":\"F\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"icon\":\"U\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
+      "json": "{\"activities\":[],\"categories\":[{\"id\":\"school\",\"name\":\"School\",\"color\":\"#3B82F6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":0},{\"id\":\"personal\",\"name\":\"Personal\",\"color\":\"#8B5CF6\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":1},{\"id\":\"business\",\"name\":\"Business\",\"color\":\"#F59E0B\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":2},{\"id\":\"hobby\",\"name\":\"Hobby\",\"color\":\"#10B981\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":3},{\"id\":\"field\",\"name\":\"Field\",\"color\":\"#EF4444\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":4},{\"id\":\"unassigned\",\"name\":\"Unassigned\",\"color\":\"#6B7280\",\"isDefault\":true,\"isHidden\":false,\"sortOrder\":5}]}",
       "error": null,
       "expected": {
         "activities": [],
@@ -3906,7 +3803,6 @@
             "id": "school",
             "name": "School",
             "color": "#3B82F6",
-            "icon": "S",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 0
@@ -3915,7 +3811,6 @@
             "id": "personal",
             "name": "Personal",
             "color": "#8B5CF6",
-            "icon": "P",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 1
@@ -3924,7 +3819,6 @@
             "id": "business",
             "name": "Business",
             "color": "#F59E0B",
-            "icon": "B",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 2
@@ -3933,7 +3827,6 @@
             "id": "hobby",
             "name": "Hobby",
             "color": "#10B981",
-            "icon": "H",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 3
@@ -3942,7 +3835,6 @@
             "id": "field",
             "name": "Field",
             "color": "#EF4444",
-            "icon": "F",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 4
@@ -3951,7 +3843,6 @@
             "id": "unassigned",
             "name": "Unassigned",
             "color": "#6B7280",
-            "icon": "U",
             "isDefault": true,
             "isHidden": false,
             "sortOrder": 5

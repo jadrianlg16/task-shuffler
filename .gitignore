@@ -1,7 +1,5 @@
 node_modules/
 dist/
-.claude/
-node_modules
 *.tsbuildinfo
 /data/
 

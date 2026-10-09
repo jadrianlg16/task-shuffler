@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* json-server's data file isn't source; don't scan it (or watch it) for classes. */
+@source not "../data";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -30,19 +32,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
   --font-display: "Libre Baskerville", Georgia, serif;
   --font-body: "DM Sans", system-ui, sans-serif;
 }
@@ -52,14 +41,14 @@
   --radius: 12px;
 
   /* Design system tokens */
-  --bg: #F7F5F2;
-  --surface: #FFFFFF;
-  --ink: #1A1A18;
-  --ink-muted: #6A6862; /* 4.8:1+ on every light surface (WCAG AA) */
-  --ink-faint: #D4D2CE;
-  --ds-accent: #2C5F2E;
-  --accent-light: #E8F0E9;
-  --danger: #C0392B;
+  --bg: #f7f5f2;
+  --surface: #ffffff;
+  --ink: #1a1a18;
+  --ink-muted: #6a6862; /* 4.8:1+ on every light surface (WCAG AA) */
+  --ink-faint: #d4d2ce;
+  --ds-accent: #2c5f2e;
+  --accent-light: #e8f0e9;
+  --danger: #c0392b;
 
   /* Map to shadcn variables */
   --background: var(--bg);
@@ -69,10 +58,10 @@
   --popover: var(--surface);
   --popover-foreground: var(--ink);
   --primary: var(--ds-accent);
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #ffffff;
   --secondary: var(--accent-light);
   --secondary-foreground: var(--ds-accent);
-  --muted: #F0EEED;
+  --muted: #f0eeed;
   --muted-foreground: var(--ink-muted);
   --accent: var(--accent-light);
   --accent-foreground: var(--ds-accent);
@@ -82,19 +71,19 @@
   --ring: var(--ds-accent);
 
   /* Shadows */
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 /* ── Dark theme (deep black) ── */
 .dark {
-  --bg: #0F0F0F;
-  --surface: #1A1A1A;
-  --ink: #E8E6E3;
-  --ink-muted: #9A9A97;
-  --ink-faint: #3A3A38;
-  --ds-accent: #5FB563;
-  --accent-light: #1A2A1D;
-  --danger: #E74C3C;
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --ink: #e8e6e3;
+  --ink-muted: #9a9a97;
+  --ink-faint: #3a3a38;
+  --ds-accent: #5fb563;
+  --accent-light: #1a2a1d;
+  --danger: #e74c3c;
 
   --background: var(--bg);
   --foreground: var(--ink);
@@ -103,7 +92,7 @@
   --popover: var(--surface);
   --popover-foreground: var(--ink);
   --primary: var(--ds-accent);
-  --primary-foreground: #0F0F0F;
+  --primary-foreground: #0f0f0f;
   --secondary: var(--accent-light);
   --secondary-foreground: var(--ds-accent);
   --muted: #252525;
@@ -115,7 +104,7 @@
   --input: var(--ink-faint);
   --ring: var(--ds-accent);
 
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.25);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 /* ── Keyframe animations ── */
@@ -152,12 +141,6 @@
   }
 }
 
-@keyframes progressFill {
-  from {
-    width: 0;
-  }
-}
-
 /* ── Base styles ── */
 @layer base {
   * {
@@ -168,7 +151,9 @@
     font-family: "DM Sans", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 }
 
@@ -189,8 +174,15 @@
   animation: taskIn 0.25s ease;
 }
 
-.animate-check-scale {
-  animation: checkScale 0.2s ease;
+/* "Loading…" only appears if loading takes long enough to notice. */
+.load-pending {
+  animation: fadeIn 0.2s ease 0.4s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
 }
 
 /* ── Task card styles ── */
@@ -200,13 +192,15 @@
   padding: 14px 16px;
   border-left: 3px solid transparent;
   box-shadow: var(--shadow-card);
-  transition: border-color 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 @media (hover: hover) {
   .task-card:hover {
     border-left-color: var(--ink-faint);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -234,7 +228,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
   flex-shrink: 0;
 }
 
@@ -277,7 +273,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 @media (hover: hover) {
@@ -305,7 +303,9 @@
   border: 1px solid var(--ink-faint);
   color: var(--ink);
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .field:focus-visible {
@@ -343,7 +343,10 @@ select.field option {
   background: transparent;
   color: var(--ink-muted);
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .chip[aria-pressed="true"] {
@@ -363,7 +366,9 @@ select.field option {
   border: none;
   color: var(--ink-muted);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .icon-btn:hover {
@@ -392,7 +397,10 @@ select.field option {
   color: var(--ink-muted);
   border: none;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .nav-tab:hover {
@@ -412,7 +420,6 @@ select.field option {
   border-radius: 16px;
   box-shadow: var(--shadow-card);
 }
-
 
 /* ── Touch + keyboard ── */
 
@@ -461,7 +468,9 @@ select.field option {
   border: 1.5px solid var(--ink-faint);
   color: var(--ink);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .quick-input::placeholder {
@@ -485,7 +494,9 @@ select.field option {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
 }
 
 .quick-add-btn:active {
@@ -595,5 +606,21 @@ button,
   [data-slot="dialog-content"] {
     top: calc(env(viewport-segment-top 0 1) + env(viewport-segment-height 0 1) / 2);
     max-height: calc(env(viewport-segment-height 0 1) - 2rem);
+  }
+}
+
+/* ── Reduced motion ──
+   framer-motion follows this setting through MotionConfig; this covers the CSS
+   keyframes and transitions, including the dialog animations. Durations go
+   near zero rather than to "none" so animationend still fires for code that
+   waits on it (Radix unmounts closing dialogs on it). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

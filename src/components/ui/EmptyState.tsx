@@ -19,7 +19,10 @@ interface EmptyStateProps {
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   const Icon = ICONS[icon];
   return (
-    <div className="flex flex-col items-center justify-center text-center" style={{ padding: "48px 0" }}>
+    <div
+      className="flex flex-col items-center justify-center text-center"
+      style={{ padding: "48px 0" }}
+    >
       <Icon size={22} strokeWidth={1.5} style={{ color: "var(--ink-muted)", marginBottom: 14 }} />
       <h3 className="font-display" style={{ fontSize: 18, fontWeight: 400, marginBottom: 6 }}>
         {title}

@@ -1,23 +1,34 @@
-# done. (task shuffler) — dev-mode container.
+# done. (task shuffler): dev-mode container.
 # Runs the Vite UI (3003) and the json-server API (3001) together, both bound to
-# 0.0.0.0. The browser only needs :3003 — Vite proxies /api to json-server.
+# 0.0.0.0. The browser only needs :3003; Vite proxies /api to json-server.
 FROM node:20-alpine
+
+# su-exec lets the start script fix data-volume ownership as root and then run
+# the app as the unprivileged "node" user (see scripts/docker-start.sh).
+RUN apk add --no-cache su-exec
+
 WORKDIR /app
+RUN chown node:node /app
+USER node
 
-COPY package.json package-lock.json* ./
-RUN npm install
+COPY --chown=node:node package.json package-lock.json ./
+RUN npm ci
 
-COPY . .
+COPY --chown=node:node . .
+# A new named volume mounted here starts out owned by "node".
+RUN mkdir -p /app/data
 
 # Polling makes file-watching reliable inside a container.
 ENV CHOKIDAR_USEPOLLING=true
 # Live data lives under /app/data so it can be mounted as a volume and survive
-# container re-creation (the dashboard removes + recreates the container on
-# every Open/Stop). /app/db.json stays in the image as the first-run seed only.
+# the container being removed and re-created. /app/db.json stays in the image
+# as the first-run seed only.
 ENV DB_FILE=/app/data/db.json
-# json-server binds IPv4 0.0.0.0 below; point the /api proxy at it explicitly.
+# json-server binds IPv4 0.0.0.0; point the /api proxy at it explicitly.
 ENV API_PROXY_TARGET=http://127.0.0.1:3001
 EXPOSE 3003 3001
 
-# Seed the data file once, then json-server on 0.0.0.0:3001 + vite on 0.0.0.0:3003.
-CMD ["sh", "-c", "mkdir -p \"$(dirname \"$DB_FILE\")\"; if [ ! -f \"$DB_FILE\" ]; then cp /app/db.json \"$DB_FILE\"; fi; npx json-server --watch \"$DB_FILE\" --host 0.0.0.0 --port 3001 & npx vite --host 0.0.0.0 --port 3003"]
+# Starts as root only to adopt volumes written by earlier root-run images; the
+# script drops to "node" before anything else runs.
+USER root
+CMD ["sh", "scripts/docker-start.sh"]

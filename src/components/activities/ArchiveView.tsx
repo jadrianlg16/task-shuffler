@@ -40,10 +40,7 @@ export function ArchiveView() {
     <>
       {groups.map((group) => (
         <section key={group.label} style={{ marginBottom: 20 }}>
-          <div
-            className="section-label flex justify-between"
-            style={{ marginBottom: 10 }}
-          >
+          <div className="section-label flex justify-between" style={{ marginBottom: 10 }}>
             <span>{group.label}</span>
             <span>{group.items.length}</span>
           </div>
@@ -71,9 +68,7 @@ export function ArchiveView() {
                         color: "var(--ink-muted)",
                       }}
                     >
-                      {a.durationMinutes && (
-                        <span>{a.durationMinutes} min</span>
-                      )}
+                      {a.durationMinutes && <span>{a.durationMinutes} min</span>}
                       {category && <CategoryBadge category={category} />}
                       {a.completedAt && (
                         <span>
@@ -106,18 +101,12 @@ export function ArchiveView() {
           </div>
         </section>
       ))}
-      <Dialog
-        open={!!confirmDelete}
-        onOpenChange={() => setConfirmDelete(null)}
-      >
+      <Dialog open={!!confirmDelete} onOpenChange={() => setConfirmDelete(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="font-display font-normal">
-              Delete for good?
-            </DialogTitle>
+            <DialogTitle className="font-display font-normal">Delete for good?</DialogTitle>
             <DialogDescription>
-              &quot;{confirmDelete?.name}&quot; will be permanently removed.
-              This cannot be undone.
+              &quot;{confirmDelete?.name}&quot; will be permanently removed. This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

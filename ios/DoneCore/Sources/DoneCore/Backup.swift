@@ -131,14 +131,12 @@ public struct Backup: Codable, Equatable, Sendable {
               let order = Int(exactly: sortOrder.rounded())
         else { throw invalid }
 
-        // Older backups may lack the optional flags; default them.
-        var icon = ""
-        if case .string(let text)? = fields["icon"] { icon = text }
+        // Keep only the known fields: older backups may lack the optional flags
+        // (defaulted here) or carry the retired `icon` field (dropped).
         return TaskCategory(
             id: id,
             name: name,
             color: color,
-            icon: icon,
             isDefault: fields["isDefault"] == .bool(true),
             isHidden: fields["isHidden"] == .bool(true),
             sortOrder: order

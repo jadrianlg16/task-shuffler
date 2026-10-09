@@ -18,7 +18,13 @@ const meta = (o: Partial<SafetyMeta> = {}): SafetyMeta => ({
 });
 
 describe("shouldShowInstallHint", () => {
-  const base = { ownTaskCount: 3, standalone: false, embedded: false, dismissed: false, canInstall: true };
+  const base = {
+    ownTaskCount: 3,
+    standalone: false,
+    embedded: false,
+    dismissed: false,
+    canInstall: true,
+  };
 
   it("shows once someone has a few real tasks and could install", () => {
     expect(shouldShowInstallHint(base)).toBe(true);
@@ -37,24 +43,44 @@ describe("shouldRemindBackup", () => {
   const n = BACKUP_MIN_TASKS;
 
   it("reminds after a week of use without any backup", () => {
-    expect(shouldRemindBackup({ ownTaskCount: n, meta: meta(), embedded: false, now: NOW })).toBe(true);
+    expect(shouldRemindBackup({ ownTaskCount: n, meta: meta(), embedded: false, now: NOW })).toBe(
+      true
+    );
     expect(
-      shouldRemindBackup({ ownTaskCount: n, meta: meta({ firstUseAt: NOW - 6 * DAY }), embedded: false, now: NOW })
+      shouldRemindBackup({
+        ownTaskCount: n,
+        meta: meta({ firstUseAt: NOW - 6 * DAY }),
+        embedded: false,
+        now: NOW,
+      })
     ).toBe(false);
   });
 
   it("then only when the last backup is a month old", () => {
     const recent = meta({ lastBackupAt: NOW - 29 * DAY });
     const old = meta({ lastBackupAt: NOW - 31 * DAY });
-    expect(shouldRemindBackup({ ownTaskCount: n, meta: recent, embedded: false, now: NOW })).toBe(false);
-    expect(shouldRemindBackup({ ownTaskCount: n, meta: old, embedded: false, now: NOW })).toBe(true);
+    expect(shouldRemindBackup({ ownTaskCount: n, meta: recent, embedded: false, now: NOW })).toBe(
+      false
+    );
+    expect(shouldRemindBackup({ ownTaskCount: n, meta: old, embedded: false, now: NOW })).toBe(
+      true
+    );
   });
 
   it("respects 'Later', small lists and embeds", () => {
     expect(
-      shouldRemindBackup({ ownTaskCount: n, meta: meta({ backupSnoozedUntil: NOW + DAY }), embedded: false, now: NOW })
+      shouldRemindBackup({
+        ownTaskCount: n,
+        meta: meta({ backupSnoozedUntil: NOW + DAY }),
+        embedded: false,
+        now: NOW,
+      })
     ).toBe(false);
-    expect(shouldRemindBackup({ ownTaskCount: n - 1, meta: meta(), embedded: false, now: NOW })).toBe(false);
-    expect(shouldRemindBackup({ ownTaskCount: n, meta: meta(), embedded: true, now: NOW })).toBe(false);
+    expect(
+      shouldRemindBackup({ ownTaskCount: n - 1, meta: meta(), embedded: false, now: NOW })
+    ).toBe(false);
+    expect(shouldRemindBackup({ ownTaskCount: n, meta: meta(), embedded: true, now: NOW })).toBe(
+      false
+    );
   });
 });

@@ -3,8 +3,7 @@ import type { Activity } from "@/types";
 import { groupArchive } from "./archive";
 
 const now = new Date(2026, 8, 22, 15, 0); // local time, Tue 22 Sep 2026 15:00
-const at = (daysBack: number, hour = 10) =>
-  new Date(2026, 8, 22 - daysBack, hour, 0).toISOString();
+const at = (daysBack: number, hour = 10) => new Date(2026, 8, 22 - daysBack, hour, 0).toISOString();
 const done = (id: string, completedAt: string | null): Activity => ({
   id,
   name: id,

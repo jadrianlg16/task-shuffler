@@ -3,8 +3,9 @@ import * as localDb from "./localDb";
 
 /**
  * Storage façade. Default: json-server over HTTP (httpDb).
- * Build with VITE_STORAGE=local for a serverless localStorage build
- * (used by the portfolio embed at adriangaona.dev).
+ * Build with VITE_STORAGE=local for a serverless localStorage build that can
+ * be hosted as plain static files. Vite inlines the flag, so the unused
+ * backend is dropped from the bundle.
  */
 const impl = import.meta.env.VITE_STORAGE === "local" ? localDb : httpDb;
 

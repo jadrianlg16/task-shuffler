@@ -1,8 +1,9 @@
 import { toast } from "sonner";
 
 /**
- * Stores update the screen first, then save. If the save fails, undo just the
- * change that failed and say so, instead of showing data that isn't stored.
+ * Stores update the screen first, then save. If the save fails, `rollback`
+ * takes back what the change showed (field updates go through pendingWrites.ts)
+ * and a toast says so, instead of showing data that isn't stored.
  */
 export function persist(save: Promise<unknown>, rollback: () => void): void {
   save.catch((err) => {
@@ -12,4 +13,9 @@ export function persist(save: Promise<unknown>, rollback: () => void): void {
       id: "save-failed", // one toast, not one per failed request
     });
   });
+}
+
+/** A short, human-readable reason for a failed request. */
+export function describeError(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
 }

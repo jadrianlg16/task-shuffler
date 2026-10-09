@@ -9,6 +9,10 @@ import { isDemoRequested, isEmbedded } from "@/lib/platform";
  * as httpDb.ts, no json-server required.
  */
 
+/* eslint-disable @typescript-eslint/require-await --
+   async with no await is deliberate: it keeps httpDb's signatures and turns a
+   throw (e.g. "not found") into a rejection the stores already roll back on. */
+
 const ACTIVITIES_KEY = "task-shuffler-activities";
 
 const adapter = new LocalStorageAdapter();
@@ -37,10 +41,7 @@ export async function saveActivity(activity: Activity): Promise<Activity> {
   return activity;
 }
 
-export async function updateActivity(
-  id: string,
-  updates: Partial<Activity>
-): Promise<Activity> {
+export async function updateActivity(id: string, updates: Partial<Activity>): Promise<Activity> {
   ensureSeeded();
   const activities = adapter.getActivities();
   const index = activities.findIndex((a) => a.id === id);
@@ -69,10 +70,7 @@ export async function saveCategory(category: Category): Promise<Category> {
   return category;
 }
 
-export async function updateCategory(
-  id: string,
-  updates: Partial<Category>
-): Promise<Category> {
+export async function updateCategory(id: string, updates: Partial<Category>): Promise<Category> {
   ensureSeeded();
   const categories = adapter.getCategories();
   const index = categories.findIndex((c) => c.id === id);
@@ -91,10 +89,7 @@ export async function deleteCategory(id: string): Promise<void> {
 }
 
 /** Replace everything with an imported backup (both writes are synchronous). */
-export async function replaceAll(
-  activities: Activity[],
-  categories: Category[]
-): Promise<void> {
+export async function replaceAll(activities: Activity[], categories: Category[]): Promise<void> {
   adapter.saveCategories(categories);
   adapter.saveActivities(activities);
 }

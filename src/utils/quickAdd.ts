@@ -32,16 +32,18 @@ export function parseQuickAdd(input: string, categories: Category[]): QuickAddPa
   let durationMinutes: number | null = null;
   let categoryId: string | null = null;
 
-  name = name.replace(DURATION, (match, hours, extraMin, mins) => {
+  // Groups that didn't take part in the match arrive as undefined.
+  const onDuration = (match: string, hours?: string, extraMin?: string, mins = "") => {
     const minutes = hours
       ? Math.round(parseFloat(hours) * 60) + (extraMin ? parseInt(extraMin, 10) : 0)
       : parseInt(mins, 10);
     if (!minutes) return match;
     durationMinutes = minutes;
     return " ";
-  });
+  };
+  name = name.replace(DURATION, onDuration);
 
-  name = name.replace(TAG, (match, tag) => {
+  name = name.replace(TAG, (match: string, tag: string) => {
     const cat = matchCategory(tag, categories);
     if (!cat) return match;
     categoryId = cat.id;
