@@ -72,11 +72,10 @@ final class DoneUITests: XCTestCase {
         // On failure, the screen as UI tests see it (is there a toast? which buttons?).
         if !cardGone {
             print(app.debugDescription)
-            app.buttons["nowDone"].tap()
-            XCTAssertFalse(
-                nowTitle.waitForNonExistence(timeout: 3),
-                "DIAGNOSTIC: a second tap on Done worked, so the first one was lost"
-            )
+            let done = app.buttons["nowDone"]
+            print("DIAGNOSTIC nowDone hittable=\(done.isHittable) enabled=\(done.isEnabled) frame=\(done.frame)")
+            app.buttons["nowDrop"].tap()
+            print("DIAGNOSTIC after Drop, card gone=\(nowTitle.waitForNonExistence(timeout: 3))")
         }
         XCTAssertTrue(cardGone, "the Now card goes away when it's done")
 
