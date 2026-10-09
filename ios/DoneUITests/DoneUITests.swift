@@ -65,10 +65,19 @@ final class DoneUITests: XCTestCase {
         XCTAssertTrue(nowTitle.waitForExistence(timeout: 3), "the Now card shows the started task")
         XCTAssertEqual(nowTitle.label, "Write report")
 
+        // Start also closes the shuffle sheet; let it finish closing before the next tap.
+        XCTAssertTrue(picked.waitForNonExistence(timeout: 3), "the shuffle sheet closes")
         app.buttons["nowDone"].tap()
         let cardGone = nowTitle.waitForNonExistence(timeout: 3)
         // On failure, the screen as UI tests see it (is there a toast? which buttons?).
-        if !cardGone { print(app.debugDescription) }
+        if !cardGone {
+            print(app.debugDescription)
+            app.buttons["nowDone"].tap()
+            XCTAssertFalse(
+                nowTitle.waitForNonExistence(timeout: 3),
+                "DIAGNOSTIC: a second tap on Done worked, so the first one was lost"
+            )
+        }
         XCTAssertTrue(cardGone, "the Now card goes away when it's done")
 
         // Saved, not just on screen: a fresh launch still has it in the archive.
