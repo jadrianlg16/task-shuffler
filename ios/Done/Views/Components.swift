@@ -105,14 +105,20 @@ struct CardStyle: ViewModifier {
             )
             .overlay {
                 // A 3 pt stripe down the left edge, clipped to the card's corners.
+                // It's a whole-card fill masked to 3 pt, and a mask doesn't shrink
+                // where taps land: without allowsHitTesting(false) it swallowed
+                // every tap on the Now card's buttons.
                 if accentEdge {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .fill(Palette.accent)
                         .mask(alignment: .leading) { Rectangle().frame(width: 3) }
+                        .allowsHitTesting(false)
                 }
             }
             .overlay(
-                RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Palette.inkFaint.opacity(0.7), lineWidth: 1)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Palette.inkFaint.opacity(0.7), lineWidth: 1)
+                    .allowsHitTesting(false)
             )
     }
 }
