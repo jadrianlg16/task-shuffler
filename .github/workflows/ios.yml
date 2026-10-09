@@ -57,4 +57,12 @@ jobs:
           brew install xcodegen
           xcodegen
           xcodebuild test -project Done.xcodeproj -scheme Done \
-            -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
+            -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO \
+            -resultBundlePath "$RUNNER_TEMP/Done.xcresult"
+      # Screenshots and the accessibility tree of any failed UI test.
+      - name: Keep the test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Done-xcresult
+          path: ${{ runner.temp }}/Done.xcresult

@@ -66,7 +66,10 @@ final class DoneUITests: XCTestCase {
         XCTAssertEqual(nowTitle.label, "Write report")
 
         app.buttons["nowDone"].tap()
-        XCTAssertTrue(nowTitle.waitForNonExistence(timeout: 3), "the Now card goes away when it's done")
+        let cardGone = nowTitle.waitForNonExistence(timeout: 3)
+        // On failure, the screen as UI tests see it (is there a toast? which buttons?).
+        if !cardGone { print(app.debugDescription) }
+        XCTAssertTrue(cardGone, "the Now card goes away when it's done")
 
         // Saved, not just on screen: a fresh launch still has it in the archive.
         app.terminate()
