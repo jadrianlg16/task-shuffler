@@ -4,9 +4,11 @@ The native SwiftUI version of done. Same features as the web app, plus what
 only an Apple app can do: sounds and haptics, notifications, widgets, a Live
 Activity, Siri and Shortcuts, Focus filters, Spotlight and Control Center.
 
-**Status: written, never compiled.** Everything here was written on Windows,
-which can't build Swift for iOS. The first run on a Mac is the first real
-check; expect a round of compile fixes.
+**Status: builds and passes its tests; not on the App Store yet.** CI builds it
+with Xcode 26 and runs the core and UI tests on every push that touches it, and
+it builds and passes on Xcode 27 too. Before a release it still needs a paid
+developer team to sign with, the App Store listing (see
+[Not included](#not-included)) and a TestFlight round.
 
 ## What's in it
 
@@ -66,8 +68,10 @@ iOS 17+, iPhone and iPad, Swift 5 language mode, bundle ids
 
 ## First run on a Mac
 
-1. **Xcode 16.1 or newer** (16.0's widget-bundle builder crashes on iOS 17 with
-   the iOS 18 control), and XcodeGen: `brew install xcodegen`.
+1. **Xcode 26 or newer**, and XcodeGen: `brew install xcodegen`. Since
+   28 April 2026 the App Store only takes builds from Xcode 26 or later. (Xcode
+   16.1 still builds it for your own devices; 16.0's widget-bundle builder
+   crashes on iOS 17 with the iOS 18 control.)
 2. Core tests first; they need nothing else:
 
    ```bash
@@ -94,7 +98,8 @@ iOS 17+, iPhone and iPad, Swift 5 language mode, bundle ids
    ```
 
 6. UI tests: ⌘U in Xcode, or
-   `xcodebuild test -project Done.xcodeproj -scheme Done -destination 'platform=iOS Simulator,name=iPhone 16'`.
+   `xcodebuild test -project Done.xcodeproj -scheme Done -destination 'platform=iOS Simulator,name=iPhone 17'`
+   (any iPhone simulator you have; `xcrun simctl list devices` lists them).
 
 ## Keeping it in step with the web app
 
@@ -151,5 +156,8 @@ JavaScript's: `[0-9]` for `\d`, JavaScript's whitespace set for `\s` and
 ## CI
 
 `.github/workflows/ios.yml` runs the web tests, the fixture check, `swift test`,
-and the app build with its UI tests on GitHub's macOS runners. It only runs
-once the branch is pushed.
+and the app build with its UI tests, on pushes and pull requests that touch
+`ios/`, the web logic it ports, or the workflow. The Swift job uses GitHub's
+`macos-26` runner and its default Xcode 26, and tests on an iPhone simulator
+with the newest iOS the runner has. When a UI test fails, the job keeps the
+result bundle (screenshots and the accessibility tree) as an artifact.

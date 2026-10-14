@@ -1,5 +1,5 @@
 # The iPhone app's checks. Only runs on GitHub (macOS runners are free for
-# public repos); the same commands work on a Mac with Xcode 16.
+# public repos); the same commands work on a Mac with Xcode 26 or later.
 name: iOS
 
 on:
@@ -40,14 +40,15 @@ jobs:
 
   # DoneCore's tests (including parity), then the app builds for the simulator.
   swift:
-    runs-on: macos-15
+    # The image's default Xcode, 26.x: since 28 April 2026 the App Store only
+    # takes builds from Xcode 26 or later, so CI builds with what ships.
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
-      # Newest Xcode 16.x on the runner (the widget bundle needs 16.1 or later).
-      # Only numbered installs: a plain lexical sort put the Xcode_16.app alias
-      # (16.0, no simulator runtime) last.
-      - name: Choose Xcode
-        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16.[0-9]*.app | grep -iv beta | sort -V | tail -1)"
+      - name: Show Xcode and simulators
+        run: |
+          xcodebuild -version
+          xcrun simctl list runtimes
       - name: DoneCore tests
         working-directory: ios/DoneCore
         run: swift test
@@ -56,8 +57,19 @@ jobs:
         run: |
           brew install xcodegen
           xcodegen
+          # An iPhone on the newest iOS runtime: device names change with each
+          # Xcode (iPhone 16 → 17 → …), so none is hard-coded.
+          udid=$(xcrun simctl list devices available -j | jq -r '
+            .devices | to_entries
+            | map(select(.key | test("SimRuntime\\.iOS-"))
+                | .value |= map(select(.name | startswith("iPhone")))
+                | select(.value | length > 0))
+            | sort_by(.key | capture("iOS-(?<major>[0-9]+)-(?<minor>[0-9]+)")
+                | [(.major | tonumber), (.minor | tonumber)])
+            | last.value[0].udid')
+          xcrun simctl list devices | grep "$udid"
           xcodebuild test -project Done.xcodeproj -scheme Done \
-            -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO \
+            -destination "id=$udid" CODE_SIGNING_ALLOWED=NO \
             -resultBundlePath "$RUNNER_TEMP/Done.xcresult"
       # Screenshots and the accessibility tree of any failed UI test.
       - name: Keep the test results
