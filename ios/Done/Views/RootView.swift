@@ -92,7 +92,9 @@ struct RootView: View {
             .buttonStyle(.borderless)
             .scrollContentBackground(.hidden)
             .scrollDismissesKeyboard(.interactively)
-            .safeAreaInset(edge: .bottom, spacing: 0) { QuickAddBar() }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                QuickAddBar { reveal($0, with: proxy) }
+            }
             .onChange(of: store.library.current?.id) {
                 // A task just started (maybe picked from far down the list): show
                 // its card. At accessibility text sizes the header alone can fill
@@ -109,6 +111,16 @@ struct RootView: View {
 
     private static let top = "top"
     private static let now = "now"
+
+    /// Brings a task just added into view, scrolling only as far as needed. It
+    /// can land below the fold; at the largest text sizes the header and picker
+    /// alone are taller than an iPhone's screen.
+    private func reveal(_ task: TaskItem, with proxy: ScrollViewProxy) {
+        // On the next turn, once the list has a row for it.
+        DispatchQueue.main.async {
+            withAnimation { proxy.scrollTo(task.id) }
+        }
+    }
 
     private var wideLayout: some View {
         HStack(alignment: .top, spacing: 0) {
@@ -127,14 +139,18 @@ struct RootView: View {
 
             Divider()
 
-            List {
-                TaskSections(search: search)
+            ScrollViewReader { proxy in
+                List {
+                    TaskSections(search: search)
+                }
+                .listStyle(.insetGrouped)
+                .buttonStyle(.borderless)
+                .scrollContentBackground(.hidden)
+                .scrollDismissesKeyboard(.interactively)
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    QuickAddBar { reveal($0, with: proxy) }
+                }
             }
-            .listStyle(.insetGrouped)
-            .buttonStyle(.borderless)
-            .scrollContentBackground(.hidden)
-            .scrollDismissesKeyboard(.interactively)
-            .safeAreaInset(edge: .bottom, spacing: 0) { QuickAddBar() }
         }
     }
 

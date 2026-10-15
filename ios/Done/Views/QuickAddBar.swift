@@ -7,6 +7,8 @@ struct QuickAddBar: View {
     @Environment(LibraryStore.self) private var store
     @Environment(Router.self) private var router
     @Environment(\.dynamicTypeSize) private var typeSize
+    /// Called with each task added, so the list can show it.
+    var onAdd: (TaskItem) -> Void = { _ in }
     @FocusState private var focused: Bool
     @State private var text = ""
     @State private var minutes: Int?
@@ -213,12 +215,17 @@ struct QuickAddBar: View {
     }
 
     private func add() {
-        guard store.quickAdd(text, minutes: minutes, categoryId: categoryId) != nil else { return }
+        guard let task = store.quickAdd(text, minutes: minutes, categoryId: categoryId) else { return }
         text = ""
         minutes = nil
         otherMinutes = ""
         categoryId = TaskCategory.unassignedId
         // Ready for the next one. Return ends editing first, so ask again after it.
         DispatchQueue.main.async { focused = true }
+        // VoiceOver stays on the empty field, so say that it worked.
+        var added = AttributedString("Added \(task.name)")
+        added.accessibilitySpeechAnnouncementPriority = .high
+        AccessibilityNotification.Announcement(added).post()
+        onAdd(task)
     }
 }

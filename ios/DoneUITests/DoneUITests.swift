@@ -52,10 +52,15 @@ final class DoneUITests: XCTestCase {
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.tap()
         field.typeText("Write report 15m\n")
+        // The list scrolls to the new task, with the keyboard still up, so it's
+        // seen even when the header and picker fill the screen (largest text).
+        let row = element("task-Write report", in: app)
+        XCTAssertTrue(row.waitForExistence(timeout: 3), "the task is in the list")
+        XCTAssertTrue(row.wait(for: \.isHittable, toEqual: true, timeout: 3), "the new task is on screen")
         closeKeyboard(field, in: app)
-        XCTAssertTrue(element("task-Write report", in: app).waitForExistence(timeout: 3), "the task is in the list")
 
         let shuffle = app.buttons["shuffleButton"]
+        scrollTo(shuffle, in: app, upward: true)
         XCTAssertTrue(shuffle.waitForExistence(timeout: 3))
         shuffle.tap()
 
