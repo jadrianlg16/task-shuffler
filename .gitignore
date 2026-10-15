@@ -14,3 +14,6 @@ ios/**/.build/
 ios/**/.swiftpm/
 ios/**/xcuserdata/
 ios/**/DerivedData/
+
+# Device-matrix runs: result bundles, screenshots, build folders
+matrix-out/
