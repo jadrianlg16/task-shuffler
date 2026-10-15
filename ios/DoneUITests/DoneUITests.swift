@@ -31,12 +31,15 @@ final class DoneUITests: XCTestCase {
         }
     }
 
-    /// Off-screen List rows don't exist for UI tests, so scroll until it does.
+    /// Off-screen List rows don't exist for UI tests, so swipe until the target
+    /// is on screen: up for what's further down the list, down for what's above.
+    /// At the largest text sizes even the picker and the Now card's buttons can
+    /// be off screen.
     @MainActor
-    private func scrollTo(_ target: XCUIElement, in app: XCUIApplication) {
+    private func scrollTo(_ target: XCUIElement, in app: XCUIApplication, upward: Bool = false) {
         var tries = 0
-        while !target.exists && tries < 8 {
-            app.swipeUp()
+        while !(target.exists && target.isHittable) && tries < 8 {
+            if upward { app.swipeDown() } else { app.swipeUp() }
             tries += 1
         }
     }
@@ -67,7 +70,9 @@ final class DoneUITests: XCTestCase {
 
         // Start also closes the shuffle sheet; let it finish closing before the next tap.
         XCTAssertTrue(picked.waitForNonExistence(timeout: 3), "the shuffle sheet closes")
-        app.buttons["nowDone"].tap()
+        let done = app.buttons["nowDone"]
+        scrollTo(done, in: app)
+        done.tap()
         XCTAssertTrue(nowTitle.waitForNonExistence(timeout: 3), "the Now card goes away when it's done")
 
         // Saved, not just on screen: a fresh launch still has it in the archive.

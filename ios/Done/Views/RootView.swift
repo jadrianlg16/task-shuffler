@@ -10,6 +10,7 @@ struct RootView: View {
     @Environment(Router.self) private var router
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var search = ""
     @State private var searching = false
 
@@ -75,6 +76,7 @@ struct RootView: View {
                         NoticesView()
                         if let current = store.library.current {
                             NowCard(task: current)
+                                .id(Self.now)
                         }
                         PickerCard()
                     }
@@ -92,14 +94,21 @@ struct RootView: View {
             .scrollDismissesKeyboard(.interactively)
             .safeAreaInset(edge: .bottom, spacing: 0) { QuickAddBar() }
             .onChange(of: store.library.current?.id) {
-                // A task just started (maybe picked from far down the list): show its card.
+                // A task just started (maybe picked from far down the list): show
+                // its card. At accessibility text sizes the header alone can fill
+                // the screen, so go to the card itself instead of the top, once
+                // the list has it.
                 guard store.library.current != nil else { return }
-                withAnimation { proxy.scrollTo(Self.top, anchor: .top) }
+                let target = typeSize.isAccessibilitySize ? Self.now : Self.top
+                DispatchQueue.main.async {
+                    withAnimation { proxy.scrollTo(target, anchor: .top) }
+                }
             }
         }
     }
 
     private static let top = "top"
+    private static let now = "now"
 
     private var wideLayout: some View {
         HStack(alignment: .top, spacing: 0) {
