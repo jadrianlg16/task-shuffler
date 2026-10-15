@@ -6,6 +6,7 @@ import SwiftUI
 struct QuickAddBar: View {
     @Environment(LibraryStore.self) private var store
     @Environment(Router.self) private var router
+    @Environment(\.dynamicTypeSize) private var typeSize
     @FocusState private var focused: Bool
     @State private var text = ""
     @State private var minutes: Int?
@@ -89,32 +90,60 @@ struct QuickAddBar: View {
         .accessibilityElement(children: .combine)
     }
 
+    @ViewBuilder
     private var options: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            // Minutes and category on one line where they fit. On a narrower
-            // phone or with larger text the category moves under the minutes,
-            // and at the largest sizes everything wraps, instead of the
-            // category's name being squeezed onto several lines.
-            ViewThatFits(in: .horizontal) {
+        if typeSize.isAccessibilitySize {
+            // Wrapped, the choices and the tip filled the whole screen above the
+            // keyboard (on an iPhone SE at the largest size the text field went
+            // under it), leaving no room to see the task just added. One
+            // scrolling row instead, fading out at the screen's edges, and no tip.
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     minuteChoices
-                    Spacer(minLength: 8)
-                    categoryMenu
-                }
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack(spacing: 6) { minuteChoices }
-                    categoryMenu
-                }
-                FlowLayout(spacing: 6) {
-                    minuteChoices
                     categoryMenu
                 }
             }
-            if text.isEmpty, let example = store.library.visibleCategories.first(where: { $0.id != TaskCategory.unassignedId }) {
-                Text("Tip: type 30m or #\(example.name.lowercased()) right in the name.")
-                    .font(.caption2)
-                    .foregroundStyle(Palette.inkMuted)
+            .contentMargins(.horizontal, 16, for: .scrollContent)
+            .mask {
+                HStack(spacing: 0) {
+                    LinearGradient(colors: [.clear, .black], startPoint: .leading, endPoint: .trailing).frame(width: 16)
+                    Rectangle()
+                    LinearGradient(colors: [.black, .clear], startPoint: .leading, endPoint: .trailing).frame(width: 16)
+                }
             }
+            .padding(.horizontal, -16)
+        } else {
+            VStack(alignment: .leading, spacing: 6) {
+                // Minutes and category on one line where they fit. On a narrower
+                // phone or with larger text the category moves under the minutes,
+                // and where even the minutes don't fit on a line everything wraps,
+                // instead of the category's name being squeezed onto several lines.
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 6) {
+                        minuteChoices
+                        Spacer(minLength: 8)
+                        categoryMenu
+                    }
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack(spacing: 6) { minuteChoices }
+                        categoryMenu
+                    }
+                    FlowLayout(spacing: 6) {
+                        minuteChoices
+                        categoryMenu
+                    }
+                }
+                tip
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var tip: some View {
+        if text.isEmpty, let example = store.library.visibleCategories.first(where: { $0.id != TaskCategory.unassignedId }) {
+            Text("Tip: type 30m or #\(example.name.lowercased()) right in the name.")
+                .font(.caption2)
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 

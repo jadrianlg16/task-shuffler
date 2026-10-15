@@ -138,7 +138,9 @@ them.
 - **Small UI choices:** active tasks can be deleted (swipe, with Undo; the web
   only deletes from the archive); deleting a category asks first; an emptied
   list says "All clear"; one toast at a time (a new one replaces the last,
-  with its Undo); category groups start open on every launch.
+  with its Undo); category groups start open on every launch; at
+  accessibility text sizes the quick-add minutes and category are one
+  scrolling row, without the tip.
 
 Where ICU's regex rules differ from JavaScript's, the port spells out
 JavaScript's: `[0-9]` for `\d`, JavaScript's whitespace set for `\s` and
