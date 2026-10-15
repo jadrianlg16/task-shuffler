@@ -9,7 +9,12 @@ struct QuickAddBar: View {
     @FocusState private var focused: Bool
     @State private var text = ""
     @State private var minutes: Int?
+    /// What's typed in the "min" box. Its own text, so tapping a chip leaves
+    /// the box empty instead of echoing the chip.
+    @State private var otherMinutes = ""
     @State private var categoryId = TaskCategory.unassignedId
+    /// The "min" box grows with the text size, like the chips beside it.
+    @ScaledMetric(relativeTo: .subheadline) private var minutesFieldWidth: CGFloat = 52
 
     private static let minutePresets = [5, 15, 30, 60]
 
@@ -86,37 +91,24 @@ struct QuickAddBar: View {
 
     private var options: some View {
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 6) {
-                ForEach(Self.minutePresets, id: \.self) { preset in
-                    Chip(isOn: minutes == preset, action: { minutes = minutes == preset ? nil : preset }) {
-                        Text("\(preset)m")
-                    }
+            // Minutes and category on one line where they fit. On a narrower
+            // phone or with larger text the category moves under the minutes,
+            // and at the largest sizes everything wraps, instead of the
+            // category's name being squeezed onto several lines.
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 6) {
+                    minuteChoices
+                    Spacer(minLength: 8)
+                    categoryMenu
                 }
-                TextField("min", text: typedMinutes)
-                    .keyboardType(.numberPad)
-                    .font(.subheadline)
-                    .multilineTextAlignment(.center)
-                    .frame(width: 48, height: 32)
-                    .background(Capsule().fill(Palette.surface))
-                    .overlay(Capsule().strokeBorder(Palette.inkFaint, lineWidth: 1))
-                    .accessibilityLabel("Minutes")
-                Spacer(minLength: 4)
-                Menu {
-                    Picker("Category", selection: $categoryId) {
-                        ForEach(store.library.sortedCategories.filter { !$0.isHidden || $0.id == categoryId }) { category in
-                            Text(category.name).tag(category.id)
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 5) {
-                        CategoryDot(color: store.library.category(id: categoryId)?.color ?? "#6B7280", size: 7)
-                        Text(store.library.category(id: categoryId)?.name ?? "Unassigned")
-                        Image(systemName: "chevron.up.chevron.down").font(.caption2)
-                    }
-                    .font(.subheadline)
-                    .foregroundStyle(Palette.ink)
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 6) { minuteChoices }
+                    categoryMenu
                 }
-                .accessibilityLabel("Category")
+                FlowLayout(spacing: 6) {
+                    minuteChoices
+                    categoryMenu
+                }
             }
             if text.isEmpty, let example = store.library.visibleCategories.first(where: { $0.id != TaskCategory.unassignedId }) {
                 Text("Tip: type 30m or #\(example.name.lowercased()) right in the name.")
@@ -126,11 +118,68 @@ struct QuickAddBar: View {
         }
     }
 
-    /// Any number of minutes, typed.
+    @ViewBuilder
+    private var minuteChoices: some View {
+        ForEach(Self.minutePresets, id: \.self) { preset in
+            Chip(isOn: minutes == preset, action: {
+                minutes = minutes == preset ? nil : preset
+                otherMinutes = ""
+            }) {
+                Text("\(preset)m")
+            }
+        }
+        TextField("min", text: typedMinutes)
+            .keyboardType(.numberPad)
+            .font(.subheadline)
+            .multilineTextAlignment(.center)
+            .frame(width: minutesFieldWidth)
+            .frame(minHeight: 32)
+            .background(Capsule().fill(Palette.surface))
+            .overlay(Capsule().strokeBorder(otherMinutes.isEmpty ? Palette.inkFaint : Palette.accent, lineWidth: 1))
+            .accessibilityLabel("Other minutes")
+    }
+
+    /// The category as a pill like the chips: dot, name on one line, chevron.
+    private var categoryMenu: some View {
+        let category = store.library.category(id: categoryId)
+
+        return Menu {
+            Picker("Category", selection: $categoryId) {
+                ForEach(store.library.sortedCategories.filter { !$0.isHidden || $0.id == categoryId }) { category in
+                    Text(category.name).tag(category.id)
+                }
+            }
+        } label: {
+            HStack(spacing: 6) {
+                CategoryDot(color: category?.color ?? "#6B7280", size: 7)
+                Text(category?.name ?? "Unassigned")
+                    .lineLimit(1)
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(Palette.inkMuted)
+            }
+            .font(.subheadline)
+            .foregroundStyle(Palette.ink)
+            .padding(.horizontal, 12)
+            .frame(minHeight: 32)
+            .background(Capsule().fill(Palette.surface))
+            .overlay(Capsule().strokeBorder(Palette.inkFaint, lineWidth: 1))
+            .contentShape(Capsule())
+        }
+        .accessibilityLabel("Category")
+        .accessibilityValue(category?.name ?? "Unassigned")
+    }
+
+    /// Any number of minutes, typed. Only typing goes through here, so a chip
+    /// clearing the box doesn't also clear the chip's minutes.
     private var typedMinutes: Binding<String> {
         Binding(
-            get: { minutes.map { String($0) } ?? "" },
-            set: { typed in minutes = Int(typed.filter(\.isNumber)).flatMap { $0 > 0 ? $0 : nil } }
+            get: { otherMinutes },
+            set: { typed in
+                let digits = typed.filter(\.isNumber)
+                otherMinutes = digits
+                minutes = Int(digits).flatMap { $0 > 0 ? $0 : nil }
+            }
         )
     }
 
@@ -138,6 +187,7 @@ struct QuickAddBar: View {
         guard store.quickAdd(text, minutes: minutes, categoryId: categoryId) != nil else { return }
         text = ""
         minutes = nil
+        otherMinutes = ""
         categoryId = TaskCategory.unassignedId
         // Ready for the next one. Return ends editing first, so ask again after it.
         DispatchQueue.main.async { focused = true }

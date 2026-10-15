@@ -281,8 +281,7 @@ struct PickerCard: View {
             if !store.pickerCategoryIds.isEmpty {
                 hintText("No active tasks in \(store.pickerCategoryIds.count == 1 ? "that category" : "those categories").")
             } else if store.library.tasks.isEmpty {
-                HStack(spacing: 4) {
-                    hintText("No tasks yet. Add one below, or")
+                hintRow("No tasks yet. Add one below, or") {
                     Button("try the examples") { store.addExamples() }
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(Palette.accent)
@@ -292,21 +291,39 @@ struct PickerCard: View {
                 hintText("No tasks to pick from yet. Add one below.")
             }
         case .time(let suggestion, let label, let count):
-            HStack(spacing: 4) {
-                hintText("Nothing fits.")
-                Button("Try \(label)") {
-                    store.updatePreferences { $0.shuffleTimeFilter = suggestion }
-                    withAnimation(.snappy) { moreOpen = moreOpen && !isSimple(suggestion) }
+            hintRow("Nothing fits.") {
+                HStack(spacing: 4) {
+                    Button("Try \(label)") {
+                        store.updatePreferences { $0.shuffleTimeFilter = suggestion }
+                        withAnimation(.snappy) { moreOpen = moreOpen && !isSimple(suggestion) }
+                    }
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Palette.accent)
+                    hintText("(\(count) task\(count == 1 ? "" : "s"))")
                 }
-                .font(.footnote.weight(.semibold))
-                .foregroundStyle(Palette.accent)
-                hintText("(\(count) task\(count == 1 ? "" : "s"))")
             }
         }
     }
 
     private func hintText(_ text: String) -> some View {
         Text(text).font(.footnote).foregroundStyle(Palette.inkMuted)
+    }
+
+    /// A hint with its action beside it where both fit on one line, and under
+    /// it where they don't (narrow phones, larger text), instead of the text
+    /// wrapping into a column next to the action.
+    private func hintRow<Action: View>(_ text: String, @ViewBuilder action: () -> Action) -> some View {
+        let action = action()
+        return ViewThatFits(in: .horizontal) {
+            HStack(spacing: 4) {
+                hintText(text)
+                action
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                hintText(text)
+                action
+            }
+        }
     }
 }
 
