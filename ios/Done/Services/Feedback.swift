@@ -21,6 +21,8 @@ final class Feedback {
         case drop
         /// Adding a task.
         case tap
+        /// Changing a picker choice: a haptic tick, no sound.
+        case select
     }
 
     private var soundsOn = true
@@ -77,6 +79,8 @@ final class Feedback {
         case .tap:
             if hapticsOn { light.impactOccurred(intensity: 0.5) }
             playSound("add")
+        case .select:
+            if hapticsOn { selection.selectionChanged() }
         }
     }
 
