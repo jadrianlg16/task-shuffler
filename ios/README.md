@@ -162,5 +162,6 @@ JavaScript's: `[0-9]` for `\d`, JavaScript's whitespace set for `\s` and
 and the app build with its UI tests, on pushes and pull requests that touch
 `ios/`, the web logic it ports, or the workflow. The Swift job uses GitHub's
 `macos-26` runner and its default Xcode 26, and tests on an iPhone simulator
-with the newest iOS the runner has. When a UI test fails, the job keeps the
-result bundle (screenshots and the accessibility tree) as an artifact.
+with the newest iOS the runner has, then runs the UI tests again with that
+simulator at the largest text size (AX5). When a UI test fails, the job keeps
+the result bundles (screenshots and the accessibility tree) as an artifact.

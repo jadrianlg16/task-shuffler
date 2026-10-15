@@ -68,13 +68,29 @@ jobs:
                 | [(.major | tonumber), (.minor | tonumber)])
             | last.value[0].udid')
           xcrun simctl list devices | grep "$udid"
+          echo "SIM_UDID=$udid" >> "$GITHUB_ENV"
           xcodebuild test -project Done.xcodeproj -scheme Done \
             -destination "id=$udid" CODE_SIGNING_ALLOWED=NO \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             -resultBundlePath "$RUNNER_TEMP/Done.xcresult"
+      # The UI tests again at the largest text size (AX5), on the same build.
+      # On 2026-10-15 adding a task passed at the default size and failed here.
+      - name: Run the UI tests at the largest text size
+        working-directory: ios
+        run: |
+          xcrun simctl bootstatus "$SIM_UDID" -b
+          xcrun simctl ui "$SIM_UDID" content_size accessibility-extra-extra-extra-large
+          xcrun simctl ui "$SIM_UDID" content_size
+          xcodebuild test-without-building -project Done.xcodeproj -scheme Done \
+            -destination "id=$SIM_UDID" \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            -resultBundlePath "$RUNNER_TEMP/Done-AX5.xcresult"
       # Screenshots and the accessibility tree of any failed UI test.
       - name: Keep the test results
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: Done-xcresult
-          path: ${{ runner.temp }}/Done.xcresult
+          path: |
+            ${{ runner.temp }}/Done.xcresult
+            ${{ runner.temp }}/Done-AX5.xcresult
